@@ -1,6 +1,6 @@
 # Introduction
 
-The documentation for the `<BB>` building block is organised as follows...
+The documentation for the `Resource Registration` building block is organised as follows...
 
 * **Introduction**<br>
   Introduction to the BB - including summary of purpose and capabilities.
@@ -15,7 +15,7 @@ The documentation for the `<BB>` building block is organised as follows...
 * **API**<br>
   Details of APIs provided by the BB - including endpoints, usage descriptions and examples etc.
 
-## About `<BB>`
+## About `Resource Registration`
 
 Description of the purpose of the BB.
 

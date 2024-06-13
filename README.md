@@ -1,2 +1,2 @@
-# document-template
-Template for Read the Docs + mkdocs
+# Resource Registration
+EOEPCA Resource Registration Building Block repository
