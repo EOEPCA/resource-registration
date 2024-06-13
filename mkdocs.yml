@@ -1,11 +1,12 @@
-site_name: EOEPCA Document Template
-site_url: https://eoepca.readthedocs.io/projects/template/en/latest/
-repo_url: https://github.com/EOEPCA/document-template/
+site_name: EOEPCA Resource Registration
+site_url: https://eoepca.readthedocs.io/projects/resource-registration/en/latest/
+repo_url: https://github.com/EOEPCA/rm-registration/
 edit_uri: "edit/main/docs/"
 
 nav:
-  - Home: home.html
-  - Building-block Name:
+  - EOEPCA Documentation: https://eoepca.readthedocs.io/
+  - System Architecture: https://eoepca.readthedocs.io/projects/architecture/  
+  - Resource Registration:
     - index.md
     - Getting Started:
       - getting-started/quick-start.md
@@ -49,6 +50,8 @@ extra_css:
 
 plugins:
   - autorefs
+  - glightbox
+  - search  
   # - pub-debugger:
   #     console_log:
   #       enabled: true
