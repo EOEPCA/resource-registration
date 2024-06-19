@@ -47,3 +47,18 @@ Downloading will be supported from the following sources:
 - HTTP
 - Filesystem
 - Swift object storage
+
+## Common Ingestion Library
+
+How is the data found by the harvester (in which condition) and how does the Registration API need the data? The common
+ingestion library has to be able to perform all necessary steps to make the data from the harvester processable to the
+Registration API.
+
+### Modules
+
+The common ingestion library should have the following modules to be able to comply to all requirements
+- Basic File Operation
+- Perform Data Conversion Operation
+- generate STAC files? Depends, is this done by harvester/ has the harvester access to STAC files?
+- "Commanding API" how is the library going to be informed about what needs to be done? Analogous to oseostac process yamls?
+- Formulation of queries to OGC API Processes
