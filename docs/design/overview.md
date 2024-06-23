@@ -8,7 +8,7 @@ Resource Registration supports the ingestion of data and its associated metadata
 
 The Resource Registration building-block is a companion to Resource Discovery in terms of satisfying the ingestion of the resource types supported by Resource Discovery. Thus, it provides a RESTful service interface for registration of all the Resource Types supported by the Resource Discovery Building Block.
 
-![Resource Registration architecture](https://eoepca.readthedocs.io/projects/architecture/en/latest/reference-architecture/diagrams/resource-registration.drawio.png)
+![Resource Registration architecture](../img/resource-registration-architecture.drawio.png)
 
 As described in the [System Architecture document](https://eoepca.readthedocs.io/projects/architecture/) the Resource Registration Building Block includes the following components:
 
