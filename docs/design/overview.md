@@ -15,10 +15,10 @@ As described in the [System Architecture document](https://eoepca.readthedocs.io
 * **Registration API**<br>
   For record Create, Update and Delete operations. The API is based on OGC standards for the registration of records into the platform. For the simple cases that a resource is already in the appropriate format (STAC, Record, ISO 19115, Dublin Core) the OGC API Features Part 4 (Create, Replace, Update and Delete - Transactions) is used to register those resources. In cases where transformation/validation needs to take place, an OGC API - Processes interface is defined for registering the appropriate resources.
 
-* **Harvester**
+* **Harvester**<br>
   To ingest records from other (external) data sources. The Harvester proactively initiates and orchestrates the harvesting capability, and uses Harvester Data Source implementation to handle specific data sources.
 
-* **Harvester Data Source(s)**
+* **Harvester Data Source(s)**<br>
   Provides an integration with a specific data source to provide customised support for record harvesting and interpretation. Designed to be plugged-in to the Harvester for a given deployment. Harvesting is supported from the following sources for metadata: OGC API Records, STAC (static), Opensearch. for registration of data assets the following sources are supported: S3 object storage, HTTP, Filesystem, Swift object storage.
 
 
