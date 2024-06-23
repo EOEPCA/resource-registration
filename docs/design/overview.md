@@ -22,6 +22,21 @@ As described in the [System Architecture document](https://eoepca.readthedocs.io
   Provides an integration with a specific data source to provide customised support for record harvesting and interpretation. Designed to be plugged-in to the Harvester for a given deployment. Harvesting is supported from the following sources for metadata: OGC API Records, STAC (static), Opensearch. for registration of data assets the following sources are supported: S3 object storage, HTTP, Filesystem, Swift object storage.
 
 
+The components design of the Resource Registration Building Block is shown in the next figure. Two main components are provided as part of the building block:
+
+1. The Registration API and
+2. the Harvester.
+
+![Resource Registration components](../img/resource-registration-components.png)
+
+The Registration API uses pygeoapi to publish processes according to the OGC API Processes specification. Processes for resource creation, update, and deletion are implemented for all resource types available in the resource catalogue. The processes make use of the OWSLib, components of the EOEPCA registrar as well as the newly combined and developed data ingestion library.
+
+The Harvester component is built with workflows in Camunda allowing to easily operate the workflows conducted. Python is used to communicate with the Camunda core engine via REST API and to execute the workflow steps. The execution of the tasks for metadata harvesting, data download, and metadata creation is based on various software, such as EOX View Server’s harvester as well as OWSLib, pygeometa, EOMetadataTool, and stactools. A common data ingestion library is being developed to combine the functionalities from those various packages.
+
+As part of the workflows in Camunda, notifications can be sent to the notification & automation building block and workflows can listen for notifications as well.
+All APIs are protected with the API Gateway, which connects to the Identity Management building block for authentication and authorization. In addition, the API Gateway is able to conduct rate-limiting.
+
+
 ## Harvester Data Sources / Workflows
 
 As described in the overall building block architecture, the concept of the Harvester Data Source is represented by a Harvester workflow implementation. The inital set of Harvester Data Sources / Workflows is provided here. With DLR terrabyte as an operational platform for the Registration building block, this selection is primarily driven by the data requirements of the terrabyte users.
