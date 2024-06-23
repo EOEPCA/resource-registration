@@ -12,17 +12,28 @@ nav:
       - getting-started/quick-start.md
       - getting-started/more-getting-started.md
     - Design:
-      - design/overview.md
-      - design/more-design.md
-    - Usage:
-      - usage/tutorials.md
-      - usage/howtos.md
+      - Architecture: design/overview.md
+      - Components:
+        - OGC API:
+          - Design: design/ogcapi/design.md
+          - API:
+            - design/ogcapi/api/endpoint-specification.md
+            - design/ogcapi/api/usage.md
+        - Harvester:
+          - Design: design/harvester/design.md
+          - API:
+            - design/harvester/api/endpoint-specification.md
+            - design/harvester/api/usage.md
+      # - design/more-design.md
+    # - Usage:
+    #   - usage/tutorials.md
+    #   - usage/howtos.md
     - Administration:
       - admin/configuration.md
       - admin/maintenance.md
-    - API:
-      - api/endpoint-specification.md
-      - api/usage.md
+    # - API:
+    #   - api/endpoint-specification.md
+    #   - api/usage.md
 
 theme:
   # name: mkdocs
