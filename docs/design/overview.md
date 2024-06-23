@@ -8,6 +8,11 @@ Resource Registration supports the ingestion of data and its associated metadata
 
 The Resource Registration building-block is a companion to Resource Discovery in terms of satisfying the ingestion of the resource types supported by Resource Discovery. Thus, it provides a RESTful service interface for registration of all the Resource Types supported by the Resource Discovery Building Block.
 
+The proposed architecture for the building block is presented in the following figure. Compared to the design originally presented in the [System Architecture document](https://eoepca.readthedocs.io/projects/architecture/), the following changes are introduced to fit the Resource Registration well into the overall architecture of the building blocks:
+
+- Use OGC API Processes instead of OGC API Features Part 4 – Transactions for the Registration API as most of the resource types are not features (e.g., workflows, Jupyter Notebooks, EO Application Packages)
+- Use the CRUD interface of Resource Discovery directly rather than publish a message to the Notification & Automation BB as the user of the API directly expect a result synchronously (however messages are asynchronously and usually no feedback is given to the originator). The Resource Discovery component will then publish a message to the Notification & Automation BB so that other building blocks can be notified about a resource registration.
+
 ![Resource Registration architecture](../img/resource-registration-architecture.drawio.png)
 
 As described in the [System Architecture document](https://eoepca.readthedocs.io/projects/architecture/) the Resource Registration Building Block includes the following components:
