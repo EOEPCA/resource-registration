@@ -6,7 +6,7 @@ Resource Registration supports the ingestion of data and its associated metadata
 - Metadata registration into Resource Discovery service
 - Data registration into Data Access services for data retrieval and visualisation
 
-The Resource Registration building-block is a companion to Resource Discovery in terms of satisfying the ingestion of the resource types supported by Resource Discovery. Thus, it provides a RESTful service interface for registration of all the Resource Types supported by the Resource Discovery Building Block.
+The Resource Registration Building Block is a companion to Resource Discovery in terms of satisfying the ingestion of the resource types supported by Resource Discovery. Thus, it provides a RESTful service interface for registration of all the Resource Types supported by the Resource Discovery Building Block.
 
 The proposed architecture for the building block is presented in the following figure. Compared to the design originally presented in the [System Architecture document](https://eoepca.readthedocs.io/projects/architecture/), the following changes are introduced to fit the Resource Registration well into the overall architecture of the building blocks:
 
@@ -77,12 +77,14 @@ As described in the overall building block architecture, the concept of the Harv
 ### Other
 
 The Resource Registration BB is extensible for other datasets and providers, that need to be integrated for harvesting. In general, Harvester Data Sources / Workflows will support the following metadata sources for harvesting:
+
 - OGC API Records
 - STAC
 - OpenSearch
 - OData?
 
 Downloading will be supported from the following sources:
+
 - S3 object storage
 - HTTP
 - Filesystem

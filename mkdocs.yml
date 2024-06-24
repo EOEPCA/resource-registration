@@ -8,32 +8,32 @@ nav:
   - System Architecture: https://eoepca.readthedocs.io/projects/architecture/  
   - Resource Registration:
     - index.md
-    - Getting Started:
-      - getting-started/quick-start.md
-      - getting-started/more-getting-started.md
+#    - Getting Started:
+#      - getting-started/quick-start.md
+#      - getting-started/more-getting-started.md
     - Design:
       - Architecture: design/overview.md
       - Components:
-        - OGC API:
-          - Design: design/ogcapi/design.md
+        - Registration API (pygeoapi):
+          - Design: design/registration-api/design.md
           - API:
-            - design/ogcapi/api/endpoint-specification.md
-            - design/ogcapi/api/usage.md
-        - Harvester:
+            - design/registration-api/api/endpoint-specification.md
+            - design/registration-api/api/usage.md
+        - Harvester (Camunda):
           - Design: design/harvester/design.md
           - API:
             - design/harvester/api/endpoint-specification.md
             - design/harvester/api/usage.md
-      # - design/more-design.md
-    # - Usage:
-    #   - usage/tutorials.md
-    #   - usage/howtos.md
-    - Administration:
-      - admin/configuration.md
-      - admin/maintenance.md
-    # - API:
-    #   - api/endpoint-specification.md
-    #   - api/usage.md
+#      - design/more-design.md
+#    - Usage:
+#      - usage/tutorials.md
+#      - usage/howtos.md
+#    - Administration:
+#      - admin/configuration.md
+#      - admin/maintenance.md
+#    - API:
+#      - api/endpoint-specification.md
+#      - api/usage.md
 
 theme:
   # name: mkdocs
@@ -63,6 +63,7 @@ plugins:
   - autorefs
   - glightbox
   - search  
+  - swagger-ui-tag
   # - pub-debugger:
   #     console_log:
   #       enabled: true
