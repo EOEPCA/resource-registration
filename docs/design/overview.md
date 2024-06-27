@@ -23,7 +23,7 @@ As described in the [System Architecture document](https://eoepca.readthedocs.io
   To continuously ingest resources from other (external) data sources. The Harvester proactively initiates and orchestrates the harvesting capability and executes dedicated workflows to handle specific data sources. A workflow is a self-contained asset which can be deployed ("plugged") into the harvester and can therefore conceptionally be seen as a *Harvester Data Sources* mentioned in the System Architecture document.
 
 * **Common Library**<br>
-  The common library combines the functionalities of various upstream packages currently used in different EO data workflow systems. This library is used to implement the business logic of the individual workflow steps. It embeds the Data Gateway BB, which provides a singular semantic to search and access data across all BBs.
+  The common library combines the functionalities of various upstream packages currently used in different EO data workflow systems. This library is used to implement the business logic of the individual workflow steps as well as  the handling of the different resource types in the Registration API and the workflows. It embeds the Data Gateway BB, which provides a singular semantic to search and access data across all BBs.
 
 The components design of the Resource Registration Building Block is shown in the next figure. 
 

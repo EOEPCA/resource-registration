@@ -24,6 +24,11 @@ nav:
           - API:
             - design/harvester/api/endpoint-specification.md
             - design/harvester/api/usage.md
+        - Common Library:
+          - Design: design/common-library/design.md
+          - API:
+            - design/common-library/api/reference.md
+            - design/common-library/api/usage.md          
 #      - design/more-design.md
 #    - Usage:
 #      - usage/tutorials.md
