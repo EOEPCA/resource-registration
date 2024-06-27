@@ -1,6 +1,6 @@
 site_name: EOEPCA Resource Registration
 site_url: https://eoepca.readthedocs.io/projects/resource-registration/en/latest/
-repo_url: https://github.com/EOEPCA/rm-registration/
+repo_url: https://github.com/EOEPCA/resource-registration/
 edit_uri: "edit/main/docs/"
 
 nav:
