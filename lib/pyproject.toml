@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "lib"
+version = "0.0.1"
+authors = [
+  { name="DLR", email="lib@dlr.de" },
+]
+description = "PROVIDE DESCRIPTION HERE"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pystac",
+    "pystac_client",
+    "rio-cogeo",
+    "requests",
+    "psycopg2-binary",
+    "pika"
+]
+
+[project.optional-dependencies]
+gui = ["PyQt5"]
+cli = [
+  "stactools_sentinel"
+]
+
+[project.urls]
+Homepage = "https://github.com/EOEPCA/resource-registration/tree/main/lib/lib"
+Issues = "https://github.com/EOEPCA/resource-registration/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["lib"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-q --import-mode=importlib --no-header -rfE --disable-warnings --log-level=INFO"
+testpaths = [
+    "test",
+    "integration",
+]
