@@ -1,0 +1,294 @@
+{
+  "id": "modis-10a1-061",
+  "type": "Collection",
+  "links": [
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/MODIS/MOD10A1.061",
+      "title": "MODIS/Terra Snow Cover Daily L3 Global 500m SIN Grid, Version 61"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/MODIS/MYD10A1.061",
+      "title": "MODIS/Aqua Snow Cover Daily L3 Global 500m SIN Grid, Version 61"
+    },
+    {
+      "rel": "license",
+      "href": "https://nsidc.org/about/use_copyright.html",
+      "title": "Use and Copyright | National Snow and Ice Data Center"
+    },
+    {
+      "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+      "href": "https://stac.terrabyte.lrz.de/public/api/collections/modis-10a1-061/queryables",
+      "type": "application/schema+json"
+    }
+  ],
+  "title": "MOD10A1.061 & MYD10A1.061: MODIS Snow Cover Daily",
+  "assets": {
+    "thumbnail": {
+      "href": "https://stac.terrabyte.lrz.de/static/images/modis-10a1-061.png",
+      "type": "image/png",
+      "roles": [
+        "thumbnail"
+      ],
+      "title": "MODIS Snow Cover Daily thumbnail"
+    }
+  },
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -180,
+          -90,
+          180,
+          90
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2000-02-24T00:00:00Z",
+          "2023-06-09T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "proprietary",
+  "keywords": [
+    "NASA",
+    "MODIS",
+    "Satellite",
+    "Global",
+    "Snow",
+    "MOD10A1",
+    "MYD10A1"
+  ],
+  "providers": [
+    {
+      "url": "https://nsidc.org",
+      "name": "National Snow and Ice Data Center",
+      "roles": [
+        "producer",
+        "licensor",
+        "processor"
+      ]
+    },
+    {
+      "url": "https://terrabyte.lrz.de",
+      "name": "DLR terrabyte",
+      "roles": [
+        "host"
+      ]
+    }
+  ],
+  "summaries": {
+    "platform": [
+      "aqua",
+      "terra"
+    ],
+    "instruments": [
+      "modis"
+    ]
+  },
+  "description": "This global Level-3 (L3) data set provides a daily composite of snow cover and albedo derived from the 'MODIS(Terra/Aqua) Snow Cover 5-Min L2 Swath 500m' data set. Each data granule is a 10degx10deg tile projected to a 500 m sinusoidal grid.",
+  "item_assets": {
+    "hdf": {
+      "type": "application/hdf4",
+      "roles": [
+        "data"
+      ],
+      "title": "Source data containing all bands"
+    },
+    "metadata": {
+      "type": "application/xml",
+      "roles": [
+        "metadata"
+      ],
+      "title": "Federal Geographic Data Committee (FGDC) Metadata"
+    },
+    "granule_pnt": {
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "uint8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": 255,
+          "unit": "none"
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "NDSI": {
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int16",
+          "scale": 9.999999747e-05,
+          "offset": 0,
+          "nodata": 0,
+          "unit": "none"
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "NDSI_Snow_Cover_Algorithm_Flags_QA": {
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "uint8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": 255,
+          "unit": "none"
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "NDSI_Snow_Cover_Basic_QA": {
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "uint8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": 255,
+          "unit": "none"
+        }
+      ],
+      "roles": [
+        "data"
+      ],
+      "classification:classes": [
+        {
+          "value": 0,
+          "description": "best"
+        },
+        {
+          "value": 1,
+          "description": "good"
+        },
+        {
+          "value": 2,
+          "description": "ok"
+        },
+        {
+          "value": 3,
+          "description": "poor (not used)"
+        },
+        {
+          "value": 4,
+          "description": "other (not used)"
+        }
+      ]
+    },
+    "NDSI_Snow_Cover": {
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "uint8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": 255,
+          "unit": "none"
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "orbit_pnt": {
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": -1,
+          "unit": "none"
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "Snow_Albedo_Daily_Tile": {
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "uint8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": 255,
+          "unit": "none"
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    }
+  },
+  "stac_version": "1.0.0",
+  "cube:dimensions": {
+    "t": {
+      "type": "temporal",
+      "extent": [
+        "2000-02-24T00:00:00Z",
+        "2023-06-09T00:00:00Z"
+      ]
+    },
+    "x": {
+      "axis": "x",
+      "type": "spatial",
+      "extent": [
+        -180,
+        180
+      ]
+    },
+    "y": {
+      "axis": "y",
+      "type": "spatial",
+      "extent": [
+        -90,
+        90
+      ]
+    },
+    "bands": {
+      "type": "bands",
+      "values": [
+        "granule_pnt",
+        "NDSI",
+        "NDSI_Snow_Cover_Algorithm_Flags_QA",
+        "NDSI_Snow_Cover_Basic_QA",
+        "NDSI_Snow_Cover",
+        "orbit_pnt",
+        "Snow_Albedo_Daily_Tile"
+      ]
+    }
+  },
+  "stac_extensions": [
+    "https://stac-extensions.github.io/datacube/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/raster/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/table/v1.2.0/schema.json"
+  ],
+  "sci:publications": [
+    {
+      "doi": "10.5067/MODIS/MOD10A1.061",
+      "citation": "Hall, D. K., &amp; Riggs, G. A. (2021). <i>MODIS/Aqua Snow Cover Daily L3 Global 500m Grid, Version 61</i> [Data set]. NASA National Snow and Ice Data Center DAAC. https://doi.org/10.5067/MODIS/MOD10A1.061"
+    },
+    {
+      "doi": "10.5067/MODIS/MYD10A1.061",
+      "citation": "Hall, D. K., &amp; Riggs, G. A. (2021). <i>MODIS/Aqua Snow Cover Daily L3 Global 500m Grid, Version 61</i> [Data set]. NASA National Snow and Ice Data Center DAAC. https://doi.org/10.5067/MODIS/MYD10A1.061"
+    }
+  ]
+}

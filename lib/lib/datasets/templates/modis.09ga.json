@@ -1,0 +1,310 @@
+{
+  "gflags": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_1km_2D:gflags_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "uint8",
+        "scale": 1,
+        "offset": 0,
+        "nodata": 255,
+        "unit": "bit field"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "granule_pnt": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_1km_2D:granule_pnt_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "uint8",
+        "scale": 1,
+        "offset": 0,
+        "nodata": 255,
+        "unit": "none"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "iobs_res": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_500m_2D:iobs_res_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "uint8",
+        "scale": 1,
+        "offset": 0,
+        "nodata": 255,
+        "unit": "none"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "num_observations_1km": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_1km_2D:num_observations_1km",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int8",
+        "scale": 1,
+        "offset": 0,
+        "nodata": -1,
+        "unit": "none"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "num_observations_500m": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_500m_2D:num_observations_500m",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int8",
+        "scale": 1,
+        "offset": 0,
+        "nodata": -1,
+        "unit": "none"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "obscov_500m": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_500m_2D:obscov_500m_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int8",
+        "scale": 0.00999999977648258,
+        "offset": 0,
+        "nodata": -1,
+        "unit": "percent"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "orbit_pnt": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_1km_2D:orbit_pnt_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int8",
+        "scale": 1,
+        "offset": 0,
+        "nodata": -1,
+        "unit": "none"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "QC_500m": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_500m_2D:QC_500m_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "uint32",
+        "scale": 1,
+        "offset": 0,
+        "nodata": 787410671,
+        "unit": "bit field"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "q_scan": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_500m_2D:q_scan_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "uint8",
+        "scale": 1,
+        "offset": 0,
+        "nodata": 255,
+        "unit": "none"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "Range": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_1km_2D:Range_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "uint16",
+        "scale": 25,
+        "offset": 0,
+        "nodata": 0,
+        "unit": "meters"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "SensorAzimuth": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_1km_2D:SensorAzimuth_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.01,
+        "offset": 0,
+        "nodata": -32767,
+        "unit": "degree"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "SensorZenith": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_1km_2D:SensorZenith_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.01,
+        "offset": 0,
+        "nodata": -32767,
+        "unit": "degree"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "SolarAzimuth": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_1km_2D:SolarAzimuth_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.01,
+        "offset": 0,
+        "nodata": -32767,
+        "unit": "degree"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "SolarZenith": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_1km_2D:SolarZenith_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.01,
+        "offset": 0,
+        "nodata": -32767,
+        "unit": "degree"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "state_1km": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_1km_2D:state_1km_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "uint16",
+        "scale": 1,
+        "offset": 0,
+        "nodata": 65535,
+        "unit": "bit field"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "sur_refl_b01": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_500m_2D:sur_refl_b01_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -28672,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "sur_refl_b02": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_500m_2D:sur_refl_b02_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -28672,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "sur_refl_b03": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_500m_2D:sur_refl_b03_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -28672,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "sur_refl_b04": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_500m_2D:sur_refl_b04_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -28672,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "sur_refl_b05": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_500m_2D:sur_refl_b05_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -28672,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "sur_refl_b06": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_500m_2D:sur_refl_b06_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -28672,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "sur_refl_b07": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MODIS_Grid_500m_2D:sur_refl_b07_1",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -28672,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  }
+}

@@ -1,0 +1,368 @@
+{
+    "id": "sentinel-1-nrb",
+    "type": "Collection",
+    "links": [
+        {
+            "rel": "license",
+            "href": "https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice",
+            "title": "Sentinel License"
+        },
+        {
+            "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+            "href": "https://stac.terrabyte.lrz.de/public/api/collections/sentinel-1-nrb/queryables",
+            "type": "application/schema+json"
+        }
+    ],
+    "title": "Sentinel-1 Normalized Radar Backscatter (NRB)",
+    "assets": {
+        "thumbnail": {
+            "href": "https://stac.terrabyte.lrz.de/static/images/sentinel-1-nrb.png",
+            "type": "image/png",
+            "roles": [
+                "thumbnail"
+            ],
+            "title": "Sentinel-1 NRB thumbnail"
+        }
+    },
+    "extent": {
+        "spatial": {
+            "bbox": [
+                [
+                    4.408715109629379,
+                    46.79367068772223,
+                    16.57954402145993,
+                    55.94563532105239
+                ]
+            ]
+        },
+        "temporal": {
+            "interval": [
+                [
+                    "2022-01-01T05:33:06Z",
+                    "2022-12-30T17:09:54Z"
+                ]
+            ]
+        }
+    },
+    "license": "proprietary",
+    "description": "This is the Sentinel-1 Normalized Radar Backscatter product for Germany 2022 produced at DLR terrabyte based on Sentinel-1 GRD data.",
+    "item_assets": {
+        "card4l": {
+            "type": "application/xml",
+            "title": "Metadata in XML format.",
+            "roles": [
+              "metadata",
+              "card4l"
+            ]
+          },
+          "cc-g-lin": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "RGB color composite (vv-g-lin, vh-g-lin, vv-g-lin/vh-g-lin)",
+            "file:byte_order": "little-endian",
+            "roles": [
+              "backscatter",
+              "data"
+            ]
+          },
+          "vh-g-lin": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "VH gamma nought RTC backscatter, linear scaling",
+            "raster:bands": [
+              {
+                "unit": "natural",
+                "nodata": -9999.0,
+                "data_type": "float32",
+                "bits_per_sample": 32
+              }
+            ],
+            "file:byte_order": "little-endian",
+            "roles": [
+              "backscatter",
+              "data"
+            ]
+          },
+          "vh-g-log": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "VH gamma nought RTC backscatter, logarithmic scaling",
+            "file:byte_order": "little-endian",
+            "roles": [
+              "backscatter",
+              "data"
+            ]
+          },
+          "vh-s-lin": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "VH sigma nought ellipsoidal backscatter, linear scaling",
+            "file:byte_order": "little-endian",
+            "roles": [
+              "backscatter",
+              "data"
+            ]
+          },
+          "vh-s-log": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "VH sigma nought ellipsoidal backscatter, logarithmic scaling",
+            "file:byte_order": "little-endian",
+            "roles": [
+              "backscatter",
+              "data"
+            ]
+          },
+          "vv-g-lin": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "VV gamma nought RTC backscatter, linear scaling",
+            "raster:bands": [
+              {
+                "unit": "natural",
+                "nodata": -9999.0,
+                "data_type": "float32",
+                "bits_per_sample": 32
+              }
+            ],
+            "file:byte_order": "little-endian",
+            "roles": [
+              "backscatter",
+              "data"
+            ]
+          },
+          "vv-g-log": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "VV gamma nought RTC backscatter, logarithmic scaling",
+            "file:byte_order": "little-endian",
+            "roles": [
+              "backscatter",
+              "data"
+            ]
+          },
+          "vv-s-lin": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "VV sigma nought ellipsoidal backscatter, linear scaling",
+            "file:byte_order": "little-endian",
+            "roles": [
+              "backscatter",
+              "data"
+            ]
+          },
+          "vv-s-log": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "VV sigma nought ellipsoidal backscatter, logarithmic scaling",
+            "file:byte_order": "little-endian",
+            "roles": [
+              "backscatter",
+              "data"
+            ]
+          },
+          "acquisition-id": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "Acquisition ID Image",
+            "raster:bands": [
+              {
+                "unit": "unitless",
+                "nodata": 255.0,
+                "data_type": "uint8",
+                "bits_per_sample": 8,
+                "values": []
+              }
+            ],
+            "file:byte_order": "little-endian",
+            "roles": [
+              "acquisition-id",
+              "metadata"
+            ]
+          },
+          "contributing-area": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "Local Contributing Area",
+            "raster:bands": [
+              {
+                "unit": "square_meters",
+                "nodata": -9999.0,
+                "data_type": "float32",
+                "bits_per_sample": 32
+              }
+            ],
+            "file:byte_order": "little-endian",
+            "roles": [
+              "contributing-area",
+              "metadata"
+            ]
+          },
+          "data-mask": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "Data Mask Image",
+            "raster:bands": [
+              {
+                "unit": "unitless",
+                "nodata": 255.0,
+                "data_type": "uint8",
+                "bits_per_sample": 8,
+                "values": [
+                  {
+                    "value": 1,
+                    "summary": "not layover, nor shadow"
+                  }
+                ]
+              },
+              {
+                "unit": "unitless",
+                "nodata": 255.0,
+                "data_type": "uint8",
+                "bits_per_sample": 8,
+                "values": [
+                  {
+                    "value": 1,
+                    "summary": "layover"
+                  }
+                ]
+              },
+              {
+                "unit": "unitless",
+                "nodata": 255.0,
+                "data_type": "uint8",
+                "bits_per_sample": 8,
+                "values": [
+                  {
+                    "value": 1,
+                    "summary": "shadow"
+                  }
+                ]
+              },
+              {
+                "unit": "unitless",
+                "nodata": 255.0,
+                "data_type": "uint8",
+                "bits_per_sample": 8,
+                "values": [
+                  {
+                    "value": 1,
+                    "summary": "ocean water"
+                  }
+                ]
+              }
+            ],
+            "file:byte_order": "little-endian",
+            "roles": [
+              "data-mask",
+              "metadata"
+            ]
+          },
+          "ellipsoid-incidence-angle": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "Ellipsoid Incidence Angle",
+            "raster:bands": [
+              {
+                "unit": "deg",
+                "nodata": -9999.0,
+                "data_type": "float32",
+                "bits_per_sample": 32
+              }
+            ],
+            "file:byte_order": "little-endian",
+            "card4l:ellipsoidal_height": null,
+            "roles": [
+              "ellipsoid-incidence-angle",
+              "metadata"
+            ]
+          },
+          "gamma-sigma-ratio": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "Gamma0 RTC to sigma0 RTC ratio",
+            "raster:bands": [
+              {
+                "unit": "unitless",
+                "nodata": -9999.0,
+                "data_type": "float32",
+                "bits_per_sample": 32
+              }
+            ],
+            "file:byte_order": "little-endian",
+            "roles": [
+              "gamma-sigma-ratio",
+              "metadata"
+            ]
+          },
+          "local-incidence-angle": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "Local Incidence Angle",
+            "raster:bands": [
+              {
+                "unit": "deg",
+                "nodata": -9999.0,
+                "data_type": "float32",
+                "bits_per_sample": 32
+              }
+            ],
+            "file:byte_order": "little-endian",
+            "roles": [
+              "local-incidence-angle",
+              "metadata"
+            ]
+          },
+          "noise-power-vh": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "Noise Power",
+            "raster:bands": [
+              {
+                "unit": "dB",
+                "nodata": -9999.0,
+                "data_type": "float32",
+                "bits_per_sample": 32
+              }
+            ],
+            "file:byte_order": "little-endian",
+            "roles": [
+              "noise-power",
+              "metadata"
+            ]
+          },
+          "noise-power-vv": {
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "Noise Power",
+            "raster:bands": [
+              {
+                "unit": "dB",
+                "nodata": -9999.0,
+                "data_type": "float32",
+                "bits_per_sample": 32
+              }
+            ],
+            "file:byte_order": "little-endian",
+            "roles": [
+              "noise-power",
+              "metadata"
+            ]
+          }      
+    },
+    "stac_version": "1.0.0",
+    "cube:dimensions": {
+        "t": {
+            "type": "temporal",
+            "extent": [
+                "2022-01-01T05:33:06Z",
+                "2022-12-30T17:09:54Z"
+            ]
+        },
+        "x": {
+            "axis": "x",
+            "type": "spatial",
+            "extent": [
+                -180,
+                180
+            ]
+        },
+        "y": {
+            "axis": "y",
+            "type": "spatial",
+            "extent": [
+                -90,
+                90
+            ]
+        }
+    },
+    "stac_extensions": [
+        "https://stac-extensions.github.io/datacube/v2.0.0/schema.json",
+        "https://stac-extensions.github.io/file/v2.1.0/schema.json",
+        "https://stac-extensions.github.io/card4l/v0.1.0/sar/product.json",
+        "https://stac-extensions.github.io/raster/v1.1.0/schema.json"
+    ]
+}

@@ -1,0 +1,360 @@
+{
+  "id": "modis-13a3-061",
+  "type": "Collection",
+  "links": [
+      {
+          "rel": "help",
+          "href": "https://lpdaac.usgs.gov/documents/621/MOD13_User_Guide_V61.pdf",
+          "title": "MOD13 User Guide"
+      },
+      {
+          "rel": "describedby",
+          "href": "https://ladsweb.modaps.eosdis.nasa.gov/filespec/MODIS/61/MOD13A3",
+          "title": "MOD13A3 file specification"
+      },
+      {
+          "rel": "describedby",
+          "href": "https://ladsweb.modaps.eosdis.nasa.gov/filespec/MODIS/61/MYD13A3",
+          "title": "MYD13A3 file specification"
+      },
+      {
+          "rel": "cite-as",
+          "href": "https://doi.org/10.5067/MODIS/MOD13A3.061",
+          "title": "LP DAAC - MOD13A3"
+      },
+      {
+          "rel": "cite-as",
+          "href": "https://doi.org/10.5067/MODIS/MYD13A3.061",
+          "title": "LP DAAC - MYD13A3"
+      },
+      {
+          "rel": "license",
+          "href": "https://lpdaac.usgs.gov/data/data-citation-and-policies/",
+          "title": "LP DAAC - Data Citation and Policies"
+      },
+      {
+          "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+          "href": "https://stac.terrabyte.lrz.de/public/api/collections/modis-13a3-061/queryables",
+          "type": "application/schema+json"
+      }
+    ],
+  "title": "MOD13A3.061 & MYD13A3.061: MODIS Vegetation Indices Monthly (1km)",
+  "assets": {
+      "thumbnail": {
+          "href": "https://stac.terrabyte.lrz.de/static/images/modis-13a3-061.png",
+          "type": "image/png",
+          "roles": [
+              "thumbnail"
+          ],
+          "title": "MODIS Vegetation Indices Monthly (1km) thumbnail"
+      }
+  },
+  "extent": {
+      "spatial": {
+          "bbox": [
+              [
+                  -180,
+                  -60,
+                  180,
+                  90
+              ]
+          ]
+      },
+      "temporal": {
+          "interval": [
+              [
+                "2000-02-01T00:00:00Z",
+                "2023-05-01T00:00:00Z"
+              ]
+          ]
+      }
+  },
+  "license": "proprietary",
+  "keywords": [
+      "NASA",
+      "MODIS",
+      "Satellite",
+      "Global",
+      "Vegetation",
+      "MOD13A3",
+      "MYD13A3"
+  ],
+  "providers": [
+      {
+          "url": "https://lpdaac.usgs.gov/",
+          "name": "NASA LP DAAC at the USGS EROS Center",
+          "roles": [
+              "producer",
+              "licensor",
+              "processor"
+          ]
+      },
+      {
+          "url": "https://terrabyte.lrz.de",
+          "name": "DLR terrabyte",
+          "roles": [
+              "host"
+          ]
+      }
+  ],
+  "summaries": {
+      "platform": [
+          "aqua",
+          "terra"
+      ],
+      "instruments": [
+          "modis"
+      ]
+  },
+  "description": "The Terra/Aqua Moderate Resolution Imaging Spectroradiometer (MODIS) Vegetation Indices Monthly (MOD13A3/MYD13A3) Version 6.1 data are provided monthly at 1 kilometer (km) spatial resolution as a gridded Level 3 product in the sinusoidal projection. In generating this monthly product, the algorithm ingests all the MOD13A2/MYD13A2 products that overlap the month and employs a weighted temporal average. The MODIS Normalized Difference Vegetation Index (NDVI) complements NOAA's Advanced Very High Resolution Radiometer (AVHRR) NDVI products and provides continuity for time series historical applications. MODIS also includes an Enhanced Vegetation Index (EVI) that minimizes canopy background variations and maintains sensitivity over dense vegetation conditions. The EVI uses the blue band to remove residual atmosphere contamination caused by smoke and sub-pixel thin clouds. The MODIS NDVI and EVI products are computed from surface reflectances corrected for molecular scattering, ozone absorption, and aerosols. Vegetation indices are used for global monitoring of vegetation conditions and are used in products displaying land cover and land cover changes. These data may be used as input for modeling global biogeochemical and hydrologic processes as well as global and regional climate. Additional applications include characterizing land surface biophysical properties and processes, such as primary production and land cover conversion. Provided along with the vegetation layers and the two quality assurance (QA) layers are reflectance bands 1 (red), 2 (near-infrared), 3 (blue), and 7 (mid-infrared), as well as three observation layers.",
+  "item_assets": {
+      "hdf": {
+          "type": "application/hdf4",
+          "roles": [
+              "data"
+          ],
+          "title": "Source data containing all bands"
+      },
+      "metadata": {
+          "type": "application/xml",
+          "roles": [
+              "metadata"
+          ],
+          "title": "Federal Geographic Data Committee (FGDC) Metadata"
+      },
+      "blue_reflectance": {
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -1000,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "EVI": {
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -3000,
+        "unit": "EVI"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "MIR_reflectance": {
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -1000,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "NDVI": {
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -3000,
+        "unit": "NDVI"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "NIR_reflectance": {
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -1000,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "pixel_reliability": {
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int8",
+        "scale": 1,
+        "offset": 0,
+        "nodata": -1,
+        "unit": "rank"
+      }
+    ],
+          "classification:classes": [
+              {
+                  "value": 0,
+                  "description": "Good data, use with confidence"
+              },
+              {
+                  "value": 1,
+                  "description": "Marginal data, useful, but look at other QA information"
+              },
+              {
+                  "value": 2,
+                  "description": "Snow/Ice Target covered with snow/ice"
+              },
+              {
+                  "value": 3,
+                  "description": "Cloudy data"
+              }
+          ],
+    "roles": ["data"]
+  },
+  "composite_day_of_the_year": {
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 1,
+        "offset": 0,
+        "nodata": -1,
+        "unit": "Julian day of the year "
+      }
+    ],
+    "roles": ["data"]
+  },
+  "red_reflectance": {
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -1000,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "relative_azimuth_angle": {
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.01,
+        "offset": 0,
+        "nodata": -4000,
+        "unit": "degrees"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "sun_zenith_angle": {
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.01,
+        "offset": 0,
+        "nodata": -10000,
+        "unit": "degrees"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "view_zenith_angle": {
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.01,
+        "offset": 0,
+        "nodata": -10000,
+        "unit": "degrees"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "VI_Quality": {
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "uint16",
+        "scale": 1,
+        "offset": 0,
+        "nodata": 65535,
+        "unit": "bit field"
+      }
+    ],
+    "roles": ["data"]
+  }
+  },
+  "stac_version": "1.0.0",
+  "cube:dimensions": {
+      "t": {
+          "type": "temporal",
+          "extent": [
+            "2000-02-01T00:00:00Z",
+            "2023-05-01T00:00:00Z"
+          ]
+      },
+      "x": {
+          "axis": "x",
+          "type": "spatial",
+          "extent": [
+              -180,
+              180
+          ]
+      },
+      "y": {
+          "axis": "y",
+          "type": "spatial",
+          "extent": [
+              -90,
+              90
+          ]
+      },
+        "bands": {
+            "type": "bands",
+            "values": [
+                "blue_reflectance",
+                "EVI",
+                "MIR_reflectance",
+                "NDVI",
+                "NIR_reflectance",
+                "pixel_reliability",
+                "red_reflectance",
+                "relative_azimuth_angle",
+                "sun_zenith_angle",
+                "view_zenith_angle",
+                "VI_Quality"
+            ]
+        }
+  },
+  "stac_extensions": [
+      "https://stac-extensions.github.io/datacube/v2.0.0/schema.json",
+      "https://stac-extensions.github.io/classification/v1.0.0/schema.json",
+      "https://stac-extensions.github.io/raster/v1.0.0/schema.json",
+      "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
+      "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+      "https://stac-extensions.github.io/table/v1.2.0/schema.json"
+  ],
+  "sci:publications": [
+      {
+          "doi": "10.5067/MODIS/MOD13A3.061",
+          "citation": "Didan, K. (2021). <i>MODIS/Terra Vegetation Indices Monthly L3 Global 1km SIN Grid V061</i> [Data set]. NASA EOSDIS Land Processes DAAC. https://doi.org/10.5067/MODIS/MOD13A3.061"
+      },
+      {
+          "doi": "10.5067/MODIS/MYD13A3.061",
+          "citation": "Didan, K. (2021). <i>MODIS/Aqua Vegetation Indices Monthly L3 Global 1km SIN Grid V061</i> [Data set]. NASA EOSDIS Land Processes DAAC. https://doi.org/10.5067/MODIS/MYD13A3.061"
+      }
+  ]
+}

@@ -1,0 +1,238 @@
+{
+  "id": "viirs-09ga-001",
+  "type": "Collection",
+  "links": [
+      {
+          "rel": "license",
+          "href": "https://lpdaac.usgs.gov/data/data-citation-and-policies/",
+          "type": "text/html",
+          "title": "LP DAAC - Data Citation and Policies"
+      },
+      {
+          "rel": "help",
+          "href": "https://lpdaac.usgs.gov/documents/1333/VNP09_User_Guide_V1.7.pdf",
+          "type": "application/pdf",
+          "title": "Suomi-NPP VIIRS Surface Reflectance User Guide"
+      },
+      {
+          "rel": "cite-as",
+          "href": "https://doi.org/10.5067/VIIRS/VNP09GA.001",
+          "type": "text/html",
+          "title": "LP DAAC - VNP09GA v001"
+      },
+      {
+          "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+          "href": "https://stac.terrabyte.lrz.de/public/api/collections/viirs-09ga-001/queryables",
+          "type": "application/schema+json"
+      }
+    ],
+  "title": "VNP09GA.001: VIIRS/NPP Surface Reflectance Daily L2GD 500m and 1km",
+  "assets": {
+      "thumbnail": {
+          "href": "https://stac.terrabyte.lrz.de/static/images/viirs-09ga-001.png",
+          "type": "image/png",
+          "roles": [
+              "thumbnail"
+          ],
+          "title": "VIIRS/NPP Surface Reflectance Daily thumbnail"
+      }
+  },
+  "extent": {
+      "spatial": {
+          "bbox": [
+              [
+                  -180,
+                  -90,
+                  180,
+                  90
+              ]
+          ]
+      },
+      "temporal": {
+          "interval": [
+              [
+                "2012-01-19T00:00:00Z",
+                "2022-12-31T00:00:00Z"
+              ]
+          ]
+      }
+  },
+  "license": "proprietary",
+  "sci:doi": "10.5067/VIIRS/VNP09GA.001",
+  "keywords": [
+      "NASA",
+      "VIIRS",
+      "Satellite",
+      "Global",
+      "Reflectance",
+      "VNP09GA"
+  ],
+  "providers": [
+      {
+          "url": "https://lpdaac.usgs.gov/",
+          "name": "NASA LP DAAC at the USGS EROS Center",
+          "roles": [
+              "producer",
+              "licensor"
+          ]
+      },
+      {
+          "url": "https://terrabyte.lrz.de",
+          "name": "DLR terrabyte",
+          "roles": [
+              "host"
+          ]
+      }
+  ],
+  "summaries": {
+      "eo:bands": [
+          {
+              "name": "M1",
+              "description": "Visible/Reflective",
+              "center_wavelength": 0.415,
+              "full_width_half_max": 0.02
+          },
+          {
+              "name": "M2",
+              "description": "Visible/Reflective",
+              "center_wavelength": 0.445,
+              "full_width_half_max": 0.02
+          },
+          {
+              "name": "M3",
+              "description": "Visible/Reflective",
+              "center_wavelength": 0.488,
+              "full_width_half_max": 0.02
+          },
+          {
+              "name": "M4",
+              "description": "Visible/Reflective",
+              "center_wavelength": 0.555,
+              "full_width_half_max": 0.02
+          },
+          {
+              "name": "I1",
+              "description": "Visible/Reflective",
+              "center_wavelength": 0.64,
+              "full_width_half_max": 0.075
+          },
+          {
+              "name": "M5",
+              "description": "Visible/Reflective",
+              "center_wavelength": 0.673,
+              "full_width_half_max": 0.021
+          },
+          {
+              "name": "I2",
+              "description": "Visible/Reflective",
+              "center_wavelength": 0.865,
+              "full_width_half_max": 0.039
+          },
+          {
+              "name": "M7",
+              "description": "Shortwave Infrared",
+              "center_wavelength": 0.865,
+              "full_width_half_max": 0.039
+          },
+          {
+              "name": "M8",
+              "description": "Shortwave Infrared",
+              "center_wavelength": 1.24,
+              "full_width_half_max": 0.02
+          },
+          {
+              "name": "I3",
+              "description": "Shortwave Infrared",
+              "center_wavelength": 1.61,
+              "full_width_half_max": 0.06
+          },
+          {
+              "name": "M10",
+              "description": "Shortwave Infrared",
+              "center_wavelength": 1.61,
+              "full_width_half_max": 0.06
+          },
+          {
+              "name": "M11",
+              "description": "Shortwave Infrared",
+              "center_wavelength": 2.25,
+              "full_width_half_max": 0.05
+          }
+      ],
+      "platform": [
+          "snpp"
+      ],
+      "instruments": [
+          "viirs"
+      ]
+  },
+  "description": "VNP09GA provides VIIRS/NPP bands M1-5, M7-8 and M10-11 daily surface reflectance at 1 km resolution and band I1, I2 and I3 at 500 m observation and geolocation statistics. Here, observations are determined based on quality and observation coverage. Criteria are the same as for n-day composite. Best quality is in the first layer.",
+  "item_assets": {
+      "hdf5": {
+          "type": "application/x-hdf5",
+          "roles": [
+              "data"
+          ],
+          "title": "Source Data Containing All Bands"
+      },
+      "metadata": {
+          "type": "application/xml",
+          "roles": [
+              "metadata"
+          ],
+          "title": "Earth Observing System Data and Information System (EOSDIS) Metadata"
+      }
+  },
+  "sci:citation": "Vermote, E., Franch, B., Claverie, M. (2016). VIIRS/NPP Surface Reflectance Daily L2G Global 1km and 500m SIN Grid V001 [Data set]. NASA EOSDIS Land Processes DAAC.",
+  "stac_version": "1.0.0",
+  "cube:dimensions": {
+      "t": {
+          "type": "temporal",
+          "extent": [
+            "2012-01-19T00:00:00Z",
+            "2022-12-31T00:00:00Z"
+          ]
+      },
+      "x": {
+          "axis": "x",
+          "type": "spatial",
+          "extent": [
+              -180,
+              180
+          ]
+      },
+      "y": {
+          "axis": "y",
+          "type": "spatial",
+          "extent": [
+              -90,
+              90
+          ]
+      },
+      "bands": {
+          "type": "bands",
+          "values": [
+              "M1",
+              "M2",
+              "M3",
+              "M4",
+              "I1",
+              "M5",
+              "I2",
+              "M7",
+              "M8",
+              "I3",
+              "M10",
+              "M11"
+          ]
+      }
+  },
+  "stac_extensions": [
+      "https://stac-extensions.github.io/datacube/v2.0.0/schema.json",
+      "https://stac-extensions.github.io/classification/v1.0.0/schema.json",
+      "https://stac-extensions.github.io/eo/v1.0.0/schema.json",
+      "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
+      "https://stac-extensions.github.io/raster/v1.0.0/schema.json",
+      "https://stac-extensions.github.io/scientific/v1.0.0/schema.json"
+  ]
+}

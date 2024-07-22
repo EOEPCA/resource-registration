@@ -1,0 +1,156 @@
+{
+  "blue_reflectance": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MOD_Grid_monthly_1km_VI:\"1 km monthly blue reflectance\"",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -1000,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "EVI": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MOD_Grid_monthly_1km_VI:\"1 km monthly EVI\"",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -3000,
+        "unit": "EVI"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "MIR_reflectance": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MOD_Grid_monthly_1km_VI:\"1 km monthly MIR reflectance\"",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -1000,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "NDVI": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MOD_Grid_monthly_1km_VI:\"1 km monthly NDVI\"",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -3000,
+        "unit": "NDVI"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "NIR_reflectance": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MOD_Grid_monthly_1km_VI:\"1 km monthly NIR reflectance\"",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -1000,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "pixel_reliability": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MOD_Grid_monthly_1km_VI:\"1 km monthly pixel reliability\"",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int8",
+        "scale": 1,
+        "offset": 0,
+        "nodata": -1,
+        "unit": "rank"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "red_reflectance": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MOD_Grid_monthly_1km_VI:\"1 km monthly red reflectance\"",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.0001,
+        "offset": 0,
+        "nodata": -1000,
+        "unit": "reflectance"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "relative_azimuth_angle": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MOD_Grid_monthly_1km_VI:\"1 km monthly relative azimuth angle\"",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.01,
+        "offset": 0,
+        "nodata": -4000,
+        "unit": "degrees"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "sun_zenith_angle": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MOD_Grid_monthly_1km_VI:\"1 km monthly sun zenith angle\"",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.01,
+        "offset": 0,
+        "nodata": -10000,
+        "unit": "degrees"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "view_zenith_angle": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MOD_Grid_monthly_1km_VI:\"1 km monthly view zenith angle\"",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "int16",
+        "scale": 0.01,
+        "offset": 0,
+        "nodata": -10000,
+        "unit": "degrees"
+      }
+    ],
+    "roles": ["data"]
+  },
+  "VI_Quality": {
+    "href": "HDF4_EOS:EOS_GRID:\"{{hdf_path}}\":MOD_Grid_monthly_1km_VI:\"1 km monthly VI Quality\"",
+    "type": "application/x-hdf",
+    "raster:bands": [
+      {
+        "data_type": "uint16",
+        "scale": 1,
+        "offset": 0,
+        "nodata": 65535,
+        "unit": "bit field"
+      }
+    ],
+    "roles": ["data"]
+  }
+}

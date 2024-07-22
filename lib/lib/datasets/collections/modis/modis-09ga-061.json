@@ -1,0 +1,632 @@
+{
+  "id": "modis-09ga-061",
+  "type": "Collection",
+  "links": [
+    {
+      "rel": "help",
+      "href": "https://lpdaac.usgs.gov/documents/925/MOD09_User_Guide_V61.pdf",
+      "title": "MOD09 MYD09 User Guide"
+    },
+    {
+      "rel": "describedby",
+      "href": "https://ladsweb.modaps.eosdis.nasa.gov/filespec/MODIS/61/MOD09GQ",
+      "title": "MOD09GA file specification"
+    },
+    {
+      "rel": "describedby",
+      "href": "https://ladsweb.modaps.eosdis.nasa.gov/filespec/MODIS/61/MYD09GQ",
+      "title": "MYD09GA file specification"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/MODIS/MOD09GA.061",
+      "title": "LP DAAC - MOD09GA"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/MODIS/MYD09GA.061",
+      "title": "LP DAAC - MYD09GA"
+    },
+    {
+      "rel": "license",
+      "href": "https://lpdaac.usgs.gov/data/data-citation-and-policies/",
+      "title": "LP DAAC - Data Citation and Policies"
+    },
+    {
+      "rel": "http://www.opengis.net/def/rel/ogc/1.0/queryables",
+      "href": "https://stac.terrabyte.lrz.de/public/api/collections/modis-09ga-061/queryables",
+      "type": "application/schema+json"
+    }
+  ],
+  "title": "MOD09GA.061 & MYD09GA.061: MODIS Surface Reflectance Daily (1km and 500m)",
+  "assets": {
+    "thumbnail": {
+      "href": "https://stac.terrabyte.lrz.de/static/images/modis-09ga-061.png",
+      "type": "image/png",
+      "roles": [
+        "thumbnail"
+      ],
+      "title": "MODIS Surface Reflectance Daily (1km and 500m) thumbnail"
+    }
+  },
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -180,
+          -90,
+          180,
+          90
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2000-02-24T00:00:00Z",
+          "2023-06-09T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "proprietary",
+  "keywords": [
+    "NASA",
+    "MODIS",
+    "Satellite",
+    "Global",
+    "Vegetation",
+    "MOD09GA",
+    "MYD09GA"
+  ],
+  "providers": [
+    {
+      "url": "https://lpdaac.usgs.gov/",
+      "name": "NASA LP DAAC at the USGS EROS Center",
+      "roles": [
+        "producer",
+        "licensor",
+        "processor"
+      ]
+    },
+    {
+      "url": "https://terrabyte.lrz.de",
+      "name": "DLR terrabyte",
+      "roles": [
+        "host"
+      ]
+    }
+  ],
+  "summaries": {
+    "platform": [
+      "aqua",
+      "terra"
+    ],
+    "instruments": [
+      "modis"
+    ]
+  },
+  "description": "The MOD09GA/MYD09GA Version 6.1 product provides an estimate of the surface spectral reflectance of Terra/Aqua Moderate Resolution Imaging Spectroradiometer (MODIS) Bands 1 through 7, corrected for atmospheric conditions such as gasses, aerosols, and Rayleigh scattering. Provided along with the 500 meter (m) surface reflectance, observation, and quality bands are a set of ten 1 kilometer (km) observation bands and geolocation flags. The reflectance layers from the MOD09GA/MYD09GA are used as the source data for many of the MODIS land products.",
+  "item_assets": {
+    "hdf": {
+      "type": "application/hdf4",
+      "roles": [
+        "data"
+      ],
+      "title": "Source data containing all bands"
+    },
+    "metadata": {
+      "type": "application/xml",
+      "roles": [
+        "metadata"
+      ],
+      "title": "Federal Geographic Data Committee (FGDC) Metadata"
+    },
+    "gflags": {
+      "gsd": 1000,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "uint8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": 255,
+          "unit": "bit field",
+          "spatial_resolution": 1000
+        }
+      ],
+      "proj:shape": [
+        1200,
+        1200
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "granule_pnt": {
+      "gsd": 1000,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "uint8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": 255,
+          "unit": "none",
+          "spatial_resolution": 1000
+        }
+      ],
+      "proj:shape": [
+        1200,
+        1200
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "iobs_res": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "uint8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": 255,
+          "unit": "none",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "num_observations_1km": {
+      "gsd": 1000,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": -1,
+          "unit": "none",
+          "spatial_resolution": 1000
+        }
+      ],
+      "proj:shape": [
+        1200,
+        1200
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "num_observations_500m": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": -1,
+          "unit": "none",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "obscov_500m": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int8",
+          "scale": 0.00999999977648258,
+          "offset": 0,
+          "nodata": -1,
+          "unit": "percent",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "orbit_pnt": {
+      "gsd": 1000,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": -1,
+          "unit": "none",
+          "spatial_resolution": 1000
+        }
+      ],
+      "proj:shape": [
+        1200,
+        1200
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "QC_500m": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "uint32",
+          "scale": 1,
+          "offset": 0,
+          "nodata": 787410671,
+          "unit": "bit field",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "q_scan": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "uint8",
+          "scale": 1,
+          "offset": 0,
+          "nodata": 255,
+          "unit": "none",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "Range": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "uint16",
+          "scale": 25,
+          "offset": 0,
+          "nodata": 0,
+          "unit": "meters",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "SensorAzimuth": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int16",
+          "scale": 0.01,
+          "offset": 0,
+          "nodata": -32767,
+          "unit": "degree",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "SensorZenith": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int16",
+          "scale": 0.01,
+          "offset": 0,
+          "nodata": -32767,
+          "unit": "degree",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "SolarAzimuth": {
+      "gsd": 1000,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int16",
+          "scale": 0.01,
+          "offset": 0,
+          "nodata": -32767,
+          "unit": "degree",
+          "spatial_resolution": 1000
+        }
+      ],
+      "proj:shape": [
+        1200,
+        1200
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "SolarZenith": {
+      "gsd": 1000,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int16",
+          "scale": 0.01,
+          "offset": 0,
+          "nodata": -32767,
+          "unit": "degree",
+          "spatial_resolution": 1000
+        }
+      ],
+      "proj:shape": [
+        1200,
+        1200
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "state_1km": {
+      "gsd": 1000,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "uint16",
+          "scale": 1,
+          "offset": 0,
+          "nodata": 65535,
+          "unit": "bit field",
+          "spatial_resolution": 1000
+        }
+      ],
+      "proj:shape": [
+        1200,
+        1200
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "sur_refl_b01": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int16",
+          "scale": 0.0001,
+          "offset": 0,
+          "nodata": -28672,
+          "unit": "reflectance",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "sur_refl_b02": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int16",
+          "scale": 0.0001,
+          "offset": 0,
+          "nodata": -28672,
+          "unit": "reflectance",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "sur_refl_b03": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int16",
+          "scale": 0.0001,
+          "offset": 0,
+          "nodata": -28672,
+          "unit": "reflectance",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "sur_refl_b04": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int16",
+          "scale": 0.0001,
+          "offset": 0,
+          "nodata": -28672,
+          "unit": "reflectance",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "sur_refl_b05": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int16",
+          "scale": 0.0001,
+          "offset": 0,
+          "nodata": -28672,
+          "unit": "reflectance",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "sur_refl_b06": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int16",
+          "scale": 0.0001,
+          "offset": 0,
+          "nodata": -28672,
+          "unit": "reflectance",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "sur_refl_b07": {
+      "gsd": 500,
+      "type": "application/x-hdf",
+      "raster:bands": [
+        {
+          "data_type": "int16",
+          "scale": 0.0001,
+          "offset": 0,
+          "nodata": -28672,
+          "unit": "reflectance",
+          "spatial_resolution": 500
+        }
+      ],
+      "proj:shape": [
+        2400,
+        2400
+      ],
+      "roles": [
+        "data"
+      ]
+    }
+  },
+  "stac_version": "1.0.0",
+  "cube:dimensions": {
+    "t": {
+      "type": "temporal",
+      "extent": [
+        "2000-02-24T00:00:00Z",
+        "2023-06-09T00:00:00Z"
+      ]
+    },
+    "x": {
+      "axis": "x",
+      "type": "spatial",
+      "extent": [
+        -180,
+        180
+      ]
+    },
+    "y": {
+      "axis": "y",
+      "type": "spatial",
+      "extent": [
+        -90,
+        90
+      ]
+    }
+  },
+  "stac_extensions": [
+    "https://stac-extensions.github.io/datacube/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/raster/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/table/v1.2.0/schema.json"
+  ],
+  "sci:publications": [
+    {
+      "doi": "10.5067/MODIS/MOD09GA.061",
+      "citation": "Vermote, E., Wolfe, R. (2021). <i>MODIS/Terra Surface Reflectance Daily L2G Global 1km and 500m SIN Grid V061</i> [Data set]. NASA EOSDIS Land Processes DAAC. https://doi.org/10.5067/MODIS/MOD09GA.061"
+    },
+    {
+      "doi": "10.5067/MODIS/MYD09GA.061",
+      "citation": "Vermote, E., Wolfe, R. (2021). <i>MODIS/Aqua Surface Reflectance Daily L2G Global 1km and 500m SIN Grid V061</i> [Data set]. NASA EOSDIS Land Processes DAAC. https://doi.org/10.5067/MODIS/MYD09GA.061"
+    }
+  ]
+}
