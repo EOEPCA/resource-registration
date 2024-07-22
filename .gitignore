@@ -1,2 +1,10 @@
-venv/
-dist/
+*.zip
+*_back
+*.pyc
+*.tar.gw
+.pytest_cache
+.venv
+venv
+dist
+.idea
+.vscode
