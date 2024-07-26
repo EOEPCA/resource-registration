@@ -1,12 +1,20 @@
 import os
 import time
 import json
+import duckdb
 import requests
 import pystac
 import glob
+import pandas
 from pystac_client import Client
+from dateutil.parser import parse
+
+from pystac.extensions.eo import EOExtension
+from pystac.extensions.projection import ProjectionExtension
+from pystac.extensions.view import ViewExtension
 
 from ..base.file import check_file_size
+from ..base.download import download_data as download_data_base
 from ..datasets.landsat import get_scene_id_info, get_scene_id_folder
 
 
@@ -182,11 +190,12 @@ def get_download_urls(
     print('newRecords: %s' % len(results["newRecords"]))
     print('numInvalidScenes: %s' % results['numInvalidScenes'])
     
-    download_urls = []
-    if len(results["availableDownloads"]) > 0:
-         for result in results["availableDownloads"]:
-            print(f"Get download url: {result['url']}\n")
-            download_urls.append(result)
+    download_urls = dict() 
+    availableDownloads = results["availableDownloads"]
+    #if len(results["availableDownloads"]) > 0:
+    #     for result in results["availableDownloads"]:
+    #        print(f"Get download url: {result['url']}\n")
+    #        download_urls[result['url']] = result
 
     payload = {"label": label}
     results = sendJSONRequest(api_url + "download-retrieve", payload, api_key)
@@ -207,13 +216,23 @@ def get_download_urls(
     if results is not False:
         for result in results["available"]:
             print(f"Get download url: {result['url']}\n")
-            download_urls.append(result)
+            if result['url'] not in download_urls:
+                download_urls[result['url']] = result
+                #download_urls.append(result)
 
         for result in results["requested"]:
             print(f"Get download url: {result['url']}\n")
-            download_urls.append(result)
+            if result['url'] not in download_urls:
+                download_urls[result['url']] = result
+                #download_urls.append(result)
 
-    return download_urls
+    if len(availableDownloads) > 0:
+         for result in availableDownloads:
+            print(f"Get download url: {result['url']}\n")
+            if result['url'] not in download_urls:
+                download_urls[result['url']] = result
+
+    return [download_urls[url] for url in download_urls]
 
 
 def add_download_urls(scenes, api_key):
@@ -299,11 +318,11 @@ def download_data(
         else:
             os.remove(file_path)
             print(f"Failed to download from {url}")
-            return False
+            raise Exception(f"Failed to download from {url}")
     except Exception as e:
         print(e)
         print(f"Failed to download from {url}.")
-        return False
+        raise Exception(f"Failed to download from {url}")
 
 
 def download_aria(scene, basedir, aria2):
@@ -422,3 +441,115 @@ def to_inventory_from_stac(item, order_status="orderable", order_id=None, batch_
     item.collection_id = item.properties['terrabyte:collection_id']
 
     return item
+
+def convert_inventory_csv_to_parquet(file, collection, output_folder): 
+    df = pandas.read_csv(file, delimiter=',', parse_dates=['Date Acquired'])
+    out_file = os.path.join(output_folder, '%s.inventory.parquet' % collection)
+    df.to_parquet(out_file, index=False)
+    return out_file
+
+
+def get_datetime(scene):
+    start_time = parse(scene['Start Time'])
+    stop_time = parse(scene['Stop Time'])
+    mean_time = start_time + (stop_time - start_time) / 2.0
+    return mean_time
+
+def get_geometry(scene):
+    coordinates = [
+        [
+            [
+                float(scene["Corner Upper Left Longitude"]),
+                float(scene["Corner Upper Left Latitude"]),
+            ],
+            [
+                float(scene["Corner Upper Right Longitude"]),
+                float(scene["Corner Upper Right Latitude"]),
+            ],
+            [
+                float(scene["Corner Lower Right Longitude"]),
+                float(scene["Corner Lower Right Latitude"]),
+            ],
+            [
+                float(scene["Corner Lower Left Longitude"]),
+                float(scene["Corner Lower Left Latitude"]),
+            ],
+            [
+                float(scene["Corner Upper Left Longitude"]),
+                float(scene["Corner Upper Left Latitude"]),
+            ],
+        ]
+    ]
+    return {"type": "Polygon", "coordinates": coordinates}
+
+def get_bbox(geometry):
+    coords = geometry['coordinates']
+    lats = [c[1] for c in coords[0]]
+    lons = [c[0] for c in coords[0]]
+    return [min(lons), min(lats), max(lons), max(lats)]
+
+def csv_to_inventory(scene, collection=None, order_id=None, order_status="orderable"):
+    item_id = scene['Display ID']
+    item_parts = item_id.split('_')
+    item_parts.pop(4)
+    tby_item_id = '_'.join(item_parts)
+
+    item_datetime = get_datetime(scene)
+    item_geometry = get_geometry(scene)
+    item_bbox = get_bbox(item_geometry)
+
+    item = pystac.Item(
+        id=item_id,
+        datetime=item_datetime,
+        geometry=item_geometry,
+        bbox=item_bbox,
+        collection=collection,
+        properties={},
+    )
+
+    if float(scene['Land Cloud Cover']) >= 0:
+        eo_ext = EOExtension.ext(item, add_if_missing=True)
+        eo_ext.cloud_cover = float(scene['Land Cloud Cover'])
+
+    item.properties['deprecated'] = False
+    item.properties['order:status'] = order_status
+    item.properties['version'] = scene['Date Product Generated L2']
+
+    item.properties['landsat:scene_id'] = scene['Landsat Scene Identifier']
+    item.properties['landsat:wrs_path'] = int(scene['WRS Path'])
+    item.properties['landsat:wrs_row'] = int(scene['WRS Row'])
+    item.properties['landsat:correction'] = item_id.split('_')[1]
+    item.properties['landsat:product_generated'] = parse(scene['Date Product Generated L2']).isoformat()
+
+    item.properties['terrabyte:item_id'] = tby_item_id
+    item.properties['terrabyte:folder'] = os.path.join(get_scene_id_folder(item_id), item_id)
+    item.properties['terrabyte:collection_id'] = collection
+
+    item.properties['terrabyte:order'] = dict(
+        scene_id=item.id,
+        landsat_id=item.properties['landsat:scene_id'],
+        inventory=item.properties['terrabyte:collection_id'],
+        collection=item.properties['terrabyte:collection_id'],
+        download_folder=get_scene_id_folder(item_id)
+    )
+
+    return item
+
+def download_csv_inventory(output_dir, overwrite=False):
+    download_urls = [
+        'https://landsat.usgs.gov/landsat/metadata_service/bulk_metadata_files/LANDSAT_OT_C2_L2.csv.gz',
+        'https://landsat.usgs.gov/landsat/metadata_service/bulk_metadata_files/LANDSAT_ETM_C2_L2.csv.gz',
+        'https://landsat.usgs.gov/landsat/metadata_service/bulk_metadata_files/LANDSAT_TM_C2_L2.csv.gz'
+    ]
+
+    zip_files = []
+
+    for url in download_urls:
+        print(url)
+        downloaded_file = download_data_base(
+            url,
+            output_dir,
+            overwrite=overwrite
+        )
+        zip_files.append(downloaded_file)
+    return zip_files

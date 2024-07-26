@@ -2,9 +2,15 @@ import os
 import json
 import requests
 import pystac
+import pandas
+import duckdb
+import shapely.wkt
+import shapely.geometry
 from dateutil.parser import parse
 
 from ..base import geometry as geom_fct
+from ..base.order import insert_into_database
+from ..base.download import download_data
 from ..datasets.sentinel import get_scene_id_info, get_scene_id_folder, get_collection_name
 
 def login(username, password):
@@ -103,6 +109,58 @@ def search_scenes_ingestion(date_from, date_to, filters=None):
 
     return scenes
 
+def download_csv_inventory(output_dir, file_name, overwrite=False):
+    zip_file = download_data(
+        'https://s3.waw3-1.cloudferro.com/swift/v1/CatalogueCSV/CopernicusCatalogueCSV.zip', 
+        output_dir, 
+        file_name=file_name,
+        overwrite=overwrite
+    )
+    return zip_file
+
+
+def convert_inventory_csv_to_parquet(files, collections, output_folder, config): 
+    temp_df = dict()
+    files.sort()
+    files_count = len(files)
+    if not os.path.exists(output_folder): 
+        os.makedirs(output_folder)
+    counter = 1
+    for file in files: 
+        print(f"{counter}/{files_count}")
+        counter += 1
+        df = pandas.read_csv(file, delimiter=';', parse_dates=['ContentDate:Start']) #, usecols=['Name', 'ContentDate:Start']
+        for col in collections:
+            if col not in temp_df: 
+                temp_df[col] = []
+            sub = df[df['Name'].str.match(config[col]['pattern'])]
+            temp_df[col].append(sub)
+
+    output_files = []
+    for col in collections:
+        out_file = os.path.join(output_folder, '%s.inventory.parquet' % col)
+        df = pandas.concat(temp_df[col])
+        df.to_parquet(out_file, index=False)
+        output_files.append(out_file)
+    
+    temp_df = None
+    df = None
+
+    return output_files
+
+
+def csv_to_inventory(scene_csv, collection=None, order_id=None, order_status="orderable"):
+    geometry = shapely.wkt.loads(scene_csv['Bbox'])
+    geometry = shapely.geometry.mapping(geometry)
+    scene = {
+        "uid": scene_csv['Id'],
+        "scene_id": scene_csv['Name'],
+        "PublicationDate": scene_csv['IngestionDate'],
+        "ModificationDate": scene_csv['ModificationDate'],
+        "GeoFootprint": geometry,
+        "S3Path": scene_csv['S3Path']
+    }
+    return to_inventory(scene, collection=collection, order_id=order_id, order_status=order_status)
 
 
 
@@ -187,3 +245,26 @@ def to_inventory(scene, collection=None, order_id=None, order_status="orderable"
     )
 
     return item
+
+
+def query_deleted_scene_id(scene_id):
+    query = f"https://catalogue.dataspace.copernicus.eu/odata/v1/DeletedProducts?$filter=contains(Name,%27{scene_id}%27)"
+    try:
+        data = requests.get(query).json()
+        if 'value' in data: 
+            return data['value'][0]
+    except Exception as e: 
+        print(str(e))
+        return False
+
+
+def query_deleted_scenes(to_be_removed):
+    scenes = dict()
+    for scene_id in to_be_removed:
+        try:
+            reason = query_deleted_scene_id(scene_id)
+        except Exception as e: 
+            print(f"Error for {scene_id} querying deleted endpoint: {e}")
+            reason = {}
+        scenes[scene_id] = reason
+    return scenes
