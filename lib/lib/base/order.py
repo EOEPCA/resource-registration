@@ -15,8 +15,15 @@ def get_items_from_query(dsn, order_id, collections, where_query):
     scenes = get_items_from_order_id(order_id, collections, dsn)
     return scenes
 
+def get_last_items_from_collection(dsn, order_id, collection, max_items=1000):
+    conn = psycopg2.connect(dsn)
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    where_query = "collection = '%s' and content->'properties'->>'order:status'='orderable' ORDER BY datetime DESC LIMIT %s" % (collection, max_items)
+    affected_rows = update_database(cur, conn, order_id, where_query, order_status='pending')
+    scenes = get_items_from_order_id(order_id, [collection], dsn)
+    return scenes
+
 def generate_batches_from_inventory(order_id, dsn, collections, where_query, batch_size=1000):
-    #dsn = "dbname=postgis host=tby-stacfastapi-test.terrabyte.lrz.de user=username password=password port=5439"
     conn = psycopg2.connect(dsn)
     cur = conn.cursor()
 
@@ -94,6 +101,7 @@ def insert_into_database(dsn, stac, method='insert_ignore'):
     try:
         cli = PgstacCLI(dsn=dsn, debug=True)
         cli.load(table='items', file=stac, method=method)
+        return True
     except Exception as e:
         print(str(e))
         return False
@@ -130,3 +138,4 @@ def update_items_inventory_status(property, id, collection, dsn, status='pending
     cur.execute(query)
     conn.commit()
     conn.close()
+

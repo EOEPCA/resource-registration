@@ -9,11 +9,9 @@ checksum_funcs["MD5"] = hashlib.md5
 
 try:
     import blake3
-
     checksum_funcs["BLAKE3"] = blake3.blake3
 except Exception as e:
     pass
-
 
 def zip_directory(source_path, destination_path=None):
     """
@@ -35,14 +33,12 @@ def zip_directory(source_path, destination_path=None):
         raise ValueError("Source path is not a directory.")
 
     if destination_path is None:
-        destination_path = os.path.join(
-            os.path.dirname(source_path), os.path.basename(source_path) + ".zip"
-        )
-
+        destination_path = os.path.join(os.path.dirname(source_path), os.path.basename(source_path) + ".zip")
+    
     if os.path.exists(destination_path):
         raise ValueError("Destination path already exists.")
 
-    with zipfile.ZipFile(destination_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+    with zipfile.ZipFile(destination_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(source_path):
             for file in files:
                 file_path = os.path.join(root, file)
@@ -66,7 +62,7 @@ def unzip_file(zip_file, remove_zip=True, extract_dir=None):
     if not os.path.exists(zip_file):
         raise Exception("File does not exist: %s" % zip_file)
 
-    zip_ref = zipfile.ZipFile(zip_file, "r")
+    zip_ref = zipfile.ZipFile(zip_file, 'r')
     if extract_dir is None:
         extract_dir = os.path.dirname(zip_file)
     failed_files = dict()
@@ -79,19 +75,22 @@ def unzip_file(zip_file, remove_zip=True, extract_dir=None):
             failed_logs += name + ": " + str(e) + "\n"
 
     if len(failed_files) > 0:
-        raise Exception(
-            "Exceptions during unzipping: %s\n\n%s" % (zip_file, failed_logs)
-        )
+        raise Exception("Exceptions during unzipping: %s\n\n%s" % (zip_file, failed_logs))
     else:
-        response_dict = {"scene_path": os.path.join(extract_dir, zip_ref.namelist()[0])}
+        try:
+            zip_folder = zip_ref.namelist()[0].split('/')[0]
+        except Exception as e: 
+            raise Exception("Could not find sub-folder in zip file" % zip_file)
+        response_dict = {"scene_path": os.path.join(extract_dir, zip_folder)}
+        
         if remove_zip:
             try:
                 os.remove(zip_file)
-                response_dict["zip_file_removed"] = True
+                response_dict['zip_file_removed'] = True
             except Exception:
-                response_dict["zip_file_removed"] = False
+                response_dict['zip_file_removed'] = False
         else:
-            response_dict["zip_file_removed"] = False
+            response_dict['zip_file_removed'] = False
         return response_dict
 
 
@@ -109,7 +108,7 @@ def untar_file(tar_file, remove_tar=True, create_folder=False, base_folder=None)
     if not os.path.exists(tar_file):
         raise Exception("File does not exist: %s" % tar_file)
 
-    tar_ref = tarfile.open(tar_file, "r:")
+    tar_ref = tarfile.open(tar_file, 'r:')
     if not base_folder:
         base_folder = os.path.dirname(tar_file)
     if create_folder:
@@ -131,18 +130,16 @@ def untar_file(tar_file, remove_tar=True, create_folder=False, base_folder=None)
     tar_ref.close()
 
     if len(failed_files) > 0:
-        raise Exception(
-            "Exceptions during untaring: %s\n\n%s" % (tar_file, failed_logs)
-        )
+        raise Exception("Exceptions during untaring: %s\n\n%s" % (tar_file, failed_logs))
     else:
         response_dict = {"scene_path": extract_dir}
         if remove_tar:
             try:
                 os.remove(tar_file)
-                response_dict["zip_file_removed"] = True
+                response_dict['zip_file_removed'] = True
                 print("Tar-File successfully removed: %s" % tar_file)
             except Exception as e:
-                response_dict["zip_file_removed"] = False
+                response_dict['zip_file_removed'] = False
                 print(e)
                 print("Tar-File could not be removed: %s" % tar_file)
         return response_dict
@@ -154,9 +151,7 @@ def check_file_size(expected_file_size, file_path):
         if expected_file_size == actual_file_size:
             return True
         else:
-            print(
-                f"Different file sizes - {expected_file_size} expected - {actual_file_size} found"
-            )
+            print(f"Different file sizes - {expected_file_size} expected - {actual_file_size} found")
             return False
     else:
         raise Exception("File not found: {file_path}")
@@ -184,11 +179,8 @@ def get_folder_size(folder_path):
 def calculate_checksum(algorithm, check_file):
     if algorithm not in checksum_funcs:
         raise Exception("Checksum algorithm not available")
-    checksum = (
-        checksum_funcs[algorithm](open(check_file, "rb").read()).hexdigest().lower()
-    )
+    checksum = checksum_funcs[algorithm](open(check_file, 'rb').read()).hexdigest().lower()
     return checksum
-
 
 def delete_file(file: str):
     try:

@@ -1,8 +1,33 @@
 import os
 import time
 import json
+import netrc
 import requests
+from datetime import datetime
 from .file import check_file_size
+
+def access_token():
+    if 'token_expire_time' in os.environ and time.time() <= (float(os.environ['token_expire_time'])-5):
+        return os.environ['s3_access_key']
+
+    print("Need to get a new access token")
+    auth = netrc.netrc().authenticators('dataspace.copernicus.eu')
+    username = auth[0]
+    password = auth[2]
+    auth_server_url = "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
+    data = {
+        "client_id": "cdse-public",
+        "grant_type": "password",
+        "username": username,
+        "password": password,
+    }
+
+    token_time = time.time()
+    response = requests.post(auth_server_url, data=data, verify=True, allow_redirects=False).json()
+    os.environ['token_expire_time'] = str(token_time + response["expires_in"])
+    print("New expiration tme for access token: %s" % datetime.fromtimestamp(float(os.environ['token_expire_time'])).strftime("%m/%d/%Y, %H:%M:%S"))
+    os.environ['s3_access_key'] = response["access_token"]
+    return (os.environ['s3_access_key'])
 
 def download_data(
     url,
@@ -11,7 +36,8 @@ def download_data(
     chunk_size=1024 * 1000,
     timeout=300,
     auth=None,
-    check_size=True
+    check_size=True,
+    overwrite=False
 ):
     """
     Download single file from USGS M2M by download url
@@ -28,13 +54,20 @@ def download_data(
             try:
                 file_name = r.headers["Content-Disposition"].split('"')[1]
             except Exception as e:
-                raise Exception("Can not automatically identify file_name.")
+                file_name = os.path.basename(url)
+                #raise Exception("Can not automatically identify file_name.")
         
         print(f"Filename: {file_name}")
         file_path = os.path.join(output_dir, file_name)
         # TODO: Check for existing files and whether they have the correct file size
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
+        
+        if os.path.exists(file_path) and overwrite == False: 
+            return file_path
+        elif os.path.exists(file_path) and overwrite == True:
+            print("Removing old file")
+            os.remove(file_path)
 
         with open(file_path, "wb") as f:
             start = time.perf_counter()
