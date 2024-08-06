@@ -31,6 +31,9 @@ gui = ["PyQt5"]
 cli = [
   "stactools_sentinel"
 ]
+test = [
+    "pytest"
+]
 
 [project.urls]
 Homepage = "https://github.com/EOEPCA/resource-registration/tree/main/lib/lib"
