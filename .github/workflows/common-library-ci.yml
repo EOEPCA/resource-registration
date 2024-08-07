@@ -11,7 +11,7 @@ on:
       - "main"
     paths:
       - 'lib/**'
-      - '.github/workflows/python_Ci.yml'
+      - '.github/workflows/common-library-ci.yml'
 
 
   pull_request:
@@ -19,7 +19,7 @@ on:
       - "main"
     paths:
       - 'lib/**'
-      - '.github/workflows/python_Ci.yml'
+      - '.github/workflows/common-library-ci.yml'
 
 
 
@@ -41,7 +41,7 @@ jobs:
         git config core.sparseCheckout true
         
         echo "lib/" >> .git/info/sparse-checkout
-        echo ".github/workflows/python_Ci.yml" >> .git/info/sparse-checkout
+        echo ".github/workflows/common-library-ci.yml" >> .git/info/sparse-checkout
         
         git pull origin main
   
