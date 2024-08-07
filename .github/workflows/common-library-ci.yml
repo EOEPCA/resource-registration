@@ -1,26 +1,84 @@
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Common Library CI
+name: Python application
 
+# push und pull paths and/or files set here are only the ones triggering this workflow. The actual code to be checked is
+# set via sparsecheckout in the step "Checkout Repository".
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - "main"
+    paths:
+      - 'lib/test/**'
+      - '.github/workflows/python_Ci.yml'
+
+
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - "main"
+    paths:
+      - 'lib/test/**'
+      - '.github/workflows/python_Ci.yml'
+
+
+
+permissions:
+ contents: read
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.9", "3.10", "3.11"]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
+
+      # alternativ zu "use : actions / checkout@v4" sparse checkout für ausgewählte Daten
+    - name: Checkout Repository
+      run: |
+        git init
+        git remote add origin https://github.com/${{ github.repository }}.git
+        git config core.sparseCheckout true
+        
+        echo "synced/" >> .git/info/sparse-checkout
+        echo ".github/workflows/python_Ci.yml" >> .git/info/sparse-checkout
+        
+        git pull origin main
+  
+
+    - name: Set up Python 3.11
       uses: actions/setup-python@v3
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: "3.11"
+
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest black
+#        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+
+#    - name: Run black and show diff
+#      run: |
+#        black .  # Wende black an, um den Code zu formatieren
+#        git diff  # Zeige die Änderungen an, die von black vorgenommen wurden
+
+
+    - name: Format check with black
+      run: black --check --diff --color .
+
+
+    - name: Lint with flake8
+      run: |
+        flake8 --max-line-length 120 --count --statistics .
+#        # stop the build if there are Python syntax errors or undefined names
+#        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+#        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+#        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+
+    - name: Test with pytest
+      run: |
+        pytest
+
