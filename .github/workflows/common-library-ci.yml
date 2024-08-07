@@ -10,7 +10,7 @@ on:
     branches:
       - "main"
     paths:
-      - 'lib/test/**'
+      - 'lib/**'
       - '.github/workflows/python_Ci.yml'
 
 
@@ -18,7 +18,7 @@ on:
     branches:
       - "main"
     paths:
-      - 'lib/test/**'
+      - 'lib/**'
       - '.github/workflows/python_Ci.yml'
 
 
@@ -40,7 +40,7 @@ jobs:
         git remote add origin https://github.com/${{ github.repository }}.git
         git config core.sparseCheckout true
         
-        echo "synced/" >> .git/info/sparse-checkout
+        echo "lib/" >> .git/info/sparse-checkout
         echo ".github/workflows/python_Ci.yml" >> .git/info/sparse-checkout
         
         git pull origin main
