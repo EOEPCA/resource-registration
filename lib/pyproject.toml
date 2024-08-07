@@ -2,14 +2,11 @@
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-
 [project]
 name = "lib"
 version = "0.0.1"
-authors = [
-  { name="DLR", email="lib@dlr.de" },
-]
-description = "PROVIDE DESCRIPTION HERE"
+authors = []
+description = "Common Library of the Resource Registration Building Block to harvest and register resources"
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
@@ -20,16 +17,18 @@ classifiers = [
 dependencies = [
     "pystac",
     "pystac_client",
+    "stactools_sentinel",
     "rio-cogeo",
     "requests",
     "psycopg2-binary",
     "pika"
 ]
+license = {file = "LICENSE"}
 
 [project.optional-dependencies]
-gui = ["PyQt5"]
-cli = [
-  "stactools_sentinel"
+dev = [
+    "black",
+    "flake8"
 ]
 test = [
     "pytest"
@@ -52,3 +51,7 @@ testpaths = [
     "test",
     "integration",
 ]
+
+[tool.black]
+line-length = 120
+target-version = ["py38"]
