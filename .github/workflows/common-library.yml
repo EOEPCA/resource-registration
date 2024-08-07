@@ -1,1 +1,2 @@
-name: GitHub Actions Test
+name: Common Library CI
+on: [push]
