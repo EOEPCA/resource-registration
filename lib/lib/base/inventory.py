@@ -6,18 +6,26 @@ from datetime import datetime
 
 from .order import insert_into_database
 
+
 def update_inventory(scene_id, collection, inventory_dsn):
     # Update inventory database
     print("Updating inventory for %s" % (scene_id))
     conn = psycopg2.connect(inventory_dsn)
     cur = conn.cursor()
     status = "succeeded"
-    query = "UPDATE items SET content = jsonb_set(content, '{properties,order:status}', '\"%s\"'::jsonb) WHERE id = '%s' and collection in ('%s');" % (status, scene_id, collection)
+    # query = "UPDATE items SET content = jsonb_set(content, '{properties,order:status}', '\"%s\"'::jsonb) WHERE id = '%s' and collection in ('%s');" % (
+    # status, scene_id, collection)
+    # Todo: Check Formatter Query Changes (old commented out)
+    query = (
+        "UPDATE items SET content = jsonb_set(content, '{properties,order:status}', '\"%s\"'::jsonb) WHERE id = '%s' and collection in ('%s');"
+        % (status, scene_id, collection)
+    )
+
     print(query)
     cur.execute(query)
     print("[%s] affected rows: %s" % (scene_id, cur.rowcount))
-    
-    if cur.rowcount == 0: 
+
+    if cur.rowcount == 0:
         conn.close()
         raise Exception("0 affected rows")
     else:
@@ -26,7 +34,7 @@ def update_inventory(scene_id, collection, inventory_dsn):
         return True
 
 
-def get_scene_id_from_inventory_db(conn, collection, max_datetime=None): 
+def get_scene_id_from_inventory_db(conn, collection, max_datetime=None):
     if max_datetime:
         query = f"SELECT id FROM items where collection='{collection}' and content->'properties'->>'order:status' != 'removed' and datetime < '{max_datetime}'"
     else:
@@ -37,20 +45,28 @@ def get_scene_id_from_inventory_db(conn, collection, max_datetime=None):
     return [i[0] for i in cur.fetchall()]
 
 
-def get_scenes_from_inventory_file(db_file, date_column='ContentDate:Start', max_datetime=None):
+def get_scenes_from_inventory_file(db_file, date_column="ContentDate:Start", max_datetime=None):
     print(f"Query {db_file}")
+    # if max_datetime:
+    #     results = duckdb.query(
+    #         'set TimeZone=\'UTC\'; SELECT * FROM \'%s\' WHERE "%s" < \'%s\'' % (db_file, date_column, max_datetime))
+    # else:
+    #     results = duckdb.query('set TimeZone=\'UTC\'; SELECT * FROM \'%s\'' % (db_file))
+    # Todo: Check Formatter Query Changes (old commented out)
     if max_datetime:
-        results = duckdb.query('set TimeZone=\'UTC\'; SELECT * FROM \'%s\' WHERE "%s" < \'%s\'' % (db_file, date_column, max_datetime))
+        results = duckdb.query(
+            "set TimeZone='UTC'; SELECT * FROM '%s' WHERE \"%s\" < '%s'" % (db_file, date_column, max_datetime)
+        )
     else:
-        results = duckdb.query('set TimeZone=\'UTC\'; SELECT * FROM \'%s\'' % (db_file))
+        results = duckdb.query("set TimeZone='UTC'; SELECT * FROM '%s'" % (db_file))
     return results.df()
 
 
 def get_scenes_diff(scenes_inventory, scenes_db, id_column):
     # Inventory API does not include the file extension as part of the scene id column in comparison to the inventory files from CDSE data provider.
-    # Thus, we need to remove the file extension from the inventory list of scene ids. 
+    # Thus, we need to remove the file extension from the inventory list of scene ids.
     file_ext = os.path.splitext(scenes_inventory[id_column][0])[1]
-    scenes_inventory_names = list(scenes_inventory[id_column].str.replace(file_ext,''))
+    scenes_inventory_names = list(scenes_inventory[id_column].str.replace(file_ext, ""))
     print(f"Scenes Inventory: {len(scenes_inventory_names)}")
 
     # Substract the scene ids of the terrabyte Inventory from the inventory of the data provider to get missing scenes
@@ -63,16 +79,24 @@ def get_scenes_diff(scenes_inventory, scenes_db, id_column):
     return new_scenes, to_be_removed
 
 
-def get_item_from_id(scene_id, collection, api_url='https://stac.terrabyte.lrz.de/inventory/api'):
+def get_item_from_id(scene_id, collection, api_url="https://stac.terrabyte.lrz.de/inventory/api"):
     url = f"{api_url}/collections/{collection}/items/{scene_id}"
     resp = requests.get(url)
-    if resp.status_code == 200: 
+    if resp.status_code == 200:
         return resp.json()
     else:
         return False
 
 
-def query_geoparquet(inventory, collection, geoparquet, max_datetime=None, date_column='datetime', inventory_column='geoparquet', id_column='id'):
+def query_geoparquet(
+    inventory,
+    collection,
+    geoparquet,
+    max_datetime=None,
+    date_column="datetime",
+    inventory_column="geoparquet",
+    id_column="id",
+):
     if max_datetime:
         query = f"set TimeZone = 'UTC'; SELECT DATE_TRUNC('year', \"{date_column}\") as year, count(\"{id_column}\") as count FROM '{geoparquet}' WHERE \"{date_column}\" < '{max_datetime}' GROUP by year"
     else:
@@ -85,28 +109,31 @@ def query_geoparquet(inventory, collection, geoparquet, max_datetime=None, date_
     df = res.df()
 
     # Convert year to integer and index
-    df['year'] = df['year'].dt.year
-    df.set_index('year', inplace=True)
+    df["year"] = df["year"].dt.year
+    df.set_index("year", inplace=True)
 
     # Select count column
-    data = df.to_dict()['count']
+    data = df.to_dict()["count"]
 
     if collection not in inventory:
         inventory[collection] = dict()
 
     for year in data:
         if str(year) not in inventory[collection]:
-            inventory[collection][str(year)] = dict(inventory=0, removed=0, online=0, pending=0, deprecated=0, stac_api=0, geoparquet=0, datasource=0)
+            inventory[collection][str(year)] = dict(
+                inventory=0, removed=0, online=0, pending=0, deprecated=0, stac_api=0, geoparquet=0, datasource=0
+            )
 
         inventory[collection][str(year)][inventory_column] = data[year]
 
     return inventory
 
+
 def query_stac_db(cur, inventory, collection, max_datetime=None):
     where_condition = ""
     if max_datetime:
         where_condition = f"AND datetime < '{max_datetime}'"
-    
+
     query = f"SELECT DATE_TRUNC('year', datetime) AS year, count(id) FROM items WHERE collection='{collection}' {where_condition} GROUP BY year;"
     print(f"STAC API {collection}: {query}")
 
@@ -120,9 +147,11 @@ def query_stac_db(cur, inventory, collection, max_datetime=None):
         year = str(date.year)
 
         if year not in inventory[collection]:
-            inventory[collection][year] = dict(inventory=0, removed=0, online=0, pending=0, deprecated=0, stac_api=0, geoparquet=0, datasource=0)
+            inventory[collection][year] = dict(
+                inventory=0, removed=0, online=0, pending=0, deprecated=0, stac_api=0, geoparquet=0, datasource=0
+            )
 
-        inventory[collection][year]['stac_api'] += count
+        inventory[collection][year]["stac_api"] += count
 
     return inventory
 
@@ -146,27 +175,32 @@ def query_inventory_db(cur, inventory, collection, max_datetime=None):
         year = str(date.year)
 
         if year not in inventory[collection]:
-            inventory[collection][year] = dict(inventory=0, removed=0, online=0, pending=0, deprecated=0, stac_api=0, geoparquet=0, datasource=0)
+            inventory[collection][year] = dict(
+                inventory=0, removed=0, online=0, pending=0, deprecated=0, stac_api=0, geoparquet=0, datasource=0
+            )
 
-        if status == 'succeeded' and deprecated == 'false':
-            inventory[collection][year]['online'] += count
-        elif status == 'removed':
-            inventory[collection][year]['removed'] += count
-        elif status != 'succeeded' and deprecated == 'false':
-            inventory[collection][year]['pending'] += count
-        elif deprecated == 'true':
-            inventory[collection][year]['deprecated'] += count
+        if status == "succeeded" and deprecated == "false":
+            inventory[collection][year]["online"] += count
+        elif status == "removed":
+            inventory[collection][year]["removed"] += count
+        elif status != "succeeded" and deprecated == "false":
+            inventory[collection][year]["pending"] += count
+        elif deprecated == "true":
+            inventory[collection][year]["deprecated"] += count
 
-        if status != 'removed':
-            inventory[collection][year]['inventory'] += count
+        if status != "removed":
+            inventory[collection][year]["inventory"] += count
 
     return inventory
 
+
 def calculate_differences(collection, inventory_geoparquet, conn, id_column, date_column, max_datetime=None):
-    scenes_inventory = get_scenes_from_inventory_file(inventory_geoparquet, date_column=date_column, max_datetime=max_datetime)
+    scenes_inventory = get_scenes_from_inventory_file(
+        inventory_geoparquet, date_column=date_column, max_datetime=max_datetime
+    )
     scenes_db_names = get_scene_id_from_inventory_db(conn, collection, max_datetime=max_datetime)
     new_scenes, to_be_removed = get_scenes_diff(scenes_inventory, scenes_db_names, id_column)
-    if len(new_scenes) > 0: 
+    if len(new_scenes) > 0:
         scenes_inventory_by_name = scenes_inventory.set_index(id_column)
         file_ext = os.path.splitext(scenes_inventory[id_column][0])[1]
         scenes = []
@@ -178,12 +212,13 @@ def calculate_differences(collection, inventory_geoparquet, conn, id_column, dat
     else:
         return new_scenes, to_be_removed
 
-def generate_stac_new_scenes(scenes, collection, inventory_fct): 
+
+def generate_stac_new_scenes(scenes, collection, inventory_fct):
     stac_items = []
     for scene in scenes:
         try:
             stac_items.append(inventory_fct(scene, collection).to_dict())
-        except Exception as e: 
+        except Exception as e:
             print(f"Error while creating metadata for {scene}: {e}")
     return stac_items
 
@@ -192,31 +227,39 @@ def import_new_scenes(scenes, collection, inventory_fct, dsn):
     stac_items = generate_stac_new_scenes(scenes, collection, inventory_fct)
     return insert_into_database(dsn, stac_items)
 
+
 def delete_removed_scenes(collection, to_be_removed, reasons, api_url, api_user, api_pw):
-    for scene_id in to_be_removed: 
+    for scene_id in to_be_removed:
         stac_item = get_item_from_id(scene_id, collection)
         if stac_item:
-            order_status = stac_item['properties']['order:status']
-            print(scene_id, 'Order Status: ' + order_status)
-            if order_status == 'succeeded': 
+            order_status = stac_item["properties"]["order:status"]
+            print(scene_id, "Order Status: " + order_status)
+            if order_status == "succeeded":
                 # remove from STAC API
                 r = requests.delete(
-                        '%s/collections/%s/items/%s' % (api_url, collection, stac_item['id']),
-                        auth=(api_user, api_pw)
+                    # '%s/collections/%s/items/%s' % (api_url, collection, stac_item['id']),
+                    # auth=(api_user, api_pw)
+                    # Todo: Check Formatter requests Changes (old commented out)
+                    "%s/collections/%s/items/%s" % (api_url, collection, stac_item["id"]),
+                    auth=(api_user, api_pw),
                 )
                 print("%s: Delete from STAC API: %s" % (scene_id, r.status_code))
-                
-            stac_item['properties']['order:status'] = 'removed'
-            if scene_id in reasons: 
+
+            stac_item["properties"]["order:status"] = "removed"
+            if scene_id in reasons:
                 reason = reasons[scene_id]
-                stac_item['properties']['deletion:date'] = reason['DeletionDate']
-                stac_item['properties']['deletion:cause'] = reason['DeletionCause']
-            stac_item['properties']['deprecated'] = True
-            stac_item['properties']['updated'] = datetime.utcnow().isoformat() + 'Z'
+                stac_item["properties"]["deletion:date"] = reason["DeletionDate"]
+                stac_item["properties"]["deletion:cause"] = reason["DeletionCause"]
+            stac_item["properties"]["deprecated"] = True
+            stac_item["properties"]["updated"] = datetime.utcnow().isoformat() + "Z"
             r = requests.put(
-                    "%s/collections/%s/items/%s" % ('https://stac.terrabyte.lrz.de/inventory/api', collection, stac_item['id']),
-                    json=stac_item,
-                    #auth=(api_user, api_pw)
+                # "%s/collections/%s/items/%s" % (
+                # 'https://stac.terrabyte.lrz.de/inventory/api', collection, stac_item['id']),
+                # Todo: Check Formatter requests Changes (old commented out)
+                "%s/collections/%s/items/%s"
+                % ("https://stac.terrabyte.lrz.de/inventory/api", collection, stac_item["id"]),
+                json=stac_item,
+                # auth=(api_user, api_pw)
             )
             print("%s: Update Inventory API: %s" % (scene_id, r.status_code))
         else:

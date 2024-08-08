@@ -17,36 +17,32 @@ import pyarrow as pa
 
 BASE_QUERY = "SELECT * from pgstac.items WHERE collection='{}'"
 
-def partition_from_db_items_pair(idx, db, collection, output, base_url, overwrite=True): 
+
+def partition_from_db_items_pair(idx, db, collection, output, base_url, overwrite=True):
     try:
         start, end = idx
         file_end = end - timedelta(days=1)
         f_out = f"{output}/{start.strftime('%Y%m%d')}_{file_end.strftime('%Y%m%d')}.parquet"
         if os.path.exists(f_out) and not overwrite:
-            print(start, end, 'exists')
+            print(start, end, "exists")
             return True
         print(start, end)
-        query = (
-            BASE_QUERY.format(collection)
-            + f" AND datetime >= '{start}' AND datetime < '{end}'"
-        )
+        query = BASE_QUERY.format(collection) + f" AND datetime >= '{start}' AND datetime < '{end}'"
 
-        base_item = db.query_one(
-            f"select * from collection_base_item('{collection}');"
-        )
+        base_item = db.query_one(f"select * from collection_base_item('{collection}');")
 
         results = db.query(query)
         items = [prepare_item(result, base_item, base_url) for result in results]
-        print(start, end, 'items', len(items))
+        print(start, end, "items", len(items))
         if len(items) == 0:
             return None
         items_arrow = stac_geoparquet.arrow.parse_stac_items_to_arrow(items)
         table = pa.Table.from_batches(items_arrow)
         stac_geoparquet.arrow.to_parquet(table, f_out)
-        print(start, end, f_out, ': OK')
+        print(start, end, f_out, ": OK")
         return f_out
     except Exception as e:
-        print(start, end, 'FAILED', str(e))
+        print(start, end, "FAILED", str(e))
 
 
 def pairwise(iterable: Sequence) -> list[tuple[datetime, datetime]]:
@@ -54,12 +50,16 @@ def pairwise(iterable: Sequence) -> list[tuple[datetime, datetime]]:
     next(b, None)
     return zip(a, b)
 
+
 def prepare_datetime_pairs(datetime_range, partition_frequency):
     start_datetime = datetime.fromisoformat(datetime_range.split("/")[0].split("T")[0])
     end_datetime = datetime.fromisoformat(datetime_range.split("/")[1].split("T")[0])
-    idx = pd.date_range(start_datetime - timedelta(weeks=5), end_datetime + timedelta(weeks=5), freq=partition_frequency)
+    idx = pd.date_range(
+        start_datetime - timedelta(weeks=5), end_datetime + timedelta(weeks=5), freq=partition_frequency
+    )
     dt_pairs = pairwise(idx)
     return list(dt_pairs)
+
 
 def prepare_item(record, base_item, base_url):
     columns = [
@@ -112,7 +112,7 @@ def prepare_item(record, base_item, base_url):
             "rel": "self",
             "type": "application/geo+json",
             "href": f"{base_url}/collections/{item['collection']}/items/{item['id']}",
-        }
+        },
     ]
 
     return item
@@ -147,7 +147,7 @@ def generate_date_ranges(start_date, end_date):
             if end_range_date > end_date:
                 end_range_date = end_date
 
-            date_ranges.append((current_date, end_range_date  + timedelta(days=1)))
+            date_ranges.append((current_date, end_range_date + timedelta(days=1)))
 
             # Move to the next range
             current_date = end_range_date + timedelta(days=1)
@@ -179,18 +179,19 @@ def handle_partition_db_arrow(dsn, collection, output, base_url, frequency, date
             dt_pairs.extend(interval_pairs)
 
             # For weekly frequencies we calculate a 7 day rolling window starting on the first of each month
-            if frequency == 'W':
+            if frequency == "W":
                 start_date = datetime(start.year, start.month, 1)
-                end_date = datetime(end.year, end.month, end.day) 
+                end_date = datetime(end.year, end.month, end.day)
                 dt_pairs = generate_date_ranges(start_date, end_date)
 
         else:
             dt_pairs = prepare_datetime_pairs(datetime_range, frequency)
 
         executor = ThreadPoolExecutor(max_workers=max_threads)
-        futures = [executor.submit(partition_from_db_items_pair, pair, db, collection, output, base_url) for pair in dt_pairs]
+        futures = [
+            executor.submit(partition_from_db_items_pair, pair, db, collection, output, base_url) for pair in dt_pairs
+        ]
         for f in futures:
             if res := f.result():
                 print("Exported", res)
         print("End of processing")
-

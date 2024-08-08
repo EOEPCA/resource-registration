@@ -38,69 +38,69 @@ sensor_name = {
 }
 
 asset_changes = {
-    "LT": { # for Landsat 4 and 5
-        'blue': ['B01', 'Blue Band (B01)'], 
-        'green': ['B02','Green Band (B02)'],
-        'red': ['B03','Red Band (B03)'],
-        'nir08': ['B04','Near Infrared Band 0.8 (B04)'],
-        'swir16': ['B05','Short-wave Infrared Band 1.6 (B05)'],
-        'lwir': ['B06','Surface Temperature Band (B06)'],     
-        'swir22': ['B07','Short-wave Infrared Band 2.2 (B07)'],
-        'atmos_opacity': ['Atmos_Opacity',''],
-        'atran': ['ATRAN',''],
-        'cdist': ['CDIST',''],
-        'drad': ['DRAD',''],
-        'urad': ['URAD',''],
-        'trad': ['TRAD',''],
-        'emis': ['EMIS',''],
-        'emsd': ['EMSD',''],
-        'qa_pixel': ['QA_Pixel',''],
-        'qa_radsat': ['QA_Radsat',''],
-        'qa': ['QA_Temp',''],
-        'cloud_qa': ['QA_Cloud','']
+    "LT": {  # for Landsat 4 and 5
+        "blue": ["B01", "Blue Band (B01)"],
+        "green": ["B02", "Green Band (B02)"],
+        "red": ["B03", "Red Band (B03)"],
+        "nir08": ["B04", "Near Infrared Band 0.8 (B04)"],
+        "swir16": ["B05", "Short-wave Infrared Band 1.6 (B05)"],
+        "lwir": ["B06", "Surface Temperature Band (B06)"],
+        "swir22": ["B07", "Short-wave Infrared Band 2.2 (B07)"],
+        "atmos_opacity": ["Atmos_Opacity", ""],
+        "atran": ["ATRAN", ""],
+        "cdist": ["CDIST", ""],
+        "drad": ["DRAD", ""],
+        "urad": ["URAD", ""],
+        "trad": ["TRAD", ""],
+        "emis": ["EMIS", ""],
+        "emsd": ["EMSD", ""],
+        "qa_pixel": ["QA_Pixel", ""],
+        "qa_radsat": ["QA_Radsat", ""],
+        "qa": ["QA_Temp", ""],
+        "cloud_qa": ["QA_Cloud", ""],
     },
-    "LE": { # for Landsat 7
-        'blue': ['B01', 'Blue Band (B01)'], 
-        'green': ['B02','Green Band (B02)'],
-        'red': ['B03','Red Band (B03)'],
-        'nir08': ['B04','Near Infrared Band 0.8 (B04)'],
-        'swir16': ['B05','Short-wave Infrared Band 1.6 (B05)'],
-        'lwir': ['B06','Surface Temperature Band (B06)'],        
-        'swir22': ['B07','Short-wave Infrared Band 2.2 (B07)'],
-        'atmos_opacity': ['Atmos_Opacity',''],
-        'atran': ['ATRAN',''],
-        'cdist': ['CDIST',''],
-        'drad': ['DRAD',''],
-        'urad': ['URAD',''],
-        'trad': ['TRAD',''],
-        'emis': ['EMIS',''],
-        'emsd': ['EMSD',''],
-        'qa_pixel': ['QA_Pixel',''],
-        'qa_radsat': ['QA_Radsat',''],
-        'qa': ['QA_Temp',''],
-        'cloud_qa': ['QA_Cloud','']
+    "LE": {  # for Landsat 7
+        "blue": ["B01", "Blue Band (B01)"],
+        "green": ["B02", "Green Band (B02)"],
+        "red": ["B03", "Red Band (B03)"],
+        "nir08": ["B04", "Near Infrared Band 0.8 (B04)"],
+        "swir16": ["B05", "Short-wave Infrared Band 1.6 (B05)"],
+        "lwir": ["B06", "Surface Temperature Band (B06)"],
+        "swir22": ["B07", "Short-wave Infrared Band 2.2 (B07)"],
+        "atmos_opacity": ["Atmos_Opacity", ""],
+        "atran": ["ATRAN", ""],
+        "cdist": ["CDIST", ""],
+        "drad": ["DRAD", ""],
+        "urad": ["URAD", ""],
+        "trad": ["TRAD", ""],
+        "emis": ["EMIS", ""],
+        "emsd": ["EMSD", ""],
+        "qa_pixel": ["QA_Pixel", ""],
+        "qa_radsat": ["QA_Radsat", ""],
+        "qa": ["QA_Temp", ""],
+        "cloud_qa": ["QA_Cloud", ""],
     },
-    "LC": { # for Landsat 8 and 9
-        'coastal': ['B01','Coastal/Aerosol Band (B01)'],
-        'blue': ['B02','Blue Band (B02)'], 
-        'green': ['B03','Green Band (B03)'],
-        'red': ['B04','Red Band (B04)'],
-        'nir08': ['B05','Near Infrared Band 0.8 (B05)'],
-        'swir16': ['B06','Short-wave Infrared Band 1.6 (B06)'],
-        'lwir11': ['B10','Surface Temperature Band (B10)'],        
-        'swir22': ['B07','Short-wave Infrared Band 2.2 (B07)'],
-        'atran': ['ATRAN',''],
-        'cdist': ['CDIST',''],
-        'drad': ['DRAD',''],
-        'urad': ['URAD',''],
-        'trad': ['TRAD',''],
-        'emis': ['EMIS',''],
-        'emsd': ['EMSD',''],
-        'qa_pixel': ['QA_Pixel',''],
-        'qa_radsat': ['QA_Radsat',''],
-        'qa': ['QA_Temp',''],
-        'qa_aerosol': ['QA_Aerosol','']
-    }    
+    "LC": {  # for Landsat 8 and 9
+        "coastal": ["B01", "Coastal/Aerosol Band (B01)"],
+        "blue": ["B02", "Blue Band (B02)"],
+        "green": ["B03", "Green Band (B03)"],
+        "red": ["B04", "Red Band (B04)"],
+        "nir08": ["B05", "Near Infrared Band 0.8 (B05)"],
+        "swir16": ["B06", "Short-wave Infrared Band 1.6 (B06)"],
+        "lwir11": ["B10", "Surface Temperature Band (B10)"],
+        "swir22": ["B07", "Short-wave Infrared Band 2.2 (B07)"],
+        "atran": ["ATRAN", ""],
+        "cdist": ["CDIST", ""],
+        "drad": ["DRAD", ""],
+        "urad": ["URAD", ""],
+        "trad": ["TRAD", ""],
+        "emis": ["EMIS", ""],
+        "emsd": ["EMSD", ""],
+        "qa_pixel": ["QA_Pixel", ""],
+        "qa_radsat": ["QA_Radsat", ""],
+        "qa": ["QA_Temp", ""],
+        "qa_aerosol": ["QA_Aerosol", ""],
+    },
 }
 
 folder_structure = "level-{processingLevelNo}/standard/{sensor}/{year}/{wrsPath}/{wrsRow}"
@@ -121,30 +121,26 @@ def get_scene_id_folder(scene_id, folder_format=None):
     if "sensor" in variables:
         variables["sensor"] = sensor_name[variables["sensor"]]
     if "processingLevel" in variables:
-        variables['processingLevelNo'] = variables['processingLevel'][1]
+        variables["processingLevelNo"] = variables["processingLevel"][1]
 
     if folder_format is None:
         folder_format = folder_structure
 
     return folder_format.format(**variables)
 
+
 def landsat_metadata(scene_path, scene_id, return_pystac=False, add_file_size=False):
     if scene_path[-1] == "/":
         scene_path = scene_path[:-1]
     print("executing landsat_metadata for %s" % scene_path)
-    
     if not os.path.exists(scene_path):
         raise Exception("metadata_error: Folder does not exist %s" % (scene_path))
-    
-    stac_function = 'stactools.landsat.stac.create_item'
-    stac_function_options = {'use_usgs_geometry': False}
-    
+    stac_function = "stactools.landsat.stac.create_item"
+    stac_function_options = {"use_usgs_geometry": False}
     landsat_mtl_xml = glob.glob(os.path.join(scene_path, "*_MTL.xml"))
     if len(landsat_mtl_xml) == 0:
         metadata_error = "No *_MTL.xml file available in folder %s" % (scene_path,)
-        raise Exception(
-            "metadata_error: %s" % metadata_error
-        )
+        raise Exception("metadata_error: %s" % metadata_error)
     landsat_mtl_xml = landsat_mtl_xml[0]
     print("MTL file: %s" % landsat_mtl_xml)
 
@@ -158,7 +154,7 @@ def landsat_metadata(scene_path, scene_id, return_pystac=False, add_file_size=Fa
         if return_pystac:
             return stac_item
         else:
-            with open(stac_file, 'w') as f:
+            with open(stac_file, "w") as f:
                 f.write(json.dumps(stac_item.to_dict()))
             return stac_file
 
@@ -167,9 +163,7 @@ def landsat_metadata(scene_path, scene_id, return_pystac=False, add_file_size=Fa
             scene_path,
             str(e),
         )
-        raise Exception(
-            "metadata_error: %s" % metadata_error
-        )
+        raise Exception("metadata_error: %s" % metadata_error)
 
 
 def adapt_stac_metadata(scene_path):
@@ -222,47 +216,53 @@ def adapt_stac_metadata(scene_path):
             print(f"Failed to adapt STAC-metadata of {scene_path}")
     else:
         print(f"{scene_path} does not contain STAC-metadata to adapt.")
-    
+
     return stac_files
+
 
 log = logging.getLogger("Log Info")
 
+
 def modify_landsat_stac(stac_item: pystac.item.Item):
     """Modify the Asset-Keys and eo:bands:name for a Landsat L2 STAC-Item.
-    
+
+
     Args:
         stac_item: The STAC item file to modify. Must be a STACObject.
-        
+
+
         Returns: A pystac.item.Item object with the desired changes."""
 
     stac_item_dict = copy.deepcopy(stac_item.to_dict(include_self_link=False))
 
-    if stac_item_dict['geometry']['type'] == 'MultiPolygon':
+    if stac_item_dict["geometry"]["type"] == "MultiPolygon":
         try:
-            link = stac_item_dict['links'][1]['href']
+            link = stac_item_dict["links"][1]["href"]
             stac_item_usgs = requests.get(link).json()
-            stac_item_dict['geometry'] = stac_item_usgs['geometry']
+            stac_item_dict["geometry"] = stac_item_usgs["geometry"]
         except Exception as e:
             pass
 
-    mission = stac_item.id[0:2]   # Get first two characters of Item id (e.g., LC for LC09_L2SR_....)
+    mission = stac_item.id[0:2]  # Get first two characters of Item id (e.g., LC for LC09_L2SR_....)
     if mission not in asset_changes:
         raise Exception("Could not find entry for %s in asset_changes configuration" % mission)
     input_dict = asset_changes[mission]
-    
+
     for i, (current_key, target_key) in enumerate(input_dict.items()):
-        log.info(f'Replacing the current Asset-Key {current_key} with the new Asset-Key {target_key[0]}.')
+        log.info(f"Replacing the current Asset-Key {current_key} with the new Asset-Key {target_key[0]}.")
         try:
             stac_item_dict["assets"][target_key[0]] = copy.deepcopy(stac_item_dict["assets"].pop(current_key))
             if "eo:bands" in stac_item_dict["assets"][target_key[0]]:
                 stac_item_dict["assets"][target_key[0]]["eo:bands"][0]["name"] = target_key[0]
                 stac_item_dict["assets"][target_key[0]]["title"] = target_key[1]
         except:
-            log.info(f'{current_key} is not a Asset in this STAC-Item.')
-    
-    if 'proj:centroid' in stac_item_dict['properties']: 
-        for key in stac_item_dict['properties']['proj:centroid']: 
-            stac_item_dict['properties']['proj:centroid'][key] = float(stac_item_dict['properties']['proj:centroid'][key])
+            log.info(f"{current_key} is not a Asset in this STAC-Item.")
+
+    if "proj:centroid" in stac_item_dict["properties"]:
+        for key in stac_item_dict["properties"]["proj:centroid"]:
+            stac_item_dict["properties"]["proj:centroid"][key] = float(
+                stac_item_dict["properties"]["proj:centroid"][key]
+            )
 
     stac_item_object_final = pystac.Item.from_dict(stac_item_dict)
     return stac_item_object_final

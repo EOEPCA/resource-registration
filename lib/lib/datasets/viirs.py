@@ -35,7 +35,7 @@ folder_structure = "{product}.{version}/{year}/{month}/{day}/{tile_id}"
 
 def get_scene_id_info(scene_id):
     used_pattern = scene_id_pattern
-    if len(scene_id.split('.')[0]) == 8:
+    if len(scene_id.split(".")[0]) == 8:
         used_pattern = scene_id_pattern2
     match = re.match(re.compile(used_pattern), scene_id)
     variables = match.groupdict()
@@ -53,25 +53,26 @@ def get_scene_id_folder(scene_id, folder_format=None):
         folder_format = folder_structure
     return folder_format.format(**variables)
 
+
 def viirs_metadata(scene_path, scene_id, return_pystac=False, add_file_size=False):
     if scene_path[-1] == "/":
         scene_path = scene_path[:-1]
-    
+
     if not os.path.exists(scene_path):
         raise Exception("metadata_error: Folder does not exist %s" % (scene_path))
-    
-    stac_function = 'stactools.viirs.stac.create_item'
+
+    stac_function = "stactools.viirs.stac.create_item"
     try:
         stac_file = os.path.join(os.path.dirname(scene_path), scene_id + ".STAC.json")
         stac_item = extract_stactools(scene_path, stac_function, {})
-        #stac_item = add_modis_adjustments(stac_item)
+        # stac_item = add_modis_adjustments(stac_item)
 
-        stac_item.properties['terrabyte:uniq_id'] = '.'.join(stac_item.id.split('.')[0:-1])
+        stac_item.properties["terrabyte:uniq_id"] = ".".join(stac_item.id.split(".")[0:-1])
         stac_item.id = scene_id
-        
+
         # Add file:// protocol for local file paths
-        for asset in stac_item.assets: 
-            stac_item.assets[asset].href = 'file://%s' % stac_item.assets[asset].href
+        for asset in stac_item.assets:
+            stac_item.assets[asset].href = "file://%s" % stac_item.assets[asset].href
 
         if add_file_size:
             stac_item = add_asset_filesize(stac_item)
@@ -86,9 +87,7 @@ def viirs_metadata(scene_path, scene_id, return_pystac=False, add_file_size=Fals
             scene_path,
             str(e),
         )
-        raise Exception(
-            "metadata_error: %s" % metadata_error
-        )
+        raise Exception("metadata_error: %s" % metadata_error)
 
     return stac_file
 
@@ -96,32 +95,36 @@ def viirs_metadata(scene_path, scene_id, return_pystac=False, add_file_size=Fals
 def get_geometry(points):
     coordinates = []
     for p in points[::-1]:
-        coordinates.append([p['Longitude'], p['Latitude']])
+        coordinates.append([p["Longitude"], p["Latitude"]])
     return {"type": "Polygon", "coordinates": [coordinates]}
 
+
 def get_bbox(geometry):
-    coords = geometry['coordinates']
+    coords = geometry["coordinates"]
     lats = [c[1] for c in coords[0]]
     lons = [c[0] for c in coords[0]]
     return [min(lons), min(lats), max(lons), max(lats)]
 
+
 def create_item_for_inventory(scene, collection, collection_public):
     item_id = None
-    for identifier in scene['umm']['DataGranule']['Identifiers']:
-        if identifier['IdentifierType'] == 'ProducerGranuleId':
-            item_id = identifier['Identifier']
+    for identifier in scene["umm"]["DataGranule"]["Identifiers"]:
+        if identifier["IdentifierType"] == "ProducerGranuleId":
+            item_id = identifier["Identifier"]
     if item_id is None:
         raise Exception("Could not find identifier")
     item_id = os.path.splitext(item_id)[0]
-    #item_id = scene['meta']['native-id']
-    item_parts = item_id.split('.')
+    # item_id = scene['meta']['native-id']
+    item_parts = item_id.split(".")
 
-    tby_item_id = '.'.join(item_parts[0:4])
+    tby_item_id = ".".join(item_parts[0:4])
 
-    item_datetime_begin = parse(scene['umm']['TemporalExtent']['RangeDateTime']['BeginningDateTime'])
-    item_datetime_end = parse(scene['umm']['TemporalExtent']['RangeDateTime']['EndingDateTime'])
+    item_datetime_begin = parse(scene["umm"]["TemporalExtent"]["RangeDateTime"]["BeginningDateTime"])
+    item_datetime_end = parse(scene["umm"]["TemporalExtent"]["RangeDateTime"]["EndingDateTime"])
 
-    item_geometry = get_geometry(scene['umm']['SpatialExtent']['HorizontalSpatialDomain']['Geometry']['GPolygons'][0]['Boundary']['Points'])
+    item_geometry = get_geometry(
+        scene["umm"]["SpatialExtent"]["HorizontalSpatialDomain"]["Geometry"]["GPolygons"][0]["Boundary"]["Points"]
+    )
     item_bbox = get_bbox(item_geometry)
 
     item = pystac.Item(
@@ -135,41 +138,40 @@ def create_item_for_inventory(scene, collection, collection_public):
         properties={},
     )
 
-    item.properties['deprecated'] = False
-    item.properties['order:status'] = 'orderable'
-    item.properties['version'] = item_parts[-1]
+    item.properties["deprecated"] = False
+    item.properties["order:status"] = "orderable"
+    item.properties["version"] = item_parts[-1]
 
-    if 'revision-date' in scene['meta']:
-        item.properties['viirs:revision-date'] = parse(scene['meta']['revision-date']).isoformat()
-    if 'revision-id' in scene['meta']:
-        item.properties['viirs:revision-id'] = scene['meta']['revision-id']
-    item.properties['viirs:provider-id'] = scene['meta']['provider-id']
-    item.properties['viirs:concept-id'] = scene['meta']['concept-id']
+    if "revision-date" in scene["meta"]:
+        item.properties["viirs:revision-date"] = parse(scene["meta"]["revision-date"]).isoformat()
+    if "revision-id" in scene["meta"]:
+        item.properties["viirs:revision-id"] = scene["meta"]["revision-id"]
+    item.properties["viirs:provider-id"] = scene["meta"]["provider-id"]
+    item.properties["viirs:concept-id"] = scene["meta"]["concept-id"]
 
-    item.properties['platform'] = scene['umm']['Platforms'][0]['ShortName']
+    item.properties["platform"] = scene["umm"]["Platforms"][0]["ShortName"]
 
-    for attrib in scene['umm']['AdditionalAttributes']:
-        if attrib['Name'] == 'VERTICALTILENUMBER':
-            item.properties['viirs:vertical-tile'] = int(attrib['Values'][0])
-        elif attrib['Name'] == 'HORIZONTALTILENUMBER':
-            item.properties['viirs:horizontal-tile'] = int(attrib['Values'][0])
+    for attrib in scene["umm"]["AdditionalAttributes"]:
+        if attrib["Name"] == "VERTICALTILENUMBER":
+            item.properties["viirs:vertical-tile"] = int(attrib["Values"][0])
+        elif attrib["Name"] == "HORIZONTALTILENUMBER":
+            item.properties["viirs:horizontal-tile"] = int(attrib["Values"][0])
 
-    item.properties['file:size'] = scene['umm']['DataGranule']['ArchiveAndDistributionInformation'][0]['Size']
-    item.properties['file:unit'] = scene['umm']['DataGranule']['ArchiveAndDistributionInformation'][0]['SizeUnit']
+    item.properties["file:size"] = scene["umm"]["DataGranule"]["ArchiveAndDistributionInformation"][0]["Size"]
+    item.properties["file:unit"] = scene["umm"]["DataGranule"]["ArchiveAndDistributionInformation"][0]["SizeUnit"]
 
-    item.properties['terrabyte:item_id'] = tby_item_id
-    item.properties['terrabyte:folder'] = os.path.join(get_scene_id_folder(item_id), item_id + '.h5')
-    item.properties['terrabyte:collection_id'] = collection_public
+    item.properties["terrabyte:item_id"] = tby_item_id
+    item.properties["terrabyte:folder"] = os.path.join(get_scene_id_folder(item_id), item_id + ".h5")
+    item.properties["terrabyte:collection_id"] = collection_public
 
-    item.properties['viirs:dates'] = dict()
-    for date in scene['umm']['ProviderDates']:
-        item.properties['viirs:dates'][date['Type']] = parse(date['Date']).isoformat()
+    item.properties["viirs:dates"] = dict()
+    for date in scene["umm"]["ProviderDates"]:
+        item.properties["viirs:dates"][date["Type"]] = parse(date["Date"]).isoformat()
 
-    for url in scene['umm']['RelatedUrls']:
-        if url['Type'] == 'GET DATA':
-            item.assets['hdf'] = pystac.Asset(href=url['URL'])
-        elif '.xml' in url['URL'] and 'https://' in url['URL']:
-            item.assets['xml'] = pystac.Asset(href=url['URL'])
+    for url in scene["umm"]["RelatedUrls"]:
+        if url["Type"] == "GET DATA":
+            item.assets["hdf"] = pystac.Asset(href=url["URL"])
+        elif ".xml" in url["URL"] and "https://" in url["URL"]:
+            item.assets["xml"] = pystac.Asset(href=url["URL"])
 
     return item
-

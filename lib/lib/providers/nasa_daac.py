@@ -232,7 +232,7 @@ def get_login_response(url, credentials, token):
     return response
 
 
-def cmr_download(urls, output_dir='.', force=False, quiet=False):
+def cmr_download(urls, output_dir=".", force=False, quiet=False):
     """Download files from list of urls."""
     if not urls:
         return
@@ -255,11 +255,7 @@ def cmr_download(urls, output_dir='.', force=False, quiet=False):
         filename = url.split("/")[-1]
         filename = os.path.join(output_dir, filename)
         if not quiet:
-            print(
-                "{0}/{1}: {2}".format(
-                    str(index).zfill(len(str(url_count))), url_count, filename
-                )
-            )
+            print("{0}/{1}: {2}".format(str(index).zfill(len(str(url_count))), url_count, filename))
 
         try:
             response = get_login_response(url, credentials, token)
@@ -293,7 +289,7 @@ def cmr_download(urls, output_dir='.', force=False, quiet=False):
             raise
 
 
-def download_data_threads(scenes, base_dir='.'):
+def download_data_threads(scenes, base_dir="."):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -305,37 +301,33 @@ def download_data_threads(scenes, base_dir='.'):
     start = time.perf_counter()
 
     for scene in scenes:
-        urls = scene['urls']
+        urls = scene["urls"]
         file_dir = None
         output_dir = os.path.join(base_dir, file_dir)
 
         download_thread = threading.Thread(
-            target=lambda q, urls, output_dir: q.put(
-                cmr_download(
-                    urls, output_dir
-                )
-            ),
+            target=lambda q, urls, output_dir: q.put(cmr_download(urls, output_dir)),
             args=(que, urls, output_dir),
         )
         download_thread.start()
         threads.append(download_thread)
-    
+
     while not q.empty():
-        work = q.get()                      #fetch new work from the Queue
+        work = q.get()  # fetch new work from the Queue
         try:
             data = urlopen(work[1]).read()
             logging.info("Requested..." + work[1])
-            result[work[0]] = data          #Store data back at correct index
+            result[work[0]] = data  # Store data back at correct index
         except:
-            logging.error('Error with URL check!')
+            logging.error("Error with URL check!")
             result[work[0]] = {}
-        #signal to the queue that task has been processed
+        # signal to the queue that task has been processed
         q.task_done()
-    
+
     for thread in threads:
         thread.join()
 
-    download_time = (time.perf_counter() - start)
+    download_time = time.perf_counter() - start
 
     datasets = []
     mean_download_speed = 0
@@ -354,7 +346,6 @@ def download_data_threads(scenes, base_dir='.'):
     )
 
 
-
 def cmr_filter(search_results):
     """Select only the desired data files from CMR response."""
     if "feed" not in search_results or "entry" not in search_results["feed"]:
@@ -362,20 +353,20 @@ def cmr_filter(search_results):
 
     scenes = []
 
-    for item in search_results["feed"]['entry']:
+    for item in search_results["feed"]["entry"]:
         record = dict(
-            id=item['id'],
-            scene_id=item['producer_granule_id'],
-            time_start=item['time_start'],
-            time_end=item['time_end'],
-            updated=item['updated'],
-            granule_size=item['granule_size'],
-            urls=[]
+            id=item["id"],
+            scene_id=item["producer_granule_id"],
+            time_start=item["time_start"],
+            time_end=item["time_end"],
+            updated=item["updated"],
+            granule_size=item["granule_size"],
+            urls=[],
         )
 
         if "links" in item:
             unique_filenames = set()
-            for link in item['links']:
+            for link in item["links"]:
                 if "href" not in link:
                     # Exclude links with nothing to download
                     continue
@@ -398,7 +389,7 @@ def cmr_filter(search_results):
                     continue
                 unique_filenames.add(filename)
 
-                record['urls'].append(link["href"])
+                record["urls"].append(link["href"])
 
         scenes.append(record)
 
