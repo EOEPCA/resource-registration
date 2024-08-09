@@ -58,7 +58,7 @@ jobs:
 
 
     - name: Format check with black
-      run: black --check --diff --color .
+      run: black --check --diff --color --line-length 120 .
 
 
 
