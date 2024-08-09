@@ -12,6 +12,8 @@ on:
     paths:
       - 'lib/**'
       - '.github/workflows/common-library-ci.yml'
+      - '.github/actions/fetch_and_run/action.yml'
+
 
 
   pull_request:
@@ -20,6 +22,8 @@ on:
     paths:
       - 'lib/**'
       - '.github/workflows/common-library-ci.yml'
+      - '.github/actions/fetch_and_run/action.yml'
+
 
 
 
@@ -33,32 +37,20 @@ jobs:
 
     steps:
 
-      # alternativ zu "use : actions / checkout@v4" sparse checkout für ausgewählte Daten
-    - name: Checkout Repository
-      run: |
-        git init
-        git remote add origin https://github.com/${{ github.repository }}.git
-        git config core.sparseCheckout true
-        
-        echo "lib/" >> .git/info/sparse-checkout
-        
-        git pull origin main
-  
+      # gets composite action file
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.11"
-
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install black
-
-
-    - name: Format check with black
-      run: black --check --diff --color --line-length 120 .
+      # fetches data based on composite action file checkout and runs all processes
+      - name: Checkout Repository and Setup Python
+        uses: ./.github/actions/fetch_and_run
+        with:
+          repository: ${{ github.repository }}
+          dependency: black
+          cmd_run: 'cd lib/ && black --check --diff --color .'
+          opt_in: "pyproject.toml"
 
 
 
@@ -68,33 +60,19 @@ jobs:
 
     steps:
 
-      # alternativ zu "use : actions / checkout@v4" sparse checkout für ausgewählte Daten
-      - name: Checkout Repository
-        run: |
-          git init
-          git remote add origin https://github.com/${{ github.repository }}.git
-          git config core.sparseCheckout true
-
-          echo "lib/" >> .git/info/sparse-checkout
-
-          git pull origin main
-
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v3
+      # gets composite action file
+      - uses: actions/checkout@v4
         with:
-          python-version: "3.11"
+          sparse-checkout: |
+            .github
 
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install flake8
-
-
-      - name: Lint with flake8
-        run: |
-          flake8 --max-line-length 120 --count --statistics .
+      # fetches data based on composite action file checkout and runs all processes
+      - name: Checkout Repository and Setup Python
+        uses: ./.github/actions/fetch_and_run
+        with:
+          repository: ${{ github.repository }}
+          dependency: flake8
+          cmd_run: 'flake8 --max-line-length 120 --count --statistics .'
 
 
 
@@ -104,31 +82,17 @@ jobs:
 
     steps:
 
-      # alternativ zu "use : actions / checkout@v4" sparse checkout für ausgewählte Daten
-      - name: Checkout Repository
-        run: |
-          git init
-          git remote add origin https://github.com/${{ github.repository }}.git
-          git config core.sparseCheckout true
-          
-          echo "lib/" >> .git/info/sparse-checkout
-          
-          git pull origin main
-
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v3
+      # gets composite action file
+      - uses: actions/checkout@v4
         with:
-          python-version: "3.11"
+          sparse-checkout: |
+            .github
 
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest
-          
-
-      - name: Test with pytest
-        run: |
-          pytest
+      # fetches data based on composite action file checkout and runs all processes
+      - name: Checkout Repository and Setup Python
+        uses: ./.github/actions/fetch_and_run
+        with:
+          repository: ${{ github.repository }}
+          dependency: pytest
+          cmd_run: 'pytest'
 
