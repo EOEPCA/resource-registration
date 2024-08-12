@@ -13,12 +13,14 @@ def update_inventory(scene_id, collection, inventory_dsn):
     conn = psycopg2.connect(inventory_dsn)
     cur = conn.cursor()
     status = "succeeded"
-    # query = "UPDATE items SET content = jsonb_set(content, '{properties,order:status}', '\"%s\"'::jsonb) WHERE id = '%s' and collection in ('%s');" % (
-    # status, scene_id, collection)
-    # Todo: Check Formatter Query Changes (old commented out)
     query = (
-        "UPDATE items SET content = jsonb_set(content, '{properties,order:status}', '\"%s\"'::jsonb) WHERE id = '%s' and collection in ('%s');"
-        % (status, scene_id, collection)
+        # todo: define uniform format string rules (for entire project/safety)
+        # "UPDATE items SET content = jsonb_set(content, '{properties,order:status}', '\"%s\"'::jsonb)
+        # WHERE id = '%s' and collection in ('%s');"
+        "UPDATE items "
+        "SET content = jsonb_set(content, '{properties,order:status}', '\"%s\"'::jsonb) "
+        "WHERE id = '%s' "
+        "AND collection in ('%s');" % (status, scene_id, collection)
     )
 
     print(query)
@@ -36,9 +38,20 @@ def update_inventory(scene_id, collection, inventory_dsn):
 
 def get_scene_id_from_inventory_db(conn, collection, max_datetime=None):
     if max_datetime:
-        query = f"SELECT id FROM items where collection='{collection}' and content->'properties'->>'order:status' != 'removed' and datetime < '{max_datetime}'"
+        query = (
+            f"SELECT id "
+            f"FROM items "
+            f"WHERE collection='{collection}' "
+            f"AND content->'properties'->>'order:status' != 'removed' "
+            f"AND datetime < '{max_datetime}'"
+        )
     else:
-        query = f"SELECT id FROM items where collection='{collection}' and content->'properties'->>'order:status' != 'removed'"
+        query = (
+            f"SELECT id "
+            f"FROM items "
+            f"WHERE collection='{collection}' "
+            f"AND content->'properties'->>'order:status' != 'removed'"
+        )
     print(query)
     cur = conn.cursor()
     cur.execute(query)
@@ -52,10 +65,10 @@ def get_scenes_from_inventory_file(db_file, date_column="ContentDate:Start", max
     #         'set TimeZone=\'UTC\'; SELECT * FROM \'%s\' WHERE "%s" < \'%s\'' % (db_file, date_column, max_datetime))
     # else:
     #     results = duckdb.query('set TimeZone=\'UTC\'; SELECT * FROM \'%s\'' % (db_file))
-    # Todo: Check Formatter Query Changes (old commented out)
+    # Todo: Check for quotes
     if max_datetime:
         results = duckdb.query(
-            "set TimeZone='UTC'; SELECT * FROM '%s' WHERE \"%s\" < '%s'" % (db_file, date_column, max_datetime)
+            "set TimeZone='UTC'; SELECT * FROM '%s' WHERE '%s' < '%s'" % (db_file, date_column, max_datetime)
         )
     else:
         results = duckdb.query("set TimeZone='UTC'; SELECT * FROM '%s'" % (db_file))
@@ -63,8 +76,8 @@ def get_scenes_from_inventory_file(db_file, date_column="ContentDate:Start", max
 
 
 def get_scenes_diff(scenes_inventory, scenes_db, id_column):
-    # Inventory API does not include the file extension as part of the scene id column in comparison to the inventory files from CDSE data provider.
-    # Thus, we need to remove the file extension from the inventory list of scene ids.
+    # Inventory API does not include the file extension as part of the scene id column in comparison to the inventory
+    # files from CDSE data provider. Thus, we need to remove the file extension from the inventory list of scene ids.
     file_ext = os.path.splitext(scenes_inventory[id_column][0])[1]
     scenes_inventory_names = list(scenes_inventory[id_column].str.replace(file_ext, ""))
     print(f"Scenes Inventory: {len(scenes_inventory_names)}")
@@ -73,7 +86,8 @@ def get_scenes_diff(scenes_inventory, scenes_db, id_column):
     new_scenes = list(set(scenes_inventory_names).difference(scenes_db))
     print(f"New items: {len(new_scenes)}")
 
-    # Substract the inventory of the data provider from the terrabyte Inventory to get scenes that should be removed (not anymore available)
+    # Substract the inventory of the data provider from the terrabyte Inventory
+    # to get scenes that should be removed (not anymore available)
     to_be_removed = list(set(scenes_db).difference(scenes_inventory_names))
     print(f"Items to be removed: {len(to_be_removed)}")
     return new_scenes, to_be_removed
@@ -98,9 +112,20 @@ def query_geoparquet(
     id_column="id",
 ):
     if max_datetime:
-        query = f"set TimeZone = 'UTC'; SELECT DATE_TRUNC('year', \"{date_column}\") as year, count(\"{id_column}\") as count FROM '{geoparquet}' WHERE \"{date_column}\" < '{max_datetime}' GROUP by year"
+        query = (
+            f"set TimeZone = 'UTC'; "
+            f'SELECT DATE_TRUNC(\'year\', "{date_column}") AS year, count("{id_column}") AS count '
+            f"FROM '{geoparquet}' "
+            f"WHERE \"{date_column}\" < '{max_datetime}' "
+            f"GROUP by year"
+        )
     else:
-        query = f"set TimeZone = 'UTC'; SELECT DATE_TRUNC('year', \"{date_column}\") as year, count(\"{id_column}\") as count FROM '{geoparquet}' GROUP by year"
+        query = (
+            f"set TimeZone = 'UTC'; "
+            f'SELECT DATE_TRUNC(\'year\', "{date_column}") AS year, count("{id_column}") AS count '
+            f"FROM '{geoparquet}' "
+            f"GROUP by year"
+        )
 
     print(f"Geoparquet {collection}: {geoparquet}")
     print(f"Query: {query}")
@@ -133,8 +158,12 @@ def query_stac_db(cur, inventory, collection, max_datetime=None):
     where_condition = ""
     if max_datetime:
         where_condition = f"AND datetime < '{max_datetime}'"
-
-    query = f"SELECT DATE_TRUNC('year', datetime) AS year, count(id) FROM items WHERE collection='{collection}' {where_condition} GROUP BY year;"
+    query = (
+        f"SELECT DATE_TRUNC('year', datetime) AS year, count(id) "
+        f"FROM items "
+        f"WHERE collection='{collection}' {where_condition} "
+        f"GROUP BY year;"
+    )
     print(f"STAC API {collection}: {query}")
 
     cur.execute(query)
@@ -160,8 +189,14 @@ def query_inventory_db(cur, inventory, collection, max_datetime=None):
     where_condition = ""
     if max_datetime:
         where_condition = f"AND datetime < '{max_datetime}'"
-
-    query = f"SELECT DATE_TRUNC('year', datetime) AS year, content->'properties'->>'order:status' as status, content->'properties'->>'deprecated' as deprecated, count(id) FROM items WHERE collection='{collection}' {where_condition} GROUP BY year, status, deprecated;"
+    query = (
+        f"SELECT DATE_TRUNC('year', datetime) AS year, "
+        f"content->'properties'->>'order:status' AS status, "
+        f"content->'properties'->>'deprecated' AS deprecated, count(id) "
+        f"FROM items "
+        f"WHERE collection='{collection}' {where_condition} "
+        f"GROUP BY year, status, deprecated;"
+    )
     print(f"Inventory {collection}: {query}")
 
     cur.execute(query)
@@ -237,9 +272,6 @@ def delete_removed_scenes(collection, to_be_removed, reasons, api_url, api_user,
             if order_status == "succeeded":
                 # remove from STAC API
                 r = requests.delete(
-                    # '%s/collections/%s/items/%s' % (api_url, collection, stac_item['id']),
-                    # auth=(api_user, api_pw)
-                    # Todo: Check Formatter requests Changes (old commented out)
                     "%s/collections/%s/items/%s" % (api_url, collection, stac_item["id"]),
                     auth=(api_user, api_pw),
                 )
@@ -253,9 +285,6 @@ def delete_removed_scenes(collection, to_be_removed, reasons, api_url, api_user,
             stac_item["properties"]["deprecated"] = True
             stac_item["properties"]["updated"] = datetime.utcnow().isoformat() + "Z"
             r = requests.put(
-                # "%s/collections/%s/items/%s" % (
-                # 'https://stac.terrabyte.lrz.de/inventory/api', collection, stac_item['id']),
-                # Todo: Check Formatter requests Changes (old commented out)
                 "%s/collections/%s/items/%s"
                 % ("https://stac.terrabyte.lrz.de/inventory/api", collection, stac_item["id"]),
                 json=stac_item,

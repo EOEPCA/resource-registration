@@ -1,9 +1,8 @@
 import earthaccess
 import pystac
-import json
 import os
 from dateutil.parser import parse
-from ..datasets.modis import get_scene_id_info, get_scene_id_folder
+from ..datasets.modis import get_scene_id_folder
 from ..base.geometry import calculate_bbox
 
 

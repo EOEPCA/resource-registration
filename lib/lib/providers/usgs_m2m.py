@@ -1,21 +1,17 @@
 import os
 import time
 import json
-import duckdb
 import requests
 import pystac
-import glob
 import pandas
 from pystac_client import Client
 from dateutil.parser import parse
 
 from pystac.extensions.eo import EOExtension
-from pystac.extensions.projection import ProjectionExtension
-from pystac.extensions.view import ViewExtension
 
 from ..base.file import check_file_size
 from ..base.download import download_data as download_data_base
-from ..datasets.landsat import get_scene_id_info, get_scene_id_folder
+from ..datasets.landsat import get_scene_id_folder
 
 
 authentication_errors = ["AUTH_INVALID", "AUTH_KEY_INVALID"]
@@ -186,9 +182,7 @@ def get_download_urls(
         print("API request failed. Try again...\n")
         results = sendJSONRequest(api_url + "download-retrieve", payload, api_key)
 
-    queued = False
     while results["queueSize"] > 0:
-        queued = True
         print("Queue Size: %s - try again in 15 seconds" % results["queueSize"])
         time.sleep(15)
         results = sendJSONRequest(api_url + "download-retrieve", payload, api_key)
@@ -304,7 +298,6 @@ def download_data(url, output_dir, chunk_size=1024 * 1000, timeout=300):
 
 def download_aria(scene, basedir, aria2):
     if "scene_id" in scene:
-        scene_id = scene["scene_id"]
         path = get_scene_id_folder(scene["scene_id"])
         directory = os.path.join(basedir, path)
         filename = scene["scene_id"] + ".tar"

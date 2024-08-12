@@ -1,6 +1,8 @@
 name: 'Fetch and Initialize'
 description: 'Fetches and initializes the repository, then sets up Python.'
 
+
+# define inputs from workflow
 inputs:
   repository:
     description: 'The repository to check out'
@@ -23,6 +25,8 @@ runs:
   using: 'composite'
 
   steps:
+
+    # first step: fetch the project data that is to be checked
     - uses: actions/checkout@v4
       with:
         sparse-checkout: |
@@ -31,19 +35,20 @@ runs:
           ${{ inputs.opt_in }}
         sparse-checkout-cone-mode: false
 
-
+    # second step: install python
     - name: Set up Python 3.11
       uses: actions/setup-python@v3
       with:
         python-version: "3.11"
 
-
+    # third step: install dependencies
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install ${{ inputs.dependency }}
       shell: bash
 
+    # fourth step: run the tool on given project code
     - name: Tool Run
       run: |
         ${{ inputs.cmd_run }}

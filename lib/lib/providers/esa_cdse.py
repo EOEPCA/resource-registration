@@ -1,15 +1,12 @@
 import os
-import json
 import requests
 import pystac
 import pandas
-import duckdb
 import shapely.wkt
 import shapely.geometry
 from dateutil.parser import parse
 
 from ..base import geometry as geom_fct
-from ..base.order import insert_into_database
 from ..base.download import download_data
 from ..datasets.sentinel import get_scene_id_info, get_scene_id_folder, get_collection_name
 
@@ -27,7 +24,7 @@ def login(username, password):
             data=data,
         )
         r.raise_for_status()
-    except Exception as e:
+    except Exception:
         raise Exception(f"Keycloak token creation failed. Reponse from the server was: {r.json()}")
     return r.json()["access_token"]
 
@@ -88,11 +85,15 @@ def search_scenes_ingestion(date_from, date_to, filters=None):
         "%date_from", date_from
     ).replace("%date_to", date_to)
 
-    if filters == None:
+    if filters is None:
         filters = [
-            "(startswith(Name,'S1') and (contains(Name,'SLC') or contains(Name,'GRD')) and not contains(Name,'_COG') and not contains(Name, 'CARD_BS'))&$expand=Attributes",
+            (
+                "(startswith(Name,'S1') and (contains(Name,'SLC') or contains(Name,'GRD')) "
+                "and not contains(Name,'_COG') and not contains(Name, 'CARD_BS'))&$expand=Attributes"
+            ),
             "(startswith(Name,'S2') and (contains(Name,'L2A')) and not contains(Name,'_N9999'))",
-            # "(startswith(Name,'S2') and (contains(Name,'L1C') or contains(Name,'L2A')) and not contains(Name,'_N9999'))",
+            # ("(startswith(Name,'S2') and (contains(Name,'L1C') or
+            # contains(Name,'L2A')) and not contains(Name,'_N9999'))"),
             # "(startswith(Name,'S3A') or startswith(Name,'S3B'))",
             # "(startswith(Name,'S5P') and not contains(Name,'NRTI_'))"
         ]
@@ -185,7 +186,7 @@ def to_inventory(scene, collection=None, order_id=None, order_status="orderable"
         item_geometry = scene["GeoFootprint"]
         try:
             item_bbox = geom_fct.calculate_bbox(item_geometry)
-        except Exceptuion as e:
+        except Exception as e:
             print(str(e))
 
     item = pystac.Item(
@@ -228,13 +229,15 @@ def to_inventory(scene, collection=None, order_id=None, order_status="orderable"
         item.properties["terrabyte:uniq_id"] = "_".join(tby_parts)
     elif item_id.startswith("S3"):
         item.properties["terrabyte:uniq_id"] = (
-            f"{info['sensor']}_{info['instrument']}_{info['processingLevel']}_{info['product']}_{info['start']}_{info['stop']}_{info['instance']}"
+            f"{info['sensor']}_{info['instrument']}_{info['processingLevel']}_"
+            f"{info['product']}_{info['start']}_{info['stop']}_{info['instance']}"
         )
     elif item_id.startswith("S5"):
         item.properties["terrabyte:collection_id"] = ""
         if "_AUX_" not in item_id:
             item.properties["terrabyte:uniq_id"] = (
-                f"{info['sensor']}_{info['category']}_{info['product']}_{info['start']}_{info['stop']}_{info['orbitNumber']}"
+                f"{info['sensor']}_{info['category']}_{info['product']}_{info['start']}"
+                f"_{info['stop']}_{info['orbitNumber']}"
             )
         else:
             item.properties["terrabyte:uniq_id"] = item_id

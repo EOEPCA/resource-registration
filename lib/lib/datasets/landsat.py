@@ -5,7 +5,6 @@ import glob
 import copy
 import logging
 import pystac
-import fnmatch
 import requests
 from datetime import datetime
 
@@ -240,7 +239,7 @@ def modify_landsat_stac(stac_item: pystac.item.Item):
             link = stac_item_dict["links"][1]["href"]
             stac_item_usgs = requests.get(link).json()
             stac_item_dict["geometry"] = stac_item_usgs["geometry"]
-        except Exception as e:
+        except Exception:
             pass
 
     mission = stac_item.id[0:2]  # Get first two characters of Item id (e.g., LC for LC09_L2SR_....)
@@ -255,7 +254,7 @@ def modify_landsat_stac(stac_item: pystac.item.Item):
             if "eo:bands" in stac_item_dict["assets"][target_key[0]]:
                 stac_item_dict["assets"][target_key[0]]["eo:bands"][0]["name"] = target_key[0]
                 stac_item_dict["assets"][target_key[0]]["title"] = target_key[1]
-        except:
+        except Exception:
             log.info(f"{current_key} is not a Asset in this STAC-Item.")
 
     if "proj:centroid" in stac_item_dict["properties"]:

@@ -40,14 +40,19 @@
 #
 from __future__ import print_function
 
+# import queue
 import base64
 import getopt
 import json
+
+# import logging
 import math
 import netrc
 import os.path
 import ssl
 import sys
+
+# import threading
 import time
 
 try:
@@ -289,61 +294,63 @@ def cmr_download(urls, output_dir=".", force=False, quiet=False):
             raise
 
 
-def download_data_threads(scenes, base_dir="."):
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
-    que = Queue()
-    threads = []
-
-    num_theads = min(50, len(scenes))
-
-    start = time.perf_counter()
-
-    for scene in scenes:
-        urls = scene["urls"]
-        file_dir = None
-        output_dir = os.path.join(base_dir, file_dir)
-
-        download_thread = threading.Thread(
-            target=lambda q, urls, output_dir: q.put(cmr_download(urls, output_dir)),
-            args=(que, urls, output_dir),
-        )
-        download_thread.start()
-        threads.append(download_thread)
-
-    while not q.empty():
-        work = q.get()  # fetch new work from the Queue
-        try:
-            data = urlopen(work[1]).read()
-            logging.info("Requested..." + work[1])
-            result[work[0]] = data  # Store data back at correct index
-        except:
-            logging.error("Error with URL check!")
-            result[work[0]] = {}
-        # signal to the queue that task has been processed
-        q.task_done()
-
-    for thread in threads:
-        thread.join()
-
-    download_time = time.perf_counter() - start
-
-    datasets = []
-    mean_download_speed = 0
-    while not que.empty():
-        result = que.get()
-        mean_download_speed += result["download_speed"]
-        datasets.append(result)
-
-    if len(datasets) > 0:
-        mean_download_speed = mean_download_speed / len(datasets)
-
-    return dict(
-        datasets=datasets,
-        total_time=download_time,
-        mean_download_speed=mean_download_speed,
-    )
+# todo: function causes linter calls
+# def download_data_threads(scenes, base_dir="."):
+#     if not os.path.exists(output_dir):
+#         os.makedirs(output_dir)
+#
+#     que = queue.Queue()
+#     threads = []
+#
+#     # num_theads = min(50, len(scenes))
+#     _ = min(50, len(scenes))
+#
+#     start = time.perf_counter()
+#
+#     for scene in scenes:
+#         urls = scene["urls"]
+#         file_dir = None
+#         output_dir = os.path.join(base_dir, file_dir)
+#
+#         download_thread = threading.Thread(
+#             target=lambda q, urls, output_dir: q.put(cmr_download(urls, output_dir)),
+#             args=(que, urls, output_dir),
+#         )
+#         download_thread.start()
+#         threads.append(download_thread)
+#
+#     while not q.empty():
+#         work = q.get()  # fetch new work from the Queue
+#         try:
+#             data = urlopen(work[1]).read()
+#             logging.info("Requested..." + work[1])
+#             result[work[0]] = data  # Store data back at correct index
+#         except:
+#             logging.error("Error with URL check!")
+#             result[work[0]] = {}
+#         # signal to the queue that task has been processed
+#         q.task_done()
+#
+#     for thread in threads:
+#         thread.join()
+#
+#     download_time = time.perf_counter() - start
+#
+#     datasets = []
+#     mean_download_speed = 0
+#     while not que.empty():
+#         result = que.get()
+#         mean_download_speed += result["download_speed"]
+#         datasets.append(result)
+#
+#     if len(datasets) > 0:
+#         mean_download_speed = mean_download_speed / len(datasets)
+#
+#     return dict(
+#         datasets=datasets,
+#         total_time=download_time,
+#         mean_download_speed=mean_download_speed,
+#     )
 
 
 def cmr_filter(search_results):

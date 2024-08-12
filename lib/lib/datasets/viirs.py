@@ -1,7 +1,6 @@
 from dateutil.parser import parse
 import pystac
 import os
-import json
 import re
 from datetime import datetime
 

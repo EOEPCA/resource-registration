@@ -3,7 +3,6 @@ import json
 import importlib
 import datetime
 import pystac
-import psycopg2
 import requests
 from pystac.extensions.file import FileExtension
 from ..base.file import get_file_size, get_folder_size
@@ -129,7 +128,10 @@ def register_metadata(
 
         if r.status_code != 200:
             raise Exception(
-                "registration_error: %s request of product %s not successfull. Status code: %s. Reason: %s. Response content: %s"
+                (
+                    "registration_error: %s request of product %s not successfull. "
+                    "Status code: %s. Reason: %s. Response content: %s"
+                )
                 % (api_action, stac.id, r.status_code, r.reason, r.content),
             )
         else:

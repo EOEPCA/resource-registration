@@ -1,10 +1,8 @@
 import os
 import time
-import json
 import netrc
 import requests
 from datetime import datetime
-from .file import check_file_size
 
 
 def access_token():
@@ -52,7 +50,7 @@ def download_data(
         if file_name is None:
             try:
                 file_name = r.headers["Content-Disposition"].split('"')[1]
-            except Exception as e:
+            except Exception:
                 file_name = os.path.basename(url)
                 # raise Exception("Can not automatically identify file_name.")
 

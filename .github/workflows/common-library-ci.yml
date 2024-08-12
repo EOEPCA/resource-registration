@@ -37,21 +37,20 @@ jobs:
 
     steps:
 
-      # gets composite action file
+      # fetches local composite action file from .github directory
       - uses: actions/checkout@v4
         with:
           sparse-checkout: |
             .github
 
-      # fetches data based on composite action file checkout and runs all processes
+      # fetches data based on composite action file "fetch_and_run" and runs all processes
       - name: Checkout Repository and Setup Python
         uses: ./.github/actions/fetch_and_run
         with:
           repository: ${{ github.repository }}
           dependency: black
-          cmd_run: 'cd lib/ && black --check --diff --color .'
+          cmd_run: 'cd lib/ && black --check --diff --color .'  # change dir to toml loc, only needed if toml not in root
           opt_in: "pyproject.toml"
-
 
 
   flake8-Linting:
@@ -60,13 +59,13 @@ jobs:
 
     steps:
 
-      # gets composite action file
+      # fetches local composite action file from .github directory
       - uses: actions/checkout@v4
         with:
           sparse-checkout: |
             .github
 
-      # fetches data based on composite action file checkout and runs all processes
+      # fetches data based on composite action file "fetch_and_run" and runs all processes
       - name: Checkout Repository and Setup Python
         uses: ./.github/actions/fetch_and_run
         with:
@@ -75,20 +74,19 @@ jobs:
           cmd_run: 'flake8 --max-line-length 120 --count --statistics .'
 
 
-
   pytest-Testing:
 
     runs-on: ubuntu-latest
 
     steps:
 
-      # gets composite action file
+      # fetches local composite action file from .github directory
       - uses: actions/checkout@v4
         with:
           sparse-checkout: |
             .github
 
-      # fetches data based on composite action file checkout and runs all processes
+      # fetches data based on composite action file "fetch_and_run" and runs all processes
       - name: Checkout Repository and Setup Python
         uses: ./.github/actions/fetch_and_run
         with:

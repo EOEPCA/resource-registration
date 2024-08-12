@@ -6,7 +6,6 @@ from datetime import datetime
 import xml.etree.ElementTree as ET
 import logging
 import pystac
-import fnmatch
 
 from ..base.file import calculate_checksum
 from ..resources.stac import (
@@ -355,7 +354,10 @@ def modify_s2_stac(stac_item: pystac.item.Item, base_item=None):
             assets_new[target_key] = copy.deepcopy(stac_item_dict["assets"].pop(current_key))
         else:
             log.info(
-                f"Replacing the current Asset-Key {current_key} with the new Asset-Key {target_key}: Current key not found in metadata!"
+                (
+                    f"Replacing the current Asset-Key {current_key} with the new Asset-Key {target_key}: "
+                    f"Current key not found in metadata!"
+                )
             )
 
     if base_item:
@@ -409,7 +411,10 @@ def modify_s3_stac(stac_item: pystac.item.Item, base_item=None):
     stac_item_dict["assets"] = assets_new
 
     info = get_scene_id_info(stac_item.id)
-    tby_item_id = f"{info['sensor']}_{info['instrument']}_{info['processingLevel']}_{info['product']}_{info['start']}_{info['stop']}_{info['instance']}"
+    tby_item_id = (
+        f"{info['sensor']}_{info['instrument']}_{info['processingLevel']}_{info['product']}_"
+        f"{info['start']}_{info['stop']}_{info['instance']}"
+    )
     stac_item_dict["properties"]["terrabyte:uniq_id"] = tby_item_id
 
     if "s3:productType" in stac_item_dict["properties"]:

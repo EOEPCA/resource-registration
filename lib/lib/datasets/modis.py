@@ -1,13 +1,11 @@
 import os
 import json
 import re
-import inspect
 from datetime import datetime
 import pystac
 import rio_stac
 
 from ..resources.stac import (
-    extract_and_save_stactools,
     extract_stactools,
     add_asset_filesize,
 )
@@ -119,9 +117,19 @@ def add_modis_adjustments(stac):
     asset_tmpl = json.load(open(os.path.join(os.path.dirname(__file__), "templates", asset_tmpl_file)))
     data = stac.to_dict()
 
-    data["properties"][
-        "proj:wkt2"
-    ] = 'PROJCRS["unnamed",BASEGEOGCRS["Unknown datum based upon the custom spheroid",DATUM["Not specified (based on custom spheroid)",ELLIPSOID["Custom spheroid",6371007.181,0,LENGTHUNIT["metre",1,ID["EPSG",9001]]]],PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9122]]]],CONVERSION["Sinusoidal",METHOD["Sinusoidal"],PARAMETER["Longitude of natural origin",0,ANGLEUNIT["degree",0.0174532925199433],ID["EPSG",8802]],PARAMETER["False easting",0,LENGTHUNIT["metre",1],ID["EPSG",8806]],PARAMETER["False northing",0,LENGTHUNIT["metre",1],ID["EPSG",8807]]],CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["Meter",1]],AXIS["(N)",north,ORDER[2],LENGTHUNIT["Meter",1]]]'
+    data["properties"]["proj:wkt2"] = (
+        'PROJCRS["unnamed",'
+        'BASEGEOGCRS["Unknown datum based upon the custom spheroid",'
+        'DATUM["Not specified (based on custom spheroid)",'
+        'ELLIPSOID["Custom spheroid",6371007.181,0,LENGTHUNIT["metre",1,ID["EPSG",9001]]]],'
+        'PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433,ID["EPSG",9122]]]],'
+        'CONVERSION["Sinusoidal",METHOD["Sinusoidal"],PARAMETER["Longitude of natural origin",0,'
+        'ANGLEUNIT["degree",0.0174532925199433],ID["EPSG",8802]],'
+        'PARAMETER["False easting",0,LENGTHUNIT["metre",1],ID["EPSG",8806]],'
+        'PARAMETER["False northing",0,LENGTHUNIT["metre",1],ID["EPSG",8807]]],'
+        'CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["Meter",1]],'
+        'AXIS["(N)",north,ORDER[2],LENGTHUNIT["Meter",1]]]'
+    )
     hdf = data["assets"]["hdf"]["href"]
     data["assets"]["hdf"]["type"] = "application/hdf4"
     if asset_tmpl_file == "modis.09ga.json":
