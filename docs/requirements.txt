@@ -3,3 +3,4 @@ mkdocs-autorefs==1.0.1
 mkdocs-publisher==1.2.0
 mkdocs-glightbox==0.4.0
 mkdocs-swagger-ui-tag
+mkdocs-mkdocsstrings
