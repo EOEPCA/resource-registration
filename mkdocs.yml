@@ -26,8 +26,8 @@ nav:
         - Common Library:
           - Design: design/common-library/design.md
           - API:
-            - design/common-library/api/reference.md
-            - design/common-library/api/usage.md          
+            - Reference: design/common-library/api/reference.md
+            - design/common-library/api/usage.md
 #      - design/more-design.md
 #    - Usage:
 #      - usage/tutorials.md
@@ -69,6 +69,24 @@ plugins:
   - glightbox
   - search  
   - swagger-ui-tag
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_if_no_docstring: false
+#            filters:
+#              - "!checksum_funcs"
+#              - "!asset_changes"
+#              - "!folder_structure"
+#              - "!__log"  # zu streng;
+#              - "!scene_id_pattern"
+#              - "!scene_id_pattern"
+#              - "!sensor_name"
+#              - "!usgs_path_structure"
+#              - "!checksum_settings"
+#              - "!variable_mappings"
+#              - "!BASE_QUERY"
   # - pub-debugger:
   #     console_log:
   #       enabled: true

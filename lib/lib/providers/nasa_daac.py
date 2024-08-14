@@ -90,7 +90,12 @@ CMR_FILE_URL = (
 
 
 def get_login_credentials():
-    """Get user credentials from .netrc or prompt for input."""
+    """
+        Get user credentials from .netrc or prompt for input.
+
+    Returns:
+        (tuple): ...
+    """
     credentials = None
     token = None
 
@@ -110,6 +115,15 @@ def get_login_credentials():
 
 
 def build_version_query_params(version):
+    """
+        Description...
+
+    Parameters:
+        version: x
+
+    Returns:
+        (...): ...
+    """
     desired_pad_length = 3
     if len(version) > desired_pad_length:
         print('Version string too long: "{0}"'.format(version))
@@ -126,6 +140,15 @@ def build_version_query_params(version):
 
 
 def filter_add_wildcards(filter):
+    """
+        Description...
+
+    Parameters:
+        filter: x
+
+    Returns:
+        (...): ...
+    """
     if not filter.startswith("*"):
         filter = "*" + filter
     if not filter.endswith("*"):
@@ -134,6 +157,15 @@ def filter_add_wildcards(filter):
 
 
 def build_filename_filter(filename_filter):
+    """
+        Description...
+
+    Parameters:
+        filename_filter: x
+
+    Returns:
+        (...): ...
+    """
     filters = filename_filter.split(",")
     result = "&options[producer_granule_id][pattern]=true"
     for filter in filters:
@@ -151,6 +183,22 @@ def build_cmr_query_url(
     polygon=None,
     filename_filter=None,
 ):
+    """
+        Description...
+
+    Parameters:
+        provider: x
+        short_name: x
+        version: x
+        time_start: x
+        time_end: x
+        bounding_box: x
+        polygon: x
+        filename_filter: x
+
+    Returns:
+        (...): ...
+    """
     params = "&provider={0}".format(provider)
     params += "&short_name={0}".format(short_name)
     params += build_version_query_params(version)
@@ -165,6 +213,16 @@ def build_cmr_query_url(
 
 
 def get_speed(time_elapsed, chunk_size):
+    """
+        Description...
+
+    Parameters:
+        time_elapsed: x
+        chunk_size: x
+
+    Returns:
+        (...): ...
+    """
     if time_elapsed <= 0:
         return ""
     speed = chunk_size / time_elapsed
@@ -177,6 +235,18 @@ def get_speed(time_elapsed, chunk_size):
 
 
 def output_progress(count, total, status="", bar_len=60):
+    """
+        Description...
+
+    Parameters:
+        count: x
+        total: x
+        status: x
+        bar_len: x
+
+    Returns:
+        (...): ...
+    """
     if total <= 0:
         return
     fraction = min(max(count / float(total), 0), 1)
@@ -190,7 +260,16 @@ def output_progress(count, total, status="", bar_len=60):
 
 
 def cmr_read_in_chunks(file_object, chunk_size=1024 * 1024):
-    """Read a file in chunks using a generator. Default chunk size: 1Mb."""
+    """
+        Read a file in chunks using a generator. Default chunk size: 1Mb.
+
+    Parameters:
+        file_object: x
+        chunk_size: x
+
+    Returns:
+        (...): ...
+    """
     while True:
         data = file_object.read(chunk_size)
         if not data:
@@ -199,6 +278,17 @@ def cmr_read_in_chunks(file_object, chunk_size=1024 * 1024):
 
 
 def get_login_response(url, credentials, token):
+    """
+        Description...
+
+    Parameters:
+        url: x
+        credentials: x
+        token: x
+
+    Returns:
+        (...): ...
+    """
     opener = build_opener(HTTPCookieProcessor())
 
     req = Request(url)
@@ -238,7 +328,18 @@ def get_login_response(url, credentials, token):
 
 
 def cmr_download(urls, output_dir=".", force=False, quiet=False):
-    """Download files from list of urls."""
+    """
+        Download files from list of urls.
+
+    Parameters:
+        urls: x
+        output_dir: x
+        force: x
+        quiet: x
+
+    Returns:
+        (...): ...
+    """
     if not urls:
         return
 
@@ -354,7 +455,15 @@ def cmr_download(urls, output_dir=".", force=False, quiet=False):
 
 
 def cmr_filter(search_results):
-    """Select only the desired data files from CMR response."""
+    """
+        Select only the desired data files from CMR response.
+
+    Parameters:
+        search_results: x
+
+    Returns:
+        (...): ...
+    """
     if "feed" not in search_results or "entry" not in search_results["feed"]:
         return []
 
@@ -414,7 +523,23 @@ def cmr_search(
     filename_filter="",
     quiet=False,
 ):
-    """Perform a scrolling CMR query for files matching input criteria."""
+    """
+        Perform a scrolling CMR query for files matching input criteria.
+
+    Parameters:
+        provider: x
+        short_name: x
+        version: x
+        time_start: x
+        time_end: x
+        bounding_box: x
+        polygon: x
+        filename_filter: x
+        quiet: x
+
+    Returns:
+        (...): ...
+    """
     cmr_query_url = build_cmr_query_url(
         provoder=provider,
         short_name=short_name,
@@ -470,6 +595,15 @@ def cmr_search(
 
 
 def main(argv=None):
+    """
+        Description...
+
+    Parameters:
+        argv: x
+
+    Returns:
+        (...): ...
+    """
     global short_name, version, time_start, time_end, bounding_box, polygon, filename_filter, url_list
 
     if argv is None:

@@ -12,6 +12,20 @@ from ..datasets.sentinel import get_scene_id_info, get_scene_id_folder, get_coll
 
 
 def login(username, password):
+    """
+        Description...
+
+    Parameters:
+        username: x
+        password: x
+
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Keycloak token creation failed.
+    """
     data = {
         "client_id": "cdse-public",
         "username": username,
@@ -31,14 +45,14 @@ def login(username, password):
 
 def search_data(api_url="https://datahub.creodias.eu/odata/v1", query_filter=None):
     """
-    Searches for data in ESA Copernicus Data Space Ecosystem based on a given query filter
+        Searches for data in ESA Copernicus Data Space Ecosystem based on a given query filter
 
     Arguments:
         api_url: API URL
         query_filter: Query string to be passed to the API URL
 
     Returns:
-        Array: List of scenes
+        (Array): List of scenes
     """
 
     query_url = False
@@ -80,6 +94,20 @@ def search_data(api_url="https://datahub.creodias.eu/odata/v1", query_filter=Non
 
 
 def search_scenes_ingestion(date_from, date_to, filters=None):
+    """
+        Description...
+
+    Parameters:
+        date_from: x
+        date_to: x
+        filters: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Search failed.
+    """
     query_template = "/Products?$filter=%filter&$top=1000"
     filter_base = "((PublicationDate ge %date_from and PublicationDate lt %date_to) and (Online eq true))".replace(
         "%date_from", date_from
@@ -113,6 +141,17 @@ def search_scenes_ingestion(date_from, date_to, filters=None):
 
 
 def download_csv_inventory(output_dir, file_name, overwrite=False):
+    """
+        Description...
+
+    Parameters:
+        output_dir: x
+        file_name: x
+        overwrite: x
+
+    Returns:
+        (...): ...
+    """
     zip_file = download_data(
         "https://s3.waw3-1.cloudferro.com/swift/v1/CatalogueCSV/CopernicusCatalogueCSV.zip",
         output_dir,
@@ -123,6 +162,18 @@ def download_csv_inventory(output_dir, file_name, overwrite=False):
 
 
 def convert_inventory_csv_to_parquet(files, collections, output_folder, config):
+    """
+        Description...
+
+    Parameters:
+        files: x
+        collections: x
+        output_folder: x
+        config: x
+
+    Returns:
+        (...): ...
+    """
     temp_df = dict()
     files.sort()
     files_count = len(files)
@@ -155,6 +206,18 @@ def convert_inventory_csv_to_parquet(files, collections, output_folder, config):
 
 
 def csv_to_inventory(scene_csv, collection=None, order_id=None, order_status="orderable"):
+    """
+        Description...
+
+    Parameters:
+        scene_csv: x
+        collection: x
+        order_id: x
+        order_status: x
+
+    Returns:
+        (...): ...
+    """
     geometry = shapely.wkt.loads(scene_csv["Bbox"])
     geometry = shapely.geometry.mapping(geometry)
     scene = {
@@ -169,6 +232,18 @@ def csv_to_inventory(scene_csv, collection=None, order_id=None, order_status="or
 
 
 def to_inventory(scene, collection=None, order_id=None, order_status="orderable"):
+    """
+        Description...
+
+    Parameters:
+        scene: x
+        collection: x
+        order_id: x
+        order_status: x
+
+    Returns:
+        (...): ...
+    """
     uid = scene["uid"]
     scene_id = os.path.splitext(scene["scene_id"])[0]
     info = get_scene_id_info(scene_id)
@@ -258,6 +333,15 @@ def to_inventory(scene, collection=None, order_id=None, order_status="orderable"
 
 
 def query_deleted_scene_id(scene_id):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+
+    Returns:
+        (...): ...
+    """
     query = (
         f"https://catalogue.dataspace.copernicus.eu/odata/v1/DeletedProducts?$filter=contains(Name,%27{scene_id}%27)"
     )
@@ -271,6 +355,18 @@ def query_deleted_scene_id(scene_id):
 
 
 def query_deleted_scenes(to_be_removed):
+    """
+        Description...
+
+    Parameters:
+        to_be_removed: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Error for Scene querying deleted endpoint.
+    """
     scenes = dict()
     for scene_id in to_be_removed:
         try:

@@ -8,13 +8,27 @@ from .order import insert_into_database
 
 
 def update_inventory(scene_id, collection, inventory_dsn):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+        collection: x
+        inventory_dsn: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: 0 affected rows.
+    """
     # Update inventory database
     print("Updating inventory for %s" % (scene_id))
     conn = psycopg2.connect(inventory_dsn)
     cur = conn.cursor()
     status = "succeeded"
     query = (
-        # todo: define uniform format string rules (for entire project/safety)
+        # todo: define uniform format string rules (for entire project)
         # "UPDATE items SET content = jsonb_set(content, '{properties,order:status}', '\"%s\"'::jsonb)
         # WHERE id = '%s' and collection in ('%s');"
         "UPDATE items "
@@ -37,6 +51,17 @@ def update_inventory(scene_id, collection, inventory_dsn):
 
 
 def get_scene_id_from_inventory_db(conn, collection, max_datetime=None):
+    """
+        Description...
+
+    Parameters:
+        conn: x
+        collection: x
+        max_datetime: x
+
+    Returns:
+        (list): ...
+    """
     if max_datetime:
         query = (
             f"SELECT id "
@@ -59,6 +84,17 @@ def get_scene_id_from_inventory_db(conn, collection, max_datetime=None):
 
 
 def get_scenes_from_inventory_file(db_file, date_column="ContentDate:Start", max_datetime=None):
+    """
+        Description...
+
+    Parameters:
+        db_file: x
+        date_column: x
+        max_datetime: x
+
+    Returns:
+        (...): ...
+    """
     print(f"Query {db_file}")
     # if max_datetime:
     #     results = duckdb.query(
@@ -76,6 +112,17 @@ def get_scenes_from_inventory_file(db_file, date_column="ContentDate:Start", max
 
 
 def get_scenes_diff(scenes_inventory, scenes_db, id_column):
+    """
+        Description...
+
+    Parameters:
+        scenes_inventory: x
+        scenes_db: x
+        id_column: x
+
+    Returns:
+        (tuple(...)): ...
+    """
     # Inventory API does not include the file extension as part of the scene id column in comparison to the inventory
     # files from CDSE data provider. Thus, we need to remove the file extension from the inventory list of scene ids.
     file_ext = os.path.splitext(scenes_inventory[id_column][0])[1]
@@ -94,6 +141,17 @@ def get_scenes_diff(scenes_inventory, scenes_db, id_column):
 
 
 def get_item_from_id(scene_id, collection, api_url="https://stac.terrabyte.lrz.de/inventory/api"):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+        collection: x
+        api_url: x
+
+    Returns:
+        (...|bool): ...
+    """
     url = f"{api_url}/collections/{collection}/items/{scene_id}"
     resp = requests.get(url)
     if resp.status_code == 200:
@@ -111,6 +169,21 @@ def query_geoparquet(
     inventory_column="geoparquet",
     id_column="id",
 ):
+    """
+        Description...
+
+    Parameters:
+        inventory: x
+        collection: x
+        geoparquet: x
+        max_datetime: x
+        date_column: x
+        inventory_column: x
+        id_column: x
+
+    Returns:
+        (...): ...
+    """
     if max_datetime:
         query = (
             f"set TimeZone = 'UTC'; "
@@ -155,6 +228,18 @@ def query_geoparquet(
 
 
 def query_stac_db(cur, inventory, collection, max_datetime=None):
+    """
+        Description...
+
+    Parameters:
+        cur: x
+        inventory: x
+        collection: x
+        max_datetime: x
+
+    Returns:
+        (...): ...
+    """
     where_condition = ""
     if max_datetime:
         where_condition = f"AND datetime < '{max_datetime}'"
@@ -186,6 +271,18 @@ def query_stac_db(cur, inventory, collection, max_datetime=None):
 
 
 def query_inventory_db(cur, inventory, collection, max_datetime=None):
+    """
+        Description...
+
+    Parameters:
+        cur: x
+        inventory: x
+        collection: x
+        max_datetime: x
+
+    Returns:
+        (...): ...
+    """
     where_condition = ""
     if max_datetime:
         where_condition = f"AND datetime < '{max_datetime}'"
@@ -230,6 +327,20 @@ def query_inventory_db(cur, inventory, collection, max_datetime=None):
 
 
 def calculate_differences(collection, inventory_geoparquet, conn, id_column, date_column, max_datetime=None):
+    """
+        Description...
+
+    Parameters:
+        collection: x
+        inventory_geoparquet: x
+        conn: x
+        id_column: x
+        date_column: x
+        max_datetime: x
+
+    Returns:
+        (tuple(...)): ...
+    """
     scenes_inventory = get_scenes_from_inventory_file(
         inventory_geoparquet, date_column=date_column, max_datetime=max_datetime
     )
@@ -249,6 +360,20 @@ def calculate_differences(collection, inventory_geoparquet, conn, id_column, dat
 
 
 def generate_stac_new_scenes(scenes, collection, inventory_fct):
+    """
+        Description...
+
+    Parameters:
+        scenes: x
+        collection: x
+        inventory_fct: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Error while creating metadata for a scene.
+    """
     stac_items = []
     for scene in scenes:
         try:
@@ -259,11 +384,34 @@ def generate_stac_new_scenes(scenes, collection, inventory_fct):
 
 
 def import_new_scenes(scenes, collection, inventory_fct, dsn):
+    """
+        Description...
+
+    Parameters:
+        scenes: x
+        collection: x
+        inventory_fct: x
+        dsn: x
+
+    Returns:
+        (...): ...
+    """
     stac_items = generate_stac_new_scenes(scenes, collection, inventory_fct)
     return insert_into_database(dsn, stac_items)
 
 
 def delete_removed_scenes(collection, to_be_removed, reasons, api_url, api_user, api_pw):
+    """
+        Description...
+
+    Parameters:
+        collection: x
+        to_be_removed: x
+        reasons: x
+        api_url: x
+        api_user: x
+        api_pw: x
+    """
     for scene_id in to_be_removed:
         stac_item = get_item_from_id(scene_id, collection)
         if stac_item:

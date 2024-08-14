@@ -3,6 +3,7 @@ import zipfile
 import tarfile
 import hashlib
 
+# todo: module-attributes in docs?
 checksum_funcs = dict()
 checksum_funcs["SHA3-256"] = hashlib.sha3_256
 checksum_funcs["MD5"] = hashlib.md5
@@ -26,7 +27,7 @@ def zip_directory(source_path, destination_path=None):
             with the name of the source directory plus .zip extension. Defaults to None.
 
     Returns:
-        str: The path to the generated zip file.
+        (str): The path to the generated zip file.
 
     Raises:
         ValueError: If the source_path is not a directory or if the destination_path already exists.
@@ -59,7 +60,7 @@ def unzip_file(zip_file, remove_zip=True, extract_dir=None):
         remove_zip: Whether zip file is being removed or not (default: True)
 
     Returns:
-        Dictionary: scene_path with folder of unzipped file and boolean zip_file_removed
+        (dict): scene_path with folder of unzipped file and boolean zip_file_removed
     """
     if not os.path.exists(zip_file):
         raise Exception("File does not exist: %s" % zip_file)
@@ -105,7 +106,7 @@ def untar_file(tar_file, remove_tar=True, create_folder=False, base_folder=None)
         remove_tar: Whether tar file is being removed or not (default: True)
 
     Returns:
-        scene_path with folder of untared file
+        (dict): scene_path with folder of untared file
     """
     if not os.path.exists(tar_file):
         raise Exception("File does not exist: %s" % tar_file)
@@ -148,6 +149,19 @@ def untar_file(tar_file, remove_tar=True, create_folder=False, base_folder=None)
 
 
 def check_file_size(expected_file_size, file_path):
+    """
+        Description...
+
+    Parameters:
+        expected_file_size: x
+        file_path: x
+
+    Returns:
+        (bool): ...
+
+    Raises:
+        Exception: File not found.
+    """
     if os.path.isfile(file_path):
         actual_file_size = os.path.getsize(file_path)
         if expected_file_size == actual_file_size:
@@ -160,6 +174,18 @@ def check_file_size(expected_file_size, file_path):
 
 
 def get_file_size(file_path):
+    """
+        Description...
+
+    Parameters:
+        file_path: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: File does not exist.
+    """
     if not os.path.exists(file_path):
         raise Exception("File %s does not exist!" % file_path)
     stat = os.stat(file_path)
@@ -167,6 +193,18 @@ def get_file_size(file_path):
 
 
 def get_folder_size(folder_path):
+    """
+        Description...
+
+    Parameters:
+        folder_path: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Folder does not exist.
+    """
     if not os.path.exists(folder_path):
         raise Exception("Folder %s does not exist!" % folder_path)
     size = 0
@@ -179,6 +217,19 @@ def get_folder_size(folder_path):
 
 
 def calculate_checksum(algorithm, check_file):
+    """
+        Description...
+
+    Parameters:
+        algorithm: x
+        check_file: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Checksum algorithm not available.
+    """
     if algorithm not in checksum_funcs:
         raise Exception("Checksum algorithm not available")
     checksum = checksum_funcs[algorithm](open(check_file, "rb").read()).hexdigest().lower()
@@ -186,6 +237,19 @@ def calculate_checksum(algorithm, check_file):
 
 
 def delete_file(file: str):
+    """
+        Description...
+
+    Parameters:
+        algorithm: x
+        check_file: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        OSError: ...
+    """
     try:
         os.remove(file)
     except OSError as e:

@@ -163,6 +163,18 @@ variable_mappings = {"S3": {"OL": "OLCI", "SL": "SLSTR", "SY": "SYNERGY"}}
 
 
 def get_scene_id_info(scene_id):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Satellite not supported.
+    """
     satellite = scene_id[0:2]
     if satellite == "S5" and "_AUX_" in scene_id:
         satellite = "S5P_AUX"
@@ -179,6 +191,23 @@ def get_scene_id_info(scene_id):
 
 
 def get_scene_id_folder(scene_id, folder_format=None):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+        folder_format: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Satellite not supported.
+        Exception: Not supported for integrity check.
+        Exception: manifest.safe not found.
+        Exception: File does not match expected file size.
+        Exception: File does not match expected checksum.
+    """
     variables = get_scene_id_info(scene_id)
     if "start" in variables:
         date = datetime.strptime(variables["start"], "%Y%m%dT%H%M%S")
@@ -204,6 +233,22 @@ def get_scene_id_folder(scene_id, folder_format=None):
 
 
 def validate_integrity(scene_path, scene_id):
+    """
+        Description...
+
+    Parameters:
+        scene_path: x
+        scene_id: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Not supported for integrity check.
+        Exception: manifest.safe not found.
+        Exception: File does not match expected file size.
+        Exception: File does not match expected checksum.
+    """
     if scene_id[0:2] not in checksum_settings:
         raise Exception("%s not supported for integrity check (%s)" % (scene_id[0:2], scene_id))
     settings = checksum_settings[scene_id[0:2]]
@@ -239,6 +284,23 @@ def validate_integrity(scene_path, scene_id):
 
 
 def sentinel_metadata(scene_path, scene_id, return_pystac=False, add_file_size=False):
+    """
+        Description...
+
+    Parameters:
+        scene_path: x
+        scene_id: x
+        return_pystac: x
+        add_file_size: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Metadata_error: Folder does not exist.
+        Exception: Metadata_error: No STAC function for this scene.
+        Exception: Error during creating metadata.
+    """
     if scene_path[-1] == "/":
         scene_path = scene_path[:-1]
     print("executing sentinel_metadata for %s" % scene_path)
@@ -308,6 +370,18 @@ def sentinel_metadata(scene_path, scene_id, return_pystac=False, add_file_size=F
 
 
 def get_collection_name(scene_id):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: No collection found.
+    """
     if scene_id.startswith("S1") and "_GRD" in scene_id:
         return "sentinel-1-grd"
     elif scene_id.startswith("S1") and "_SLC" in scene_id:
@@ -328,16 +402,23 @@ def get_collection_name(scene_id):
         raise Exception("No collection found")
 
 
-log = logging.getLogger("Log Info")
+__log = logging.getLogger("Log Info")
 
 
 def modify_s2_stac(stac_item: pystac.item.Item, base_item=None):
-    """Modify the Asset-Keys and eo:bands:name for a Sentinel-2 L2 STAC-Item.
+    """
+        Modify the Asset-Keys and eo:bands:name for a Sentinel-2 L2 STAC-Item.
 
     Args:
         stac_item: The STAC item file/object to modify. Must be a STACObject.
+        base_item: x
 
-        Returns: A pystac.item.Item object with the desired changes."""
+    Returns:
+        (...): A pystac.item.Item object with the desired changes.
+
+    Raises:
+        Exception: Could not find entry in asset_changes configuration.
+    """
 
     stac_item_dict = copy.deepcopy(stac_item.to_dict(include_self_link=False))
 
@@ -350,10 +431,10 @@ def modify_s2_stac(stac_item: pystac.item.Item, base_item=None):
     for i, (current_key, target_key) in enumerate(input_dict.items()):
 
         if current_key in stac_item_dict["assets"]:
-            log.info(f"Replacing the current Asset-Key {current_key} with the new Asset-Key {target_key}.")
+            __log.info(f"Replacing the current Asset-Key {current_key} with the new Asset-Key {target_key}.")
             assets_new[target_key] = copy.deepcopy(stac_item_dict["assets"].pop(current_key))
         else:
-            log.info(
+            __log.info(
                 (
                     f"Replacing the current Asset-Key {current_key} with the new Asset-Key {target_key}: "
                     f"Current key not found in metadata!"
@@ -369,7 +450,7 @@ def modify_s2_stac(stac_item: pystac.item.Item, base_item=None):
                     assets_new[key][property] = copy.deepcopy(base_item["assets"][key][property])
 
         except Exception as e:
-            log.error("ERROR: %s" % e)
+            __log.error("ERROR: %s" % e)
 
     stac_item_dict["assets"] = assets_new
     stac_item_object_final = pystac.Item.from_dict(stac_item_dict)
@@ -377,12 +458,15 @@ def modify_s2_stac(stac_item: pystac.item.Item, base_item=None):
 
 
 def modify_s3_stac(stac_item: pystac.item.Item, base_item=None):
-    """Modify the Asset-Keys and eo:bands:name for a Sentinel-3 STAC-Item.
+    """
+        Modify the Asset-Keys and eo:bands:name for a Sentinel-3 STAC-Item.
 
     Args:
         stac_item: The STAC item file/object to modify. Must be a STACObject.
+        base_item: x
 
-        Returns: A pystac.item.Item object with the desired changes."""
+    Returns:
+        (...): A pystac.item.Item object with the desired changes."""
 
     stac_item_dict = copy.deepcopy(stac_item.to_dict(include_self_link=False))
 
@@ -406,7 +490,7 @@ def modify_s3_stac(stac_item: pystac.item.Item, base_item=None):
                     del assets_new[key]["resolution"]
 
         except Exception as e:
-            log.error("ERROR: %s" % e)
+            __log.error("ERROR: %s" % e)
 
     stac_item_dict["assets"] = assets_new
 

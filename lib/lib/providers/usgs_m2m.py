@@ -19,6 +19,24 @@ rate_limits = ["RATE_LIMIT", "RATE_LIMIT_USER_DL"]
 
 
 def sendJSONRequest(url, data, apiKey=None):
+    """
+        Description...
+
+    Parameters:
+        url: x
+        data: x
+        apiKey: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Could not conduct request twice..
+        Exception: Error occurred.
+        Exception: Error 404 occurred.
+        Exception: Error 401 occurred.
+        Exception: Error 400 occurred.
+    """
     json_data = json.dumps(data)
 
     headers = {}
@@ -61,6 +79,18 @@ def sendJSONRequest(url, data, apiKey=None):
 
 
 def login(username: str, password: str, token=False, api_url="https://m2m.cr.usgs.gov/api/api/json/stable/"):
+    """
+        Description...
+
+    Parameters:
+        username: x
+        password: x
+        token: x
+        api_url: x
+
+    Returns:
+        (...): ...
+    """
     if token:
         endpoint = "login-token"
         payload = {"username": username, "token": password}
@@ -81,6 +111,18 @@ def login(username: str, password: str, token=False, api_url="https://m2m.cr.usg
 def search_data(
     query: dict, api_key: str, api_url="https://m2m.cr.usgs.gov/api/api/json/stable/", download_options=True
 ):
+    """
+        Description...
+
+    Parameters:
+        query: x
+        api_key: x
+        api_url: x
+        download_options: x
+
+    Returns:
+        (...): ...
+    """
     scenes = sendJSONRequest(api_url + "scene-search", query, api_key)
     if scenes["recordsReturned"] > 0:
         print(str(scenes["recordsReturned"]) + " scenes found.\n")
@@ -102,6 +144,18 @@ def search_data(
 
 
 def get_download_options(datasetName, sceneIds, api_key, api_url="https://m2m.cr.usgs.gov/api/api/json/stable/"):
+    """
+        Description...
+
+    Parameters:
+        datasetName: x
+        sceneIds: x
+        api_key: x
+        api_url: x
+
+    Returns:
+        (...): ...
+    """
     # Find the download options for these scenes
     # NOTE :: Remember the scene list cannot exceed 50,000 items!
     payload = {"datasetName": datasetName, "entityIds": sceneIds}
@@ -145,6 +199,18 @@ def get_download_urls(
     label="",
     api_url="https://m2m.cr.usgs.gov/api/api/json/stable/",
 ):
+    """
+        Description...
+
+    Parameters:
+        downloads: x
+        api_key: x
+        label: x
+        api_url: x
+
+    Returns:
+        (...): ...
+    """
     if label == "":
         label = str(int(time.time() * 1000))
 
@@ -213,6 +279,19 @@ def get_download_urls(
 
 
 def add_download_urls(scenes, api_key):
+    """
+        Description...
+
+    Parameters:
+        scenes: x
+        api_key: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: No scenes found.
+    """
     search_query = dict()
     scenes_all = dict()
     for scene in scenes:
@@ -261,7 +340,19 @@ def add_download_urls(scenes, api_key):
 
 def download_data(url, output_dir, chunk_size=1024 * 1000, timeout=300):
     """
-    Download single file from USGS M2M by download url
+        Download single file from USGS M2M by download url
+
+    Parameters:
+        url: x
+        output_dir: x
+        chunk_size: x
+        timeout: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Failed to download.
     """
 
     try:
@@ -297,6 +388,17 @@ def download_data(url, output_dir, chunk_size=1024 * 1000, timeout=300):
 
 
 def download_aria(scene, basedir, aria2):
+    """
+        Description...
+
+    Parameters:
+        scene: x
+        basedir: x
+        aria2: x
+
+    Returns:
+        (...): ...
+    """
     if "scene_id" in scene:
         path = get_scene_id_folder(scene["scene_id"])
         directory = os.path.join(basedir, path)
@@ -314,6 +416,18 @@ def download_aria(scene, basedir, aria2):
 
 
 def search_data_stac(collections, query, max_items=10000, api_url="https://landsatlook.usgs.gov/stac-server"):
+    """
+        Description...
+
+    Parameters:
+        collections: x
+        query: x
+        max_items: x
+        api_url: x
+
+    Returns:
+        (...): ...
+    """
     params = {"max_items": max_items, "collections": collections, "query": query}
 
     items = []
@@ -331,6 +445,17 @@ def search_data_stac(collections, query, max_items=10000, api_url="https://lands
 
 
 def search_data_ingestion(date_from, date_to, collections="landsat-c2l2-sr"):
+    """
+        Description...
+
+    Parameters:
+        date_from: x
+        date_to: x
+        collections: x
+
+    Returns:
+        (...): ...
+    """
     query = {"created": {"gte": date_from, "lt": date_to}}
     return search_data_stac(collections=collections, query=query)
 
@@ -346,6 +471,18 @@ collections = {
 
 
 def get_collection_name(scene_id):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Could not find item in pre-defined collections for scene.
+    """
     parts = scene_id.split("_")
     sensor = parts[0][0:2]
     collection = "C" + parts[5][1]
@@ -358,6 +495,18 @@ def get_collection_name(scene_id):
 
 
 def to_inventory_from_stac(item, order_status="orderable", order_id=None, batch_id=None):
+    """
+        Description...
+
+    Parameters:
+        item: x
+        order_status: x
+        order_id: x
+        batch_id: x
+
+    Returns:
+        (...): ...
+    """
     if "collection" in item:
         del item["collection"]
 
@@ -401,6 +550,17 @@ def to_inventory_from_stac(item, order_status="orderable", order_id=None, batch_
 
 
 def convert_inventory_csv_to_parquet(file, collection, output_folder):
+    """
+        Description...
+
+    Parameters:
+        file: x
+        collection: x
+        output_folder: x
+
+    Returns:
+        (...): ...
+    """
     df = pandas.read_csv(file, delimiter=",", parse_dates=["Date Acquired"])
     out_file = os.path.join(output_folder, "%s.inventory.parquet" % collection)
     df.to_parquet(out_file, index=False)
@@ -408,6 +568,15 @@ def convert_inventory_csv_to_parquet(file, collection, output_folder):
 
 
 def get_datetime(scene):
+    """
+        Description...
+
+    Parameters:
+        scene: x
+
+    Returns:
+        (...): ...
+    """
     start_time = parse(scene["Start Time"])
     stop_time = parse(scene["Stop Time"])
     mean_time = start_time + (stop_time - start_time) / 2.0
@@ -415,6 +584,15 @@ def get_datetime(scene):
 
 
 def get_geometry(scene):
+    """
+        Description...
+
+    Parameters:
+        scene: x
+
+    Returns:
+        (...): ...
+    """
     coordinates = [
         [
             [
@@ -443,6 +621,15 @@ def get_geometry(scene):
 
 
 def get_bbox(geometry):
+    """
+        Description...
+
+    Parameters:
+        geometry: x
+
+    Returns:
+        (...): ...
+    """
     coords = geometry["coordinates"]
     lats = [c[1] for c in coords[0]]
     lons = [c[0] for c in coords[0]]
@@ -450,6 +637,18 @@ def get_bbox(geometry):
 
 
 def csv_to_inventory(scene, collection=None, order_id=None, order_status="orderable"):
+    """
+        Description...
+
+    Parameters:
+        scene: x
+        collection: x
+        order_id: x
+        order_status: x
+
+    Returns:
+        (...): ...
+    """
     item_id = scene["Display ID"]
     item_parts = item_id.split("_")
     item_parts.pop(4)
@@ -498,6 +697,16 @@ def csv_to_inventory(scene, collection=None, order_id=None, order_status="ordera
 
 
 def download_csv_inventory(output_dir, overwrite=False):
+    """
+        Description...
+
+    Parameters:
+        output_dir: x
+        overwrite: x
+
+    Returns:
+        (...): ...
+    """
     download_urls = [
         "https://landsat.usgs.gov/landsat/metadata_service/bulk_metadata_files/LANDSAT_OT_C2_L2.csv.gz",
         "https://landsat.usgs.gov/landsat/metadata_service/bulk_metadata_files/LANDSAT_ETM_C2_L2.csv.gz",

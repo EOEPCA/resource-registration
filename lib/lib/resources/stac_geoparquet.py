@@ -19,6 +19,20 @@ BASE_QUERY = "SELECT * from pgstac.items WHERE collection='{}'"
 
 
 def partition_from_db_items_pair(idx, db, collection, output, base_url, overwrite=True):
+    """
+        Description...
+
+    Parameters:
+        idx: x
+        db: x
+        collection: x
+        output: x
+        base_url: x
+        overwrite: x
+
+    Returns:
+        (...): ...
+    """
     try:
         start, end = idx
         file_end = end - timedelta(days=1)
@@ -46,12 +60,32 @@ def partition_from_db_items_pair(idx, db, collection, output, base_url, overwrit
 
 
 def pairwise(iterable: Sequence) -> list[tuple[datetime, datetime]]:
+    """
+        Description...
+
+    Parameters:
+        iterable: x
+
+    Returns:
+        (list): ...
+    """
     a, b = itertools.tee(iterable)
     next(b, None)
     return zip(a, b)
 
 
 def prepare_datetime_pairs(datetime_range, partition_frequency):
+    """
+        Description...
+
+    Parameters:
+        datetime_range: x
+        partition_frequency: x
+
+
+    Returns:
+        (list): ...
+    """
     start_datetime = datetime.fromisoformat(datetime_range.split("/")[0].split("T")[0])
     end_datetime = datetime.fromisoformat(datetime_range.split("/")[1].split("T")[0])
     idx = pd.date_range(
@@ -62,6 +96,17 @@ def prepare_datetime_pairs(datetime_range, partition_frequency):
 
 
 def prepare_item(record, base_item, base_url):
+    """
+        Description...
+
+    Parameters:
+        record: x
+        base_item: x
+        base_url: x
+
+    Returns:
+        (...): ...
+    """
     columns = [
         "id",
         "geometry",
@@ -119,6 +164,17 @@ def prepare_item(record, base_item, base_url):
 
 
 def generate_date_ranges(start_date, end_date):
+    """
+        Description...
+
+    Parameters:
+        start_date: x
+        end_date: x
+
+
+    Returns:
+        (...): ...
+    """
     date_ranges = []
 
     # Set the initial current_date to the start_date
@@ -160,6 +216,21 @@ def generate_date_ranges(start_date, end_date):
 
 
 def handle_partition_db_arrow(dsn, collection, output, base_url, frequency, datetime_range=None, max_threads=8):
+    """
+        Description...
+
+    Parameters:
+        dsn: x
+        collection: x
+        output: x
+        base_url: x
+        frequency: x
+        datetime_range: x
+        max_threads: x
+
+    Returns:
+        (...): ...
+    """
     db = pypgstac.db.PgstacDB(dsn)
     with db:
         db.connection.execute("set statement_timeout = 600000;")

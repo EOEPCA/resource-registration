@@ -25,6 +25,15 @@ usgs_path_structure = "{usgs_path}/{product}.{version}/{year}.{month}.{day}"
 
 
 def get_scene_id_info(scene_id):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+
+    Returns:
+        (...): ...
+    """
     match = re.match(re.compile(scene_id_pattern), scene_id)
     variables = match.groupdict()
     date = datetime.strptime(variables["start"], "%Y%j")
@@ -51,6 +60,17 @@ def get_scene_id_info(scene_id):
 
 
 def get_scene_id_folder(scene_id, folder_format=None):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+        folder_format: x
+
+
+    Returns:
+        (...): ...
+    """
     variables = get_scene_id_info(scene_id)
     # date = datetime.strptime(variables["start"], "%Y%j")
     # variables["year"] = date.strftime("%Y")
@@ -63,16 +83,50 @@ def get_scene_id_folder(scene_id, folder_format=None):
 
 
 def get_usgs_path(scene_id):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+
+    Returns:
+        (...): ...
+    """
     return get_scene_id_folder(scene_id, folder_format=usgs_path_structure)
 
 
 def get_stac_proj(input_file):
+    """
+        Description...
+
+    Parameters:
+        input_file: x
+
+    Returns:
+        (...): ...
+    """
     rio = rio_stac.create_stac_item(input_file, with_proj=True)
     del rio.properties["proj:projjson"]
     return rio.properties
 
 
 def create_stac_item(scene_path, scene_id, return_pystac=False, add_file_size=False):
+    """
+        Description...
+
+    Parameters:
+        scene_path: x
+        scene_id: x
+        return_pystac: x
+        add_file_size: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Metadata_error: Folder does not exist.
+        Exception: Metadata_error: Error during creating metadata.
+    """
     if scene_path[-1] == "/":
         scene_path = scene_path[:-1]
 
@@ -112,6 +166,15 @@ def create_stac_item(scene_path, scene_id, return_pystac=False, add_file_size=Fa
 
 
 def add_modis_adjustments(stac):
+    """
+        Description...
+
+    Parameters:
+        stac: x
+
+    Returns:
+        (...): ...
+    """
     product = os.path.basename(stac.id)[3:7].lower()
     asset_tmpl_file = "modis.%s.json" % product
     asset_tmpl = json.load(open(os.path.join(os.path.dirname(__file__), "templates", asset_tmpl_file)))

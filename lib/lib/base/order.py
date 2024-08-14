@@ -6,6 +6,18 @@ from pypgstac.pypgstac import PgstacCLI
 
 
 def get_items_from_query(dsn, order_id, collections, where_query):
+    """
+        Description...
+
+    Parameters:
+        dsn: x
+        order_id: x
+        collections: x
+        where_query: x
+
+    Returns:
+        (...): ...
+    """
     conn = psycopg2.connect(dsn)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
@@ -18,6 +30,18 @@ def get_items_from_query(dsn, order_id, collections, where_query):
 
 
 def get_last_items_from_collection(dsn, order_id, collection, max_items=1000):
+    """
+        Description...
+
+    Parameters:
+        dsn: x
+        order_id: x
+        collection: x
+        max_items: x
+
+    Returns:
+        (...): ...
+    """
     conn = psycopg2.connect(dsn)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     where_query = (
@@ -31,6 +55,19 @@ def get_last_items_from_collection(dsn, order_id, collection, max_items=1000):
 
 
 def generate_batches_from_inventory(order_id, dsn, collections, where_query, batch_size=1000):
+    """
+        Description...
+
+    Parameters:
+        order_id: x
+        dsn: x
+        collections: x
+        where_query: x
+        batch_size: x
+
+    Returns:
+        (...): ...
+    """
     conn = psycopg2.connect(dsn)
     cur = conn.cursor()
 
@@ -61,6 +98,19 @@ def generate_batches_from_inventory(order_id, dsn, collections, where_query, bat
 
 
 def update_database(cur, conn, order_id, where_query, order_status="ordered"):
+    """
+        Description...
+
+    Parameters:
+        cur: x
+        conn: x
+        order_id: x
+        where_query: x
+        order_status: x
+
+    Returns:
+        (...): ...
+    """
     # Update all items with order id, order date, batch id, and ordered status
     order_update = {"order:status": order_status, "order:id": order_id, "order:date": datetime.now().isoformat()}
     query = (
@@ -76,6 +126,20 @@ def update_database(cur, conn, order_id, where_query, order_status="ordered"):
 
 
 def update_database_batch(cur, conn, order_id, batch_id, where_query, batch_size):
+    """
+        Description...
+
+    Parameters:
+        cur: x
+        conn: x
+        order_id: x
+        batch_id: x
+        where_query: x
+        batch_size: x
+
+    Returns:
+        (...): ...
+    """
     # Update all items with order id, order date, batch id, and ordered status
     order_update = {
         "order:status": "ordered",
@@ -96,6 +160,16 @@ def update_database_batch(cur, conn, order_id, batch_id, where_query, batch_size
 
 
 def get_order_from_id(scene_id, dsn):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+        dsn: x
+
+    Returns:
+        (...): ...
+    """
     conn = psycopg2.connect(dsn)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     query = "select content->'properties'->'terrabyte:order' from items where id='%s';" % scene_id
@@ -109,6 +183,17 @@ def get_order_from_id(scene_id, dsn):
 
 
 def get_items_from_order_id(order_id, collections, dsn):
+    """
+        Description...
+
+    Parameters:
+        order_id: x
+        collections: x
+        dsn: x
+
+    Returns:
+        (...): ...
+    """
     conn = psycopg2.connect(dsn)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     if len(collections) > 0:
@@ -125,6 +210,20 @@ def get_items_from_order_id(order_id, collections, dsn):
 
 
 def insert_into_database(dsn, stac, method="insert_ignore"):
+    """
+        Description...
+
+    Parameters:
+        dsn: x
+        stac: x
+        method: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: ...
+    """
     try:
         cli = PgstacCLI(dsn=dsn, debug=True)
         cli.load(table="items", file=stac, method=method)
@@ -135,6 +234,17 @@ def insert_into_database(dsn, stac, method="insert_ignore"):
 
 
 def get_scenes_from_batch(batch_id, collections, dsn):
+    """
+        Description...
+
+    Parameters:
+        batch_id: x
+        collections: x
+        dsn: x
+
+    Returns:
+        (...): ...
+    """
     # Query scenes from a specific batch id, additional use filter through collections for performance reasons
     collections = json.dumps(collections).replace('"', "'")[1:-1]
     conn = psycopg2.connect(dsn)
@@ -164,6 +274,17 @@ def get_scenes_from_batch(batch_id, collections, dsn):
 
 
 def update_items_inventory_status(property, id, collection, dsn, status="pending"):
+    """
+        Description...
+
+    Parameters:
+        property: x
+        id: x
+        collection: x
+        dsn: x
+        status: x
+
+    """
     # property = 'order:order_id' or 'order:batch_id'
 
     collections = json.dumps(collection).replace('"', "'")[1:-1]

@@ -10,15 +10,16 @@ from ..base.file import get_file_size, get_folder_size
 
 def extract_by_function_name(scene_path: str, function_name: str, stac_function_options: dict):
     """
-    Extract metadata from scene folder
+        Extract metadata from scene folder
 
     Arguments:
         scene_path: Scene folder to extract metadata from
         function_name: Function name for scene to be used for metadata extraction
                        (e.g., stactools.sentinel2.stac.create_item)
+        stac_function_options: x
 
     Returns:
-        As defined in the function
+        (...): As defined in the function
     """
     if scene_path[-1] == "/":
         scene_path = scene_path[:-1]
@@ -31,6 +32,17 @@ def extract_by_function_name(scene_path: str, function_name: str, stac_function_
 
 
 def extract_stactools(scene_path: str, function_name: str, stac_function_options: dict):
+    """
+        Description...
+
+    Parameters:
+        scene_path: x
+        function_name: x
+        stac_function_options: x
+
+    Returns:
+        (...): ...
+    """
     stac_item = extract_by_function_name(scene_path, function_name, stac_function_options)
     if "created" not in stac_item.properties:
         stac_item.properties["created"] = str(datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"))
@@ -40,6 +52,22 @@ def extract_stactools(scene_path: str, function_name: str, stac_function_options
 def extract_and_save_stactools(
     scene_path: str, function_name: str, stac_function_options: dict, output_file: str, make_asset_hrefs_relative=False
 ):
+    """
+        Description...
+
+    Parameters:
+        scene_path: x
+        function_name: x
+        stac_function_options: x
+        output_file: x
+        make_asset_hrefs_relative: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Could not make asset hrefs relative.
+    """
     # stactools packages return a pystac.Item as result
     stac_item = extract_by_function_name(scene_path, function_name, stac_function_options)
     if "created" not in stac_item.properties:
@@ -59,6 +87,15 @@ def extract_and_save_stactools(
 
 
 def add_asset_filesize(stac):
+    """
+        Description...
+
+    Parameters:
+        stac: x
+
+    Returns:
+        (...): ...
+    """
     # if not os.path.exists(stac_file):
     #    raise Exception("File %s does not exist!" % stac_file)
     # stac = pystac.Item.from_file(stac_file)
@@ -92,6 +129,29 @@ def register_metadata(
     inventory_dsn,
     file_deletion=False,
 ):
+    """
+        Description...
+
+    Parameters:
+        stac_file: x
+        scene_id: x
+        inventory_id: x
+        inventory_collection: x
+        collection: x
+        api_url: x
+        api_user: x
+        api_pw: x
+        inventory_dsn: x
+        file_deletion: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Registration_error: STAC file does not exist.
+        Exception: Registration_error: STAC collection not found in configuration or file.
+        Exception: Registration_error: Request of product not successful.
+    """
     stac_files = stac_file.split(";")
     for stac_file in stac_files:
         if not os.path.exists(stac_file):
@@ -129,13 +189,13 @@ def register_metadata(
         if r.status_code != 200:
             raise Exception(
                 (
-                    "registration_error: %s request of product %s not successfull. "
+                    "registration_error: %s request of product %s not successful. "
                     "Status code: %s. Reason: %s. Response content: %s"
                 )
                 % (api_action, stac.id, r.status_code, r.reason, r.content),
             )
         else:
-            print("%s request of product %s in collection %s successfull." % (api_action, stac.id, stac.collection_id))
+            print("%s request of product %s in collection %s successful." % (api_action, stac.id, stac.collection_id))
 
         # Optionally, delete STAC file
         if file_deletion:

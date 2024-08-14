@@ -33,6 +33,15 @@ folder_structure = "{product}.{version}/{year}/{month}/{day}/{tile_id}"
 
 
 def get_scene_id_info(scene_id):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+
+    Returns:
+        (...): ...
+    """
     used_pattern = scene_id_pattern
     if len(scene_id.split(".")[0]) == 8:
         used_pattern = scene_id_pattern2
@@ -42,6 +51,16 @@ def get_scene_id_info(scene_id):
 
 
 def get_scene_id_folder(scene_id, folder_format=None):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+        folder_format: x
+
+    Returns:
+        (...): ...
+    """
     variables = get_scene_id_info(scene_id)
     date = datetime.strptime(variables["start"], "%Y%j")
     variables["year"] = date.strftime("%Y")
@@ -54,6 +73,22 @@ def get_scene_id_folder(scene_id, folder_format=None):
 
 
 def viirs_metadata(scene_path, scene_id, return_pystac=False, add_file_size=False):
+    """
+        Description...
+
+    Parameters:
+        scene_path: x
+        scene_id: x
+        return_pystac: x
+        add_file_size: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Metadata_error: Folder does not exist.
+        Exception: Metadata_error: Error during creating metadata.
+    """
     if scene_path[-1] == "/":
         scene_path = scene_path[:-1]
 
@@ -92,6 +127,15 @@ def viirs_metadata(scene_path, scene_id, return_pystac=False, add_file_size=Fals
 
 
 def get_geometry(points):
+    """
+        Description...
+
+    Parameters:
+        points: x
+
+    Returns:
+        (...): ...
+    """
     coordinates = []
     for p in points[::-1]:
         coordinates.append([p["Longitude"], p["Latitude"]])
@@ -99,6 +143,18 @@ def get_geometry(points):
 
 
 def get_bbox(geometry):
+    """
+        Description...
+
+    Parameters:
+        geometry: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: No collection found.
+    """
     coords = geometry["coordinates"]
     lats = [c[1] for c in coords[0]]
     lons = [c[0] for c in coords[0]]
@@ -106,6 +162,20 @@ def get_bbox(geometry):
 
 
 def create_item_for_inventory(scene, collection, collection_public):
+    """
+        Description...
+
+    Parameters:
+        scene: x
+        collection: x
+        collection_public: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Could not find identifier.
+    """
     item_id = None
     for identifier in scene["umm"]["DataGranule"]["Identifiers"]:
         if identifier["IdentifierType"] == "ProducerGranuleId":

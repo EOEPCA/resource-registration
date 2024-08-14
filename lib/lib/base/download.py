@@ -6,6 +6,12 @@ from datetime import datetime
 
 
 def access_token():
+    """
+        Description...
+
+    Returns:
+        (str): ...
+    """
     if "token_expire_time" in os.environ and time.time() <= (float(os.environ["token_expire_time"]) - 5):
         return os.environ["s3_access_key"]
 
@@ -37,7 +43,20 @@ def download_data(
     url, output_dir, file_name=None, chunk_size=1024 * 1000, timeout=300, auth=None, check_size=True, overwrite=False
 ):
     """
-    Download single file from USGS M2M by download url
+        Download single file from USGS M2M by download url
+
+    Parameters:
+        url: x
+        output_dir: x
+        file_name: x
+        chunk_size: x
+        timeout: x
+        auth: x
+        check_size: x
+        overwrite: x
+
+    Returns:
+        (str|bool): filepath or False
     """
 
     try:
@@ -60,7 +79,6 @@ def download_data(
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        # is statt ==
         if os.path.exists(file_path) and overwrite is False:
             return file_path
         elif os.path.exists(file_path) and overwrite is True:

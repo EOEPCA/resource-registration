@@ -7,10 +7,32 @@ from ..base.geometry import calculate_bbox
 
 
 def login(username=None, password=None):
+    """
+        Description...
+
+    Parameters:
+        username: x
+        password: x
+
+    Returns:
+        (...): ...
+    """
     return earthaccess.login()
 
 
 def search_data(short_name, version, count=-1, **kwargs):
+    """
+        Description...
+
+    Parameters:
+        short_name: x
+        version: x
+        count: x
+        **kwargs: x
+
+    Returns:
+        (...): ...
+    """
     results = earthaccess.search_data(
         short_name=short_name,
         version=version,
@@ -38,18 +60,45 @@ def search_scenes_ingestion(products, date_from, date_to=None):
 
 
 def get_inventory_collection(scene_id):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+
+    Returns:
+        (...): ...
+    """
     # scene_id = 'MOD09GA.A2023255.h08v08.061.2023257025446'
     parts = scene_id.split(".")
     return "modis-%s-%s" % (parts[0].lower(), parts[3])
 
 
 def get_collection_name(scene_id):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+
+    Returns:
+        (...): ...
+    """
     parts = scene_id.split(".")
     product = parts[0].lower()[3:]
     return "modis-%s-%s" % (product, parts[3])
 
 
 def get_geometry(points):
+    """
+        Description...
+
+    Parameters:
+        points: x
+
+    Returns:
+        (...): ...
+    """
     coordinates = []
     for p in points[::-1]:
         coordinates.append([p["Longitude"], p["Latitude"]])
@@ -57,6 +106,21 @@ def get_geometry(points):
 
 
 def to_inventory(scene, order_status="orderable", order_id=None, batch_id=None):
+    """
+        Description...
+
+    Parameters:
+        scene: x
+        order_status: x
+        order_id: x
+        batch_id: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Could not find identifier.
+    """
     item_id = scene["meta"]["native-id"]
     if item_id.startswith("SC"):
         for identifier in scene["umm"]["DataGranule"]["Identifiers"]:

@@ -106,11 +106,31 @@ folder_structure = "level-{processingLevelNo}/standard/{sensor}/{year}/{wrsPath}
 
 
 def get_scene_id_info(scene_id):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+
+
+    Returns:
+        (...): ...
+    """
     match = re.match(re.compile(scene_id_pattern), scene_id)
     return match.groupdict()
 
 
 def get_scene_id_folder(scene_id, folder_format=None):
+    """
+        Description...
+
+    Parameters:
+        scene_id: x
+        folder_format: x
+
+    Returns:
+        (...): ...
+    """
     variables = get_scene_id_info(scene_id)
     if "start" in variables:
         date = datetime.strptime(variables["start"], "%Y%m%d")
@@ -129,6 +149,23 @@ def get_scene_id_folder(scene_id, folder_format=None):
 
 
 def landsat_metadata(scene_path, scene_id, return_pystac=False, add_file_size=False):
+    """
+        Description...
+
+    Parameters:
+        scene_path: x
+        scene_id: x
+        return_pystac: x
+        add_file_size: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Metadata_error: Folder does not exist.
+        Exception: Metadata_error: No *_MTL.xml file available in folder.
+        Exception: Metadata_error: Error during creating metadata.
+    """
     if scene_path[-1] == "/":
         scene_path = scene_path[:-1]
     print("executing landsat_metadata for %s" % scene_path)
@@ -167,7 +204,16 @@ def landsat_metadata(scene_path, scene_id, return_pystac=False, add_file_size=Fa
 
 def adapt_stac_metadata(scene_path):
     """
-    Changes hrefs in existing Landsat STAC-Metadata
+        Changes hrefs in existing Landsat STAC-Metadata
+
+    Parameters:
+        scene_path: x
+
+    Returns:
+        (...): ...
+
+    Raises:
+        Exception: Failed to adapt STAC-metadata.
     """
 
     print(f"Adapt STAC-metadata of {scene_path}.")
@@ -219,18 +265,23 @@ def adapt_stac_metadata(scene_path):
     return stac_files
 
 
-log = logging.getLogger("Log Info")
+
+__log = logging.getLogger("Log Info")
 
 
 def modify_landsat_stac(stac_item: pystac.item.Item):
-    """Modify the Asset-Keys and eo:bands:name for a Landsat L2 STAC-Item.
-
+    """
+        Modify the Asset-Keys and eo:bands:name for a Landsat L2 STAC-Item.
 
     Args:
         stac_item: The STAC item file to modify. Must be a STACObject.
 
+    Returns:
+        (...): A pystac.item.Item object with the desired changes.
 
-        Returns: A pystac.item.Item object with the desired changes."""
+    Raises:
+        Exception: Could not find entry in asset_changes configuration.
+    """
 
     stac_item_dict = copy.deepcopy(stac_item.to_dict(include_self_link=False))
 
@@ -248,14 +299,14 @@ def modify_landsat_stac(stac_item: pystac.item.Item):
     input_dict = asset_changes[mission]
 
     for i, (current_key, target_key) in enumerate(input_dict.items()):
-        log.info(f"Replacing the current Asset-Key {current_key} with the new Asset-Key {target_key[0]}.")
+        __log.info(f"Replacing the current Asset-Key {current_key} with the new Asset-Key {target_key[0]}.")
         try:
             stac_item_dict["assets"][target_key[0]] = copy.deepcopy(stac_item_dict["assets"].pop(current_key))
             if "eo:bands" in stac_item_dict["assets"][target_key[0]]:
                 stac_item_dict["assets"][target_key[0]]["eo:bands"][0]["name"] = target_key[0]
                 stac_item_dict["assets"][target_key[0]]["title"] = target_key[1]
         except Exception:
-            log.info(f"{current_key} is not a Asset in this STAC-Item.")
+            __log.info(f"{current_key} is not a Asset in this STAC-Item.")
 
     if "proj:centroid" in stac_item_dict["properties"]:
         for key in stac_item_dict["properties"]["proj:centroid"]:
