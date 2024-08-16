@@ -51,6 +51,7 @@ testpaths = [
     "test",
     "integration",
 ]
+python_paths = ["lib"]
 
 [tool.black]
 line-length = 120

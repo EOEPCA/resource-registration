@@ -26,7 +26,7 @@ usgs_path_structure = "{usgs_path}/{product}.{version}/{year}.{month}.{day}"
 
 def get_scene_id_info(scene_id):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -61,7 +61,7 @@ def get_scene_id_info(scene_id):
 
 def get_scene_id_folder(scene_id, folder_format=None):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -84,7 +84,7 @@ def get_scene_id_folder(scene_id, folder_format=None):
 
 def get_usgs_path(scene_id):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -97,7 +97,7 @@ def get_usgs_path(scene_id):
 
 def get_stac_proj(input_file):
     """
-        Description...
+    Description...
 
     Parameters:
         input_file: x
@@ -112,7 +112,7 @@ def get_stac_proj(input_file):
 
 def create_stac_item(scene_path, scene_id, return_pystac=False, add_file_size=False):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_path: x
@@ -167,7 +167,7 @@ def create_stac_item(scene_path, scene_id, return_pystac=False, add_file_size=Fa
 
 def add_modis_adjustments(stac):
     """
-        Description...
+    Description...
 
     Parameters:
         stac: x

@@ -164,7 +164,7 @@ variable_mappings = {"S3": {"OL": "OLCI", "SL": "SLSTR", "SY": "SYNERGY"}}
 
 def get_scene_id_info(scene_id):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -192,7 +192,7 @@ def get_scene_id_info(scene_id):
 
 def get_scene_id_folder(scene_id, folder_format=None):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -234,7 +234,7 @@ def get_scene_id_folder(scene_id, folder_format=None):
 
 def validate_integrity(scene_path, scene_id):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_path: x
@@ -285,7 +285,7 @@ def validate_integrity(scene_path, scene_id):
 
 def sentinel_metadata(scene_path, scene_id, return_pystac=False, add_file_size=False):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_path: x
@@ -371,7 +371,7 @@ def sentinel_metadata(scene_path, scene_id, return_pystac=False, add_file_size=F
 
 def get_collection_name(scene_id):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -407,7 +407,7 @@ __log = logging.getLogger("Log Info")
 
 def modify_s2_stac(stac_item: pystac.item.Item, base_item=None):
     """
-        Modify the Asset-Keys and eo:bands:name for a Sentinel-2 L2 STAC-Item.
+    Modify the Asset-Keys and eo:bands:name for a Sentinel-2 L2 STAC-Item.
 
     Args:
         stac_item: The STAC item file/object to modify. Must be a STACObject.
@@ -459,7 +459,7 @@ def modify_s2_stac(stac_item: pystac.item.Item, base_item=None):
 
 def modify_s3_stac(stac_item: pystac.item.Item, base_item=None):
     """
-        Modify the Asset-Keys and eo:bands:name for a Sentinel-3 STAC-Item.
+    Modify the Asset-Keys and eo:bands:name for a Sentinel-3 STAC-Item.
 
     Args:
         stac_item: The STAC item file/object to modify. Must be a STACObject.

@@ -8,7 +8,7 @@ from ..base.geometry import calculate_bbox
 
 def login(username=None, password=None):
     """
-        Description...
+    Description...
 
     Parameters:
         username: x
@@ -22,7 +22,7 @@ def login(username=None, password=None):
 
 def search_data(short_name, version, count=-1, **kwargs):
     """
-        Description...
+    Description...
 
     Parameters:
         short_name: x
@@ -44,6 +44,17 @@ def search_data(short_name, version, count=-1, **kwargs):
 
 
 def search_scenes_ingestion(products, date_from, date_to=None):
+    """
+    Description...
+
+    Parameters:
+        products: x
+        date_from: x
+        date_to: x
+
+    Returns:
+        (...): ...
+    """
     scenes = []
     for product in products:
         short_name, version = product.split(".")
@@ -61,7 +72,7 @@ def search_scenes_ingestion(products, date_from, date_to=None):
 
 def get_inventory_collection(scene_id):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -76,7 +87,7 @@ def get_inventory_collection(scene_id):
 
 def get_collection_name(scene_id):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -91,7 +102,7 @@ def get_collection_name(scene_id):
 
 def get_geometry(points):
     """
-        Description...
+    Description...
 
     Parameters:
         points: x
@@ -107,7 +118,7 @@ def get_geometry(points):
 
 def to_inventory(scene, order_status="orderable", order_id=None, batch_id=None):
     """
-        Description...
+    Description...
 
     Parameters:
         scene: x

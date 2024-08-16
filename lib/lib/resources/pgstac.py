@@ -3,7 +3,7 @@ from pypgstac.pypgstac import PgstacCLI
 
 def import_stac_items(input, dsn, debug=False, method="insert_ignore"):
     """
-        Description...
+    Description...
 
     Parameters:
         input: x

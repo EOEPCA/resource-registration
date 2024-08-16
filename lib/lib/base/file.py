@@ -150,7 +150,7 @@ def untar_file(tar_file, remove_tar=True, create_folder=False, base_folder=None)
 
 def check_file_size(expected_file_size, file_path):
     """
-        Description...
+    Description...
 
     Parameters:
         expected_file_size: x
@@ -175,7 +175,7 @@ def check_file_size(expected_file_size, file_path):
 
 def get_file_size(file_path):
     """
-        Description...
+    Description...
 
     Parameters:
         file_path: x
@@ -194,7 +194,7 @@ def get_file_size(file_path):
 
 def get_folder_size(folder_path):
     """
-        Description...
+    Description...
 
     Parameters:
         folder_path: x
@@ -218,7 +218,7 @@ def get_folder_size(folder_path):
 
 def calculate_checksum(algorithm, check_file):
     """
-        Description...
+    Description...
 
     Parameters:
         algorithm: x
@@ -238,7 +238,7 @@ def calculate_checksum(algorithm, check_file):
 
 def delete_file(file: str):
     """
-        Description...
+    Description...
 
     Parameters:
         algorithm: x

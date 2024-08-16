@@ -26,7 +26,11 @@ nav:
         - Common Library:
           - Design: design/common-library/design.md
           - API:
-            - Reference: design/common-library/api/reference.md
+            - Reference:
+              - Base: design/common-library/api/base.md
+              - Datasets: design/common-library/api/datasets.md
+              - Providers: design/common-library/api/providers.md
+              - Resources: design/common-library/api/resources.md
             - design/common-library/api/usage.md
 #      - design/more-design.md
 #    - Usage:

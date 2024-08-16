@@ -20,7 +20,7 @@ BASE_QUERY = "SELECT * from pgstac.items WHERE collection='{}'"
 
 def partition_from_db_items_pair(idx, db, collection, output, base_url, overwrite=True):
     """
-        Description...
+    Description...
 
     Parameters:
         idx: x
@@ -61,7 +61,7 @@ def partition_from_db_items_pair(idx, db, collection, output, base_url, overwrit
 
 def pairwise(iterable: Sequence) -> list[tuple[datetime, datetime]]:
     """
-        Description...
+    Description...
 
     Parameters:
         iterable: x
@@ -76,7 +76,7 @@ def pairwise(iterable: Sequence) -> list[tuple[datetime, datetime]]:
 
 def prepare_datetime_pairs(datetime_range, partition_frequency):
     """
-        Description...
+    Description...
 
     Parameters:
         datetime_range: x
@@ -97,7 +97,7 @@ def prepare_datetime_pairs(datetime_range, partition_frequency):
 
 def prepare_item(record, base_item, base_url):
     """
-        Description...
+    Description...
 
     Parameters:
         record: x
@@ -165,7 +165,7 @@ def prepare_item(record, base_item, base_url):
 
 def generate_date_ranges(start_date, end_date):
     """
-        Description...
+    Description...
 
     Parameters:
         start_date: x
@@ -217,7 +217,7 @@ def generate_date_ranges(start_date, end_date):
 
 def handle_partition_db_arrow(dsn, collection, output, base_url, frequency, datetime_range=None, max_threads=8):
     """
-        Description...
+    Description...
 
     Parameters:
         dsn: x

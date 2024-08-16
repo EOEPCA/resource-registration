@@ -10,7 +10,7 @@ from ..base.file import get_file_size, get_folder_size
 
 def extract_by_function_name(scene_path: str, function_name: str, stac_function_options: dict):
     """
-        Extract metadata from scene folder
+    Extract metadata from scene folder
 
     Arguments:
         scene_path: Scene folder to extract metadata from
@@ -33,7 +33,7 @@ def extract_by_function_name(scene_path: str, function_name: str, stac_function_
 
 def extract_stactools(scene_path: str, function_name: str, stac_function_options: dict):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_path: x
@@ -53,7 +53,7 @@ def extract_and_save_stactools(
     scene_path: str, function_name: str, stac_function_options: dict, output_file: str, make_asset_hrefs_relative=False
 ):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_path: x
@@ -88,7 +88,7 @@ def extract_and_save_stactools(
 
 def add_asset_filesize(stac):
     """
-        Description...
+    Description...
 
     Parameters:
         stac: x
@@ -130,7 +130,7 @@ def register_metadata(
     file_deletion=False,
 ):
     """
-        Description...
+    Description...
 
     Parameters:
         stac_file: x

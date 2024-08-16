@@ -3,7 +3,7 @@ import duckdb
 
 def get_max_datetime_from_geoparquet(geoparquet, column):
     """
-        Description...
+    Description...
 
     Parameters:
         geoparquet: x

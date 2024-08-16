@@ -1,7 +1,7 @@
 import os
 from osgeo import gdal
 
-#todo: modis.preview wird von docgenerator nicht gefunden. Möglicherweise wegen . im Namen
+# todo: modis.preview wird von docgenerator nicht gefunden. Punkt im Namen müsste gegen anderes Zeichen ersetzt werden
 
 modis_previews = {
     "mod09ga": {
@@ -125,7 +125,7 @@ modis_previews = {
 
 def create_preview(infile: str, outdir: str, outres: int) -> str:
     """
-        Creates an 8-Bit RGB COG preview of the MODIS hdf infile
+    Creates an 8-Bit RGB COG preview of the MODIS hdf infile
 
     Args:
         infile (str): Path to input HDF

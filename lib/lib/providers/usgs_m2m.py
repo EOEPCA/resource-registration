@@ -20,7 +20,7 @@ rate_limits = ["RATE_LIMIT", "RATE_LIMIT_USER_DL"]
 
 def sendJSONRequest(url, data, apiKey=None):
     """
-        Description...
+    Description...
 
     Parameters:
         url: x
@@ -80,7 +80,7 @@ def sendJSONRequest(url, data, apiKey=None):
 
 def login(username: str, password: str, token=False, api_url="https://m2m.cr.usgs.gov/api/api/json/stable/"):
     """
-        Description...
+    Description...
 
     Parameters:
         username: x
@@ -112,7 +112,7 @@ def search_data(
     query: dict, api_key: str, api_url="https://m2m.cr.usgs.gov/api/api/json/stable/", download_options=True
 ):
     """
-        Description...
+    Description...
 
     Parameters:
         query: x
@@ -145,7 +145,7 @@ def search_data(
 
 def get_download_options(datasetName, sceneIds, api_key, api_url="https://m2m.cr.usgs.gov/api/api/json/stable/"):
     """
-        Description...
+    Description...
 
     Parameters:
         datasetName: x
@@ -200,7 +200,7 @@ def get_download_urls(
     api_url="https://m2m.cr.usgs.gov/api/api/json/stable/",
 ):
     """
-        Description...
+    Description...
 
     Parameters:
         downloads: x
@@ -280,7 +280,7 @@ def get_download_urls(
 
 def add_download_urls(scenes, api_key):
     """
-        Description...
+    Description...
 
     Parameters:
         scenes: x
@@ -340,7 +340,7 @@ def add_download_urls(scenes, api_key):
 
 def download_data(url, output_dir, chunk_size=1024 * 1000, timeout=300):
     """
-        Download single file from USGS M2M by download url
+    Download single file from USGS M2M by download url
 
     Parameters:
         url: x
@@ -389,7 +389,7 @@ def download_data(url, output_dir, chunk_size=1024 * 1000, timeout=300):
 
 def download_aria(scene, basedir, aria2):
     """
-        Description...
+    Description...
 
     Parameters:
         scene: x
@@ -417,7 +417,7 @@ def download_aria(scene, basedir, aria2):
 
 def search_data_stac(collections, query, max_items=10000, api_url="https://landsatlook.usgs.gov/stac-server"):
     """
-        Description...
+    Description...
 
     Parameters:
         collections: x
@@ -446,7 +446,7 @@ def search_data_stac(collections, query, max_items=10000, api_url="https://lands
 
 def search_data_ingestion(date_from, date_to, collections="landsat-c2l2-sr"):
     """
-        Description...
+    Description...
 
     Parameters:
         date_from: x
@@ -472,7 +472,7 @@ collections = {
 
 def get_collection_name(scene_id):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -496,7 +496,7 @@ def get_collection_name(scene_id):
 
 def to_inventory_from_stac(item, order_status="orderable", order_id=None, batch_id=None):
     """
-        Description...
+    Description...
 
     Parameters:
         item: x
@@ -551,7 +551,7 @@ def to_inventory_from_stac(item, order_status="orderable", order_id=None, batch_
 
 def convert_inventory_csv_to_parquet(file, collection, output_folder):
     """
-        Description...
+    Description...
 
     Parameters:
         file: x
@@ -569,7 +569,7 @@ def convert_inventory_csv_to_parquet(file, collection, output_folder):
 
 def get_datetime(scene):
     """
-        Description...
+    Description...
 
     Parameters:
         scene: x
@@ -585,7 +585,7 @@ def get_datetime(scene):
 
 def get_geometry(scene):
     """
-        Description...
+    Description...
 
     Parameters:
         scene: x
@@ -622,7 +622,7 @@ def get_geometry(scene):
 
 def get_bbox(geometry):
     """
-        Description...
+    Description...
 
     Parameters:
         geometry: x
@@ -638,7 +638,7 @@ def get_bbox(geometry):
 
 def csv_to_inventory(scene, collection=None, order_id=None, order_status="orderable"):
     """
-        Description...
+    Description...
 
     Parameters:
         scene: x
@@ -698,7 +698,7 @@ def csv_to_inventory(scene, collection=None, order_id=None, order_status="ordera
 
 def download_csv_inventory(output_dir, overwrite=False):
     """
-        Description...
+    Description...
 
     Parameters:
         output_dir: x

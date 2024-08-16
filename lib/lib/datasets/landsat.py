@@ -107,7 +107,7 @@ folder_structure = "level-{processingLevelNo}/standard/{sensor}/{year}/{wrsPath}
 
 def get_scene_id_info(scene_id):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -122,7 +122,7 @@ def get_scene_id_info(scene_id):
 
 def get_scene_id_folder(scene_id, folder_format=None):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -150,7 +150,7 @@ def get_scene_id_folder(scene_id, folder_format=None):
 
 def landsat_metadata(scene_path, scene_id, return_pystac=False, add_file_size=False):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_path: x
@@ -204,7 +204,7 @@ def landsat_metadata(scene_path, scene_id, return_pystac=False, add_file_size=Fa
 
 def adapt_stac_metadata(scene_path):
     """
-        Changes hrefs in existing Landsat STAC-Metadata
+    Changes hrefs in existing Landsat STAC-Metadata
 
     Parameters:
         scene_path: x
@@ -265,13 +265,12 @@ def adapt_stac_metadata(scene_path):
     return stac_files
 
 
-
 __log = logging.getLogger("Log Info")
 
 
 def modify_landsat_stac(stac_item: pystac.item.Item):
     """
-        Modify the Asset-Keys and eo:bands:name for a Landsat L2 STAC-Item.
+    Modify the Asset-Keys and eo:bands:name for a Landsat L2 STAC-Item.
 
     Args:
         stac_item: The STAC item file to modify. Must be a STACObject.

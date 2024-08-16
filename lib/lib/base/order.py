@@ -7,7 +7,7 @@ from pypgstac.pypgstac import PgstacCLI
 
 def get_items_from_query(dsn, order_id, collections, where_query):
     """
-        Description...
+    Description...
 
     Parameters:
         dsn: x
@@ -31,7 +31,7 @@ def get_items_from_query(dsn, order_id, collections, where_query):
 
 def get_last_items_from_collection(dsn, order_id, collection, max_items=1000):
     """
-        Description...
+    Description...
 
     Parameters:
         dsn: x
@@ -56,7 +56,7 @@ def get_last_items_from_collection(dsn, order_id, collection, max_items=1000):
 
 def generate_batches_from_inventory(order_id, dsn, collections, where_query, batch_size=1000):
     """
-        Description...
+    Description...
 
     Parameters:
         order_id: x
@@ -99,7 +99,7 @@ def generate_batches_from_inventory(order_id, dsn, collections, where_query, bat
 
 def update_database(cur, conn, order_id, where_query, order_status="ordered"):
     """
-        Description...
+    Description...
 
     Parameters:
         cur: x
@@ -127,7 +127,7 @@ def update_database(cur, conn, order_id, where_query, order_status="ordered"):
 
 def update_database_batch(cur, conn, order_id, batch_id, where_query, batch_size):
     """
-        Description...
+    Description...
 
     Parameters:
         cur: x
@@ -161,7 +161,7 @@ def update_database_batch(cur, conn, order_id, batch_id, where_query, batch_size
 
 def get_order_from_id(scene_id, dsn):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -184,7 +184,7 @@ def get_order_from_id(scene_id, dsn):
 
 def get_items_from_order_id(order_id, collections, dsn):
     """
-        Description...
+    Description...
 
     Parameters:
         order_id: x
@@ -211,7 +211,7 @@ def get_items_from_order_id(order_id, collections, dsn):
 
 def insert_into_database(dsn, stac, method="insert_ignore"):
     """
-        Description...
+    Description...
 
     Parameters:
         dsn: x
@@ -235,7 +235,7 @@ def insert_into_database(dsn, stac, method="insert_ignore"):
 
 def get_scenes_from_batch(batch_id, collections, dsn):
     """
-        Description...
+    Description...
 
     Parameters:
         batch_id: x
@@ -275,7 +275,7 @@ def get_scenes_from_batch(batch_id, collections, dsn):
 
 def update_items_inventory_status(property, id, collection, dsn, status="pending"):
     """
-        Description...
+    Description...
 
     Parameters:
         property: x

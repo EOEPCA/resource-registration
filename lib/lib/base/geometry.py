@@ -3,7 +3,7 @@ import shapely
 
 def wkt_to_geom(wkt):
     """
-        Description...
+    Description...
 
     Parameters:
         wkt: x
@@ -16,7 +16,7 @@ def wkt_to_geom(wkt):
 
 def geom_to_wkt(geom):
     """
-        Description...
+    Description...
 
     Parameters:
         geom: x
@@ -29,7 +29,7 @@ def geom_to_wkt(geom):
 
 def calculate_bbox(geom):
     """
-        Description...
+    Description...
 
     Parameters:
         geom: x

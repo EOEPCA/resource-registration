@@ -9,7 +9,7 @@ from .order import insert_into_database
 
 def update_inventory(scene_id, collection, inventory_dsn):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -52,7 +52,7 @@ def update_inventory(scene_id, collection, inventory_dsn):
 
 def get_scene_id_from_inventory_db(conn, collection, max_datetime=None):
     """
-        Description...
+    Description...
 
     Parameters:
         conn: x
@@ -85,7 +85,7 @@ def get_scene_id_from_inventory_db(conn, collection, max_datetime=None):
 
 def get_scenes_from_inventory_file(db_file, date_column="ContentDate:Start", max_datetime=None):
     """
-        Description...
+    Description...
 
     Parameters:
         db_file: x
@@ -113,7 +113,7 @@ def get_scenes_from_inventory_file(db_file, date_column="ContentDate:Start", max
 
 def get_scenes_diff(scenes_inventory, scenes_db, id_column):
     """
-        Description...
+    Description...
 
     Parameters:
         scenes_inventory: x
@@ -142,7 +142,7 @@ def get_scenes_diff(scenes_inventory, scenes_db, id_column):
 
 def get_item_from_id(scene_id, collection, api_url="https://stac.terrabyte.lrz.de/inventory/api"):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -170,7 +170,7 @@ def query_geoparquet(
     id_column="id",
 ):
     """
-        Description...
+    Description...
 
     Parameters:
         inventory: x
@@ -229,7 +229,7 @@ def query_geoparquet(
 
 def query_stac_db(cur, inventory, collection, max_datetime=None):
     """
-        Description...
+    Description...
 
     Parameters:
         cur: x
@@ -272,7 +272,7 @@ def query_stac_db(cur, inventory, collection, max_datetime=None):
 
 def query_inventory_db(cur, inventory, collection, max_datetime=None):
     """
-        Description...
+    Description...
 
     Parameters:
         cur: x
@@ -328,7 +328,7 @@ def query_inventory_db(cur, inventory, collection, max_datetime=None):
 
 def calculate_differences(collection, inventory_geoparquet, conn, id_column, date_column, max_datetime=None):
     """
-        Description...
+    Description...
 
     Parameters:
         collection: x
@@ -361,7 +361,7 @@ def calculate_differences(collection, inventory_geoparquet, conn, id_column, dat
 
 def generate_stac_new_scenes(scenes, collection, inventory_fct):
     """
-        Description...
+    Description...
 
     Parameters:
         scenes: x
@@ -385,7 +385,7 @@ def generate_stac_new_scenes(scenes, collection, inventory_fct):
 
 def import_new_scenes(scenes, collection, inventory_fct, dsn):
     """
-        Description...
+    Description...
 
     Parameters:
         scenes: x
@@ -402,7 +402,7 @@ def import_new_scenes(scenes, collection, inventory_fct, dsn):
 
 def delete_removed_scenes(collection, to_be_removed, reasons, api_url, api_user, api_pw):
     """
-        Description...
+    Description...
 
     Parameters:
         collection: x

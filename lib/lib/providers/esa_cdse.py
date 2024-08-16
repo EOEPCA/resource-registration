@@ -13,7 +13,7 @@ from ..datasets.sentinel import get_scene_id_info, get_scene_id_folder, get_coll
 
 def login(username, password):
     """
-        Description...
+    Description...
 
     Parameters:
         username: x
@@ -45,7 +45,7 @@ def login(username, password):
 
 def search_data(api_url="https://datahub.creodias.eu/odata/v1", query_filter=None):
     """
-        Searches for data in ESA Copernicus Data Space Ecosystem based on a given query filter
+    Searches for data in ESA Copernicus Data Space Ecosystem based on a given query filter
 
     Arguments:
         api_url: API URL
@@ -95,7 +95,7 @@ def search_data(api_url="https://datahub.creodias.eu/odata/v1", query_filter=Non
 
 def search_scenes_ingestion(date_from, date_to, filters=None):
     """
-        Description...
+    Description...
 
     Parameters:
         date_from: x
@@ -142,7 +142,7 @@ def search_scenes_ingestion(date_from, date_to, filters=None):
 
 def download_csv_inventory(output_dir, file_name, overwrite=False):
     """
-        Description...
+    Description...
 
     Parameters:
         output_dir: x
@@ -163,7 +163,7 @@ def download_csv_inventory(output_dir, file_name, overwrite=False):
 
 def convert_inventory_csv_to_parquet(files, collections, output_folder, config):
     """
-        Description...
+    Description...
 
     Parameters:
         files: x
@@ -207,7 +207,7 @@ def convert_inventory_csv_to_parquet(files, collections, output_folder, config):
 
 def csv_to_inventory(scene_csv, collection=None, order_id=None, order_status="orderable"):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_csv: x
@@ -233,7 +233,7 @@ def csv_to_inventory(scene_csv, collection=None, order_id=None, order_status="or
 
 def to_inventory(scene, collection=None, order_id=None, order_status="orderable"):
     """
-        Description...
+    Description...
 
     Parameters:
         scene: x
@@ -334,7 +334,7 @@ def to_inventory(scene, collection=None, order_id=None, order_status="orderable"
 
 def query_deleted_scene_id(scene_id):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -356,7 +356,7 @@ def query_deleted_scene_id(scene_id):
 
 def query_deleted_scenes(to_be_removed):
     """
-        Description...
+    Description...
 
     Parameters:
         to_be_removed: x

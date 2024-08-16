@@ -91,7 +91,7 @@ CMR_FILE_URL = (
 
 def get_login_credentials():
     """
-        Get user credentials from .netrc or prompt for input.
+    Get user credentials from .netrc or prompt for input.
 
     Returns:
         (tuple): ...
@@ -116,7 +116,7 @@ def get_login_credentials():
 
 def build_version_query_params(version):
     """
-        Description...
+    Description...
 
     Parameters:
         version: x
@@ -141,7 +141,7 @@ def build_version_query_params(version):
 
 def filter_add_wildcards(filter):
     """
-        Description...
+    Description...
 
     Parameters:
         filter: x
@@ -158,7 +158,7 @@ def filter_add_wildcards(filter):
 
 def build_filename_filter(filename_filter):
     """
-        Description...
+    Description...
 
     Parameters:
         filename_filter: x
@@ -184,7 +184,7 @@ def build_cmr_query_url(
     filename_filter=None,
 ):
     """
-        Description...
+    Description...
 
     Parameters:
         provider: x
@@ -214,7 +214,7 @@ def build_cmr_query_url(
 
 def get_speed(time_elapsed, chunk_size):
     """
-        Description...
+    Description...
 
     Parameters:
         time_elapsed: x
@@ -236,7 +236,7 @@ def get_speed(time_elapsed, chunk_size):
 
 def output_progress(count, total, status="", bar_len=60):
     """
-        Description...
+    Description...
 
     Parameters:
         count: x
@@ -261,7 +261,7 @@ def output_progress(count, total, status="", bar_len=60):
 
 def cmr_read_in_chunks(file_object, chunk_size=1024 * 1024):
     """
-        Read a file in chunks using a generator. Default chunk size: 1Mb.
+    Read a file in chunks using a generator. Default chunk size: 1Mb.
 
     Parameters:
         file_object: x
@@ -279,7 +279,7 @@ def cmr_read_in_chunks(file_object, chunk_size=1024 * 1024):
 
 def get_login_response(url, credentials, token):
     """
-        Description...
+    Description...
 
     Parameters:
         url: x
@@ -329,7 +329,7 @@ def get_login_response(url, credentials, token):
 
 def cmr_download(urls, output_dir=".", force=False, quiet=False):
     """
-        Download files from list of urls.
+    Download files from list of urls.
 
     Parameters:
         urls: x
@@ -456,7 +456,7 @@ def cmr_download(urls, output_dir=".", force=False, quiet=False):
 
 def cmr_filter(search_results):
     """
-        Select only the desired data files from CMR response.
+    Select only the desired data files from CMR response.
 
     Parameters:
         search_results: x
@@ -524,7 +524,7 @@ def cmr_search(
     quiet=False,
 ):
     """
-        Perform a scrolling CMR query for files matching input criteria.
+    Perform a scrolling CMR query for files matching input criteria.
 
     Parameters:
         provider: x
@@ -596,7 +596,7 @@ def cmr_search(
 
 def main(argv=None):
     """
-        Description...
+    Description...
 
     Parameters:
         argv: x

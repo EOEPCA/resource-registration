@@ -34,7 +34,7 @@ folder_structure = "{product}.{version}/{year}/{month}/{day}/{tile_id}"
 
 def get_scene_id_info(scene_id):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -52,7 +52,7 @@ def get_scene_id_info(scene_id):
 
 def get_scene_id_folder(scene_id, folder_format=None):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_id: x
@@ -74,7 +74,7 @@ def get_scene_id_folder(scene_id, folder_format=None):
 
 def viirs_metadata(scene_path, scene_id, return_pystac=False, add_file_size=False):
     """
-        Description...
+    Description...
 
     Parameters:
         scene_path: x
@@ -128,7 +128,7 @@ def viirs_metadata(scene_path, scene_id, return_pystac=False, add_file_size=Fals
 
 def get_geometry(points):
     """
-        Description...
+    Description...
 
     Parameters:
         points: x
@@ -144,7 +144,7 @@ def get_geometry(points):
 
 def get_bbox(geometry):
     """
-        Description...
+    Description...
 
     Parameters:
         geometry: x
@@ -163,7 +163,7 @@ def get_bbox(geometry):
 
 def create_item_for_inventory(scene, collection, collection_public):
     """
-        Description...
+    Description...
 
     Parameters:
         scene: x
