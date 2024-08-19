@@ -43,7 +43,7 @@ def download_data(
     url, output_dir, file_name=None, chunk_size=1024 * 1000, timeout=300, auth=None, check_size=True, overwrite=False
 ):
     """
-        Download single file from USGS M2M by download url
+    Download single file from USGS M2M by download url
 
     Parameters:
         url: x

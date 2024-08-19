@@ -65,36 +65,39 @@ def unzip_file(zip_file, remove_zip=True, extract_dir=None):
     if not os.path.exists(zip_file):
         raise Exception("File does not exist: %s" % zip_file)
 
-    zip_ref = zipfile.ZipFile(zip_file, "r")
     if extract_dir is None:
         extract_dir = os.path.dirname(zip_file)
+
     failed_files = dict()
     failed_logs = ""
-    for name in zip_ref.namelist():
-        try:
-            zip_ref.extract(name, extract_dir)
-        except Exception as e:
-            failed_files[name] = str(e)
-            failed_logs += name + ": " + str(e) + "\n"
 
-    if len(failed_files) > 0:
-        raise Exception("Exceptions during unzipping: %s\n\n%s" % (zip_file, failed_logs))
-    else:
-        try:
-            zip_folder = zip_ref.namelist()[0].split("/")[0]
-        except Exception:
-            raise Exception("Could not find sub-folder in zip file" % zip_file)
-        response_dict = {"scene_path": os.path.join(extract_dir, zip_folder)}
-
-        if remove_zip:
+    with zipfile.ZipFile(zip_file, "r") as zip_ref:  # with block added bc os.remove raised WinErr32
+        for name in zip_ref.namelist():
             try:
-                os.remove(zip_file)
-                response_dict["zip_file_removed"] = True
-            except Exception:
-                response_dict["zip_file_removed"] = False
-        else:
+                zip_ref.extract(name, extract_dir)
+            except Exception as e:
+                failed_files[name] = str(e)
+                failed_logs += name + ": " + str(e) + "\n"
+
+        if len(failed_files) > 0:
+            raise Exception("Exceptions during unzipping: %s\n\n%s" % (zip_file, failed_logs))
+        else:  # removed try block bc sub-folder error wasn't caught
+            zip_folder_list = zip_ref.namelist()[0].split("/")
+            if len(zip_folder_list) < 2:
+                raise Exception("Could not find sub-folder in zip file %s" % zip_file)
+            zip_folder = zip_folder_list[0]
+
+            response_dict = {"scene_path": os.path.join(extract_dir, zip_folder)}
+
+    if remove_zip:
+        try:
+            os.remove(zip_file)
+            response_dict["zip_file_removed"] = True
+        except Exception:
             response_dict["zip_file_removed"] = False
-        return response_dict
+    else:
+        response_dict["zip_file_removed"] = False
+    return response_dict
 
 
 def untar_file(tar_file, remove_tar=True, create_folder=False, base_folder=None):
