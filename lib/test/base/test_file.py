@@ -1,11 +1,22 @@
+import io
 import os
 import shutil
+import tarfile
 import tempfile
 from unittest import mock
 
 import pytest
 import zipfile
-from lib.base.file import zip_directory, delete_file, unzip_file, calculate_checksum, get_folder_size
+from lib.base.file import (
+    zip_directory,
+    delete_file,
+    unzip_file,
+    calculate_checksum,
+    get_folder_size,
+    untar_file,
+    check_file_size,
+    get_file_size,
+)
 
 
 # @pytest.fixture(autouse=True)
@@ -41,6 +52,19 @@ def zip_file_path(temp_directory):
     with zipfile.ZipFile(zip_file_path, "w") as zipf:
         zipf.writestr("folder/test.txt", "Test content")
     return zip_file_path
+
+
+@pytest.fixture
+def create_test_tar(temp_directory):
+    tar_file = os.path.join(temp_directory, "test.tar")
+    temp_file = os.path.join(temp_directory, "test.txt")
+
+    with tarfile.open(tar_file, "w") as tar:
+        with open(temp_file, "w") as f:
+            f.write("Test content")
+        tar.add(temp_file, arcname="test.txt")
+
+    return tar_file
 
 
 def test_zip_directory(temp_directory):
@@ -128,7 +152,7 @@ def test_unzip_file_success(zip_file_path):
 # Test if the function handles errors during file extraction properly
 def test_unzip_file_with_failed_files(zip_file_path):
     # Simuliere einen Fehler beim Entpacken
-    with mock.patch("zipfile.ZipFile.extract", side_effect=Exception("Extraction failed")):
+    with mock.patch.object(zipfile.ZipFile, "extract", side_effect=Exception("Extraction failed")):
         with pytest.raises(Exception, match="Exceptions during unzipping"):
             unzip_file(zip_file_path)
 
@@ -276,3 +300,126 @@ def test_get_folder_size_with_subfolders(temp_directory):
     total_size = os.path.getsize(file_in_main) + os.path.getsize(file_in_sub)
     size = get_folder_size(main_folder)
     assert size == total_size
+
+
+# Test if the function raises an exception when the TAR file does not exist
+def test_untar_file_file_not_exist():
+    with pytest.raises(Exception, match="File does not exist: .*"):
+        untar_file("non_existing_file.tar")
+
+
+# Test if the function successfully extracts a valid TAR file
+def test_untar_file_successful_extraction(temp_directory, create_test_tar):
+    tar_file = create_test_tar
+    extract_dir = os.path.join(temp_directory, "extracted")
+
+    result = untar_file(tar_file, base_folder=extract_dir)
+
+    assert os.path.isfile(os.path.join(result["scene_path"], "test.txt"))
+    assert result["zip_file_removed"] is True
+    assert result["scene_path"] == extract_dir
+
+
+# Test if the function removes the TAR file after extraction when remove_tar=True
+def test_untar_file_remove_tar_after_extraction(temp_directory, create_test_tar):
+    tar_file = create_test_tar
+
+    result = untar_file(tar_file, remove_tar=True, create_folder=True, base_folder=temp_directory)
+
+    assert not os.path.exists(tar_file)
+    assert result["zip_file_removed"] is True
+
+
+# Test if the function creates a new folder for the extracted files when create_folder=True
+def test_untar_file_create_folder(temp_directory, create_test_tar):
+    tar_file = create_test_tar
+
+    result = untar_file(tar_file, remove_tar=False, create_folder=True, base_folder=temp_directory)
+
+    expected_folder = os.path.join(temp_directory, "test")
+    assert os.path.exists(expected_folder)
+    assert result["scene_path"] == expected_folder
+
+
+# Test if the function extracts files to a custom base folder when base_folder is provided
+def test_untar_file_custom_base_folder(temp_directory, create_test_tar):
+    tar_file = create_test_tar
+    custom_folder = os.path.join(temp_directory, "custom_folder")
+    os.makedirs(custom_folder)
+
+    result = untar_file(tar_file, create_folder=False, base_folder=custom_folder)
+
+    extracted_file = os.path.join(custom_folder, "test.txt")
+    assert os.path.exists(extracted_file)
+    assert result["scene_path"] == custom_folder
+
+
+# Test if the function handles extraction failures correctly and logs failed files
+def test_untar_file_failed_extraction(temp_directory):
+    tar_file = os.path.join(temp_directory, "test.tar")
+
+    # Create a TAR file with invalid file paths
+    with tarfile.open(tar_file, "w") as tar:
+        tarinfo = tarfile.TarInfo("invalid/../test.txt")
+        tarinfo.size = len(b"Invalid content")
+        tar.addfile(tarinfo, io.BytesIO(b"Invalid content"))
+
+    # Patch tarfile.extract to raise an exception
+    with mock.patch.object(tarfile.TarFile, "extract", side_effect=Exception("Mocked extraction failure")):
+        with pytest.raises(Exception, match="Exceptions during untaring: .*"):
+            untar_file(tar_file, remove_tar=False, base_folder=temp_directory)
+
+
+# Test if the function raises an exception when given a file that is not a valid TAR file
+def test_untar_file_invalid_tar(temp_directory):
+    not_a_tar_file = os.path.join(temp_directory, "not_a_tar.txt")
+
+    with open(not_a_tar_file, "w") as f:
+        f.write("This is not a TAR file.")
+
+    with pytest.raises(tarfile.ReadError):
+        untar_file(not_a_tar_file, remove_tar=False, base_folder=temp_directory)
+
+
+def test_untar_file_tar_not_removed_on_delete_error(temp_directory, create_test_tar):
+    tar_file = create_test_tar
+
+    with mock.patch("os.remove", side_effect=PermissionError("Mocked permission error")):
+        result = untar_file(tar_file, remove_tar=True, create_folder=False, base_folder=temp_directory)
+
+        assert os.path.exists(tar_file)
+        assert result["zip_file_removed"] is False
+
+
+# Test if the function correctly identifies when the file size matches the expected size
+def test_check_file_size_success(temp_directory):
+    test_file = os.path.join(temp_directory, "test_file.txt")
+    with open(test_file, "w") as f:
+        f.write("Test")
+
+    assert check_file_size(4, test_file) is True
+
+
+# Test if the function raises an exception when the file does not exist
+def test_check_file_size_file_not_found(temp_directory):
+    non_existent_file = os.path.join(temp_directory, "non_existent_file.txt")
+
+    with pytest.raises(Exception, match="File not found: "):
+        check_file_size(0, non_existent_file)
+
+
+# Test if the function returns the correct size for an existing file
+def test_get_file_size_existing_file(temp_directory):
+    test_file = os.path.join(temp_directory, "test_file.txt")
+    with open(test_file, "w") as f:
+        f.write("Sample content")
+
+    assert get_file_size(test_file) == len("Sample content")
+
+
+# Test if the function raises an exception when the file does not exist
+def test_get_file_size_file_not_found(temp_directory):
+    non_existent_file = os.path.join(temp_directory, "non_existent_file.txt")
+
+    with pytest.raises(Exception, match="File .* does not exist!"):
+        get_file_size(non_existent_file)

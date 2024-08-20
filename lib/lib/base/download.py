@@ -16,9 +16,13 @@ def access_token():
         return os.environ["s3_access_key"]
 
     print("Need to get a new access token")
-    auth = netrc.netrc().authenticators("dataspace.copernicus.eu")
-    username = auth[0]
-    password = auth[2]
+    # todo: added try block & Exception raise for testing
+    try:
+        auth = netrc.netrc().authenticators("dataspace.copernicus.eu")
+        username = auth[0]
+        password = auth[2]
+    except Exception as e:
+        raise Exception("Failed to get credentials from netrc: %s" % e)
     auth_server_url = "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
     data = {
         "client_id": "cdse-public",
@@ -27,14 +31,22 @@ def access_token():
         "password": password,
     }
 
+    # response = requests.post(auth_server_url, data=data, verify=True, allow_redirects=False).json()
+    # todo: added try block for testing
+    try:
+        response = requests.post(auth_server_url, data=data, verify=True, allow_redirects=False)
+        response.raise_for_status()
+        response_json = response.json()
+    except requests.exceptions.RequestException as e:
+        raise Exception("Failed to get access token: %s" % e)
+
     token_time = time.time()
-    response = requests.post(auth_server_url, data=data, verify=True, allow_redirects=False).json()
-    os.environ["token_expire_time"] = str(token_time + response["expires_in"])
+    os.environ["token_expire_time"] = str(token_time + response_json["expires_in"])
     print(
         "New expiration tme for access token: %s"
         % datetime.fromtimestamp(float(os.environ["token_expire_time"])).strftime("%m/%d/%Y, %H:%M:%S")
     )
-    os.environ["s3_access_key"] = response["access_token"]
+    os.environ["s3_access_key"] = response_json["access_token"]
     # () gelöscht
     return os.environ["s3_access_key"]
 

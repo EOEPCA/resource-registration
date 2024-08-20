@@ -58,6 +58,7 @@ def unzip_file(zip_file, remove_zip=True, extract_dir=None):
     Arguments:
         zip_file: zip file to unzip
         remove_zip: Whether zip file is being removed or not (default: True)
+        extract_dir: x
 
     Returns:
         (dict): scene_path with folder of unzipped file and boolean zip_file_removed
@@ -107,6 +108,8 @@ def untar_file(tar_file, remove_tar=True, create_folder=False, base_folder=None)
     Arguments:
         tar_file: tar file to untar
         remove_tar: Whether tar file is being removed or not (default: True)
+        create_folder: x
+        base_folder: x
 
     Returns:
         (dict): scene_path with folder of untared file
