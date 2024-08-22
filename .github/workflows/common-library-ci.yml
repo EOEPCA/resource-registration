@@ -91,6 +91,6 @@ jobs:
         uses: ./.github/actions/fetch_and_run
         with:
           repository: ${{ github.repository }}
-          dependency: pytest
+          dependency: pytest requests
           cmd_run: 'pytest'
 
