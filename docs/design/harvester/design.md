@@ -1,18 +1,15 @@
 # Harvester
 
-The harvester is implemented as workflows in the Camunda BPMN platform. Camunda Platform is a flexible framework for workflow and process automation. Its core is a native Business Process Modelling Notation (BPMN) 2.0 process engine that runs inside the Java Virtual Machine. Workflows need to be defined with the BPMN specification that supports parallel workflow steps, branching, error handling, etc. A workflow step can be set to type “external” to allow an individual worker to fetch tasks for a specific workflow step. This worker connects to the REST API, fetches tasks, and returns the status (e.g., completed, failed, error). Failed workflow steps can be automatically retried from the Camunda process engine. Errors can be modelled in the BPMN diagram, e.g., asking an operator how to proceed as a manual user task.
+The harvester is implemented as workflows in the Flowable BPMN platform. Flowable Platform is a flexible framework for workflow and process automation. Its core is a native Business Process Modelling Notation (BPMN) 2.0 process engine that runs inside the Java Virtual Machine. Workflows need to be defined with the BPMN specification that supports parallel workflow steps, branching, error handling, etc. A workflow step can be set to type “external” to allow an individual worker to fetch tasks for a specific workflow step. This worker connects to the REST API, fetches tasks, and returns the status (e.g., completed, failed, error). Failed workflow steps can be automatically retried from the Flowable process engine. Errors can be modelled in the BPMN diagram, e.g., asking an operator how to proceed as a manual user task.
 
-The Camunda platform has the ability to separate the workflow engine from the workflow step execution, where the central workflow engine takes care of the workflow step orchestration. The workflow steps are implemented as Camunda Python Worker, allowing a seamless usage of various EO related upstream packages provided by Python's geospatial community.
+The Flowable platform has the ability to separate the workflow engine from the workflow step execution, where the central workflow engine takes care of the workflow step orchestration. The workflow steps are implemented as Flowable Python Worker, allowing a seamless usage of various EO related upstream packages provided by Python's geospatial community.
 
 On top of the workflow engine, a stack of tools for operations and monitoring are available. The following tools are used for the harvester:
 
-- Camunda Engine as the core component responsible for executing BPMN workflows
+- Flowable Engine as the core component responsible for executing BPMN workflows
 - REST API provides remote access to running processes or to start processes
-- Camunda Modeler as a standalone desktop application that allows users and developers to design and configure a workflow
-- Camunda Cockpit as a web application tool for process operations
-- Camunda Admin as a web application for managing users, groups, and their access permissions.
-- Camunda Tasklist as a web application for managing and completing operator tasks in the context of processes.
-- Camunda Python Worker as a Python library to communicate with the Camunda REST API, which can be launched anywhere with access to the Camunda REST API.
+- Flowable Design as a web application that allows users and developers to design and configure a workflow
+- Flowable External Client Python as a Python library to communicate with the Flowable REST API, which can be launched anywhere with access to the Flowable REST API.
 
 Each workflow can be triggered by the Registration API and can utilize the Resource Discovery API for the registration of the harvested resources.
 

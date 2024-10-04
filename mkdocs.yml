@@ -18,7 +18,7 @@ nav:
           - API:
             - design/registration-api/api/endpoint-specification.md
             - design/registration-api/api/usage.md
-        - Harvester (Camunda):
+        - Harvester:
           - Design: design/harvester/design.md
           - API:
             - design/harvester/api/endpoint-specification.md
