@@ -37,7 +37,7 @@ The EOEPCA+ Resource Registration building block consists of the following compo
 
 - Registration API - [https://github.com/EOEPCA/registration-api](https://github.com/EOEPCA/registration-api)
 - Registration Harvester - [https://github.com/EOEPCA/registration-harvester](https://github.com/EOEPCA/registration-harvester)
-- Common Registration Library - [https://github.com/EOEPCA/registration-library](https://github.com/EOEPCA/registration-library)
+- Common Registration Library - https://github.com/EOEPCA/registration-library
 
 The building block is built with and based on the following tools and standards.
 
@@ -46,7 +46,7 @@ The building block is built with and based on the following tools and standards.
 - [OGC API Processes](https://ogcapi.ogc.org/processes/)
 - [Flowable](https://www.flowable.com/open-source)
 - [FastAPI](https://fastapi.tiangolo.com/)
-- [OMG Business Process Model and Notation (BPMN)](https://www.bpmn.org)
+- [BPMN - Business Process Model and Notation](https://www.bpmn.org)
 
 ## Getting Started
 
