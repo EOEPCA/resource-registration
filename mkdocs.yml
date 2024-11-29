@@ -7,9 +7,6 @@ nav:
   - EOEPCA Documentation: https://eoepca.readthedocs.io/
   - Resource Registration:
     - index.md
-#    - Getting Started:
-#      - getting-started/quick-start.md
-#      - getting-started/more-getting-started.md
     - Design:
       - Architecture: design/overview.md
       - Components:
@@ -19,19 +16,23 @@ nav:
             - design/registration-api/api/endpoint-specification.md
             - design/registration-api/api/usage.md
         - Harvester:
+          - Getting Started:
+            - getting-started/quick-start.md
+            - getting-started/development-guide.md
           - Design: design/harvester/design.md
           - API:
             - design/harvester/api/endpoint-specification.md
             - design/harvester/api/usage.md
-        - Common Library:
-          - Design: design/common-library/design.md
-          - API:
-            - Reference:
-              - Base: design/common-library/api/base.md
-              - Datasets: design/common-library/api/datasets.md
-              - Providers: design/common-library/api/providers.md
-              - Resources: design/common-library/api/resources.md
-            - design/common-library/api/usage.md
+        - eodm: https://geopython.github.io/eodm/
+#       - Common Library:
+#         - Design: design/common-library/design.md
+#         - API:
+#           - Reference:
+#             - Base: design/common-library/api/base.md
+#             - Datasets: design/common-library/api/datasets.md
+#             - Providers: design/common-library/api/providers.md
+#             - Resources: design/common-library/api/resources.md
+#           - design/common-library/api/usage.md
 #      - design/more-design.md
 #    - Usage:
 #      - usage/tutorials.md
