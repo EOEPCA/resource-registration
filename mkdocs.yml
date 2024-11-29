@@ -74,12 +74,12 @@ plugins:
   - glightbox
   - search  
   - swagger-ui-tag
-  - mkdocstrings:
-      default_handler: python
-      handlers:
-        python:
-          options:
-            show_if_no_docstring: false
+#  - mkdocstrings:
+#      default_handler: python
+#      handlers:
+#        python:
+#          options:
+#            show_if_no_docstring: false
 #            filters:
 #              - "!checksum_funcs"
 #              - "!asset_changes"

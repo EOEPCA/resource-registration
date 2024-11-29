@@ -1,3 +1,0 @@
-
-!!! note
-    Work in progress
