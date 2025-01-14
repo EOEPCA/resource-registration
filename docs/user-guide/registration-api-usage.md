@@ -1,4 +1,4 @@
-# Usage
+# Registration API - User Guide
 
 ## Introduction
 

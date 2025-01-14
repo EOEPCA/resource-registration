@@ -1,4 +1,4 @@
-# Harvester
+# Design
 
 The harvester is implemented as workflows in the Flowable BPMN platform. Flowable Platform is a flexible framework for workflow and process automation. Its core is a native Business Process Modelling Notation (BPMN) 2.0 process engine that runs inside the Java Virtual Machine. Workflows need to be defined with the BPMN specification that supports parallel workflow steps, branching, error handling, etc. A workflow step can be set to type “external” to allow an individual worker to fetch tasks for a specific workflow step. This worker connects to the REST API, fetches tasks, and returns the status (e.g., completed, failed, error). Failed workflow steps can be automatically retried from the Flowable process engine. Errors can be modelled in the BPMN diagram, e.g., asking an operator how to proceed as a manual user task.
 
