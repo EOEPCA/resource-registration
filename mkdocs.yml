@@ -7,46 +7,25 @@ nav:
   - EOEPCA Documentation: https://eoepca.readthedocs.io/
   - Resource Registration:
     - index.md
+    - Getting Started:
+      - getting-started/quick-start.md
     - Design:
       - Architecture: design/overview.md
       - Components:
-        - Registration API (pygeoapi):
-          - Design: design/registration-api/design.md
-          - API:
-            - design/registration-api/api/endpoint-specification.md
-            - design/registration-api/api/usage.md
-        - Harvester:
-          - Getting Started:
-            - getting-started/quick-start.md
-            - getting-started/development-guide.md
-          - Design: design/harvester/design.md
-          - API:
-            - design/harvester/api/endpoint-specification.md
-            - design/harvester/api/usage.md
-        - eodm: https://geopython.github.io/eodm/
-#       - Common Library:
-#         - Design: design/common-library/design.md
-#         - API:
-#           - Reference:
-#             - Base: design/common-library/api/base.md
-#             - Datasets: design/common-library/api/datasets.md
-#             - Providers: design/common-library/api/providers.md
-#             - Resources: design/common-library/api/resources.md
-#           - design/common-library/api/usage.md
-#      - design/more-design.md
-#    - Usage:
-#      - usage/tutorials.md
-#      - usage/howtos.md
+        - Registration API: design/registration-api-design.md
+        - Harvester: design/harvester-design.md
+#        - eodm: https://geopython.github.io/eodm/
+    - User Guide:
+      - Registration API: user-guide/registration-api-usage.md
+      - Harvester: user-guide/harvester-usage.md
 #    - Administration:
 #      - admin/configuration.md
 #      - admin/maintenance.md
-#    - API:
-#      - api/endpoint-specification.md
-#      - api/usage.md
+    - API:
+      - Registration API: api-specification/registration-api-specification.md
+      - Harvester: api-specification/harvester-api-specification.md
 
 theme:
-  # name: mkdocs
-  # name: readthedocs
   name: material # https://squidfunk.github.io/mkdocs-material/creating-your-site/
   navigation_depth: 4
 
@@ -54,17 +33,17 @@ theme:
   logo: img/favicon.ico
   favicon: img/favicon.ico
   features:
-    - navigation.footer
+#    - navigation.footer
     - navigation.instant
     - navigation.tracking
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
-    # - navigation.expand
-    # - toc.integrate
     - navigation.top
     - content.code.copy
     - content.action.edit
+    - search.highlight
+    - toc.follow
 
 extra_css:
   - css/eoepca.css
@@ -74,24 +53,6 @@ plugins:
   - glightbox
   - search  
   - swagger-ui-tag
-#  - mkdocstrings:
-#      default_handler: python
-#      handlers:
-#        python:
-#          options:
-#            show_if_no_docstring: false
-#            filters:
-#              - "!checksum_funcs"
-#              - "!asset_changes"
-#              - "!folder_structure"
-#              - "!__log"  # zu streng;
-#              - "!scene_id_pattern"
-#              - "!scene_id_pattern"
-#              - "!sensor_name"
-#              - "!usgs_path_structure"
-#              - "!checksum_settings"
-#              - "!variable_mappings"
-#              - "!BASE_QUERY"
   # - pub-debugger:
   #     console_log:
   #       enabled: true
