@@ -43,7 +43,7 @@ The building block is built with and based on the following tools and standards.
 
 - [Python](https://www.python.org/)
 - [pygeoapi](https://pygeoapi.io/)
-- [OGC API Processes](https://ogcapi.ogc.org/processes/)
+- [OGC API - Processes](https://ogcapi.ogc.org/processes/)
 - [Flowable](https://www.flowable.com/open-source)
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [BPMN - Business Process Model and Notation](https://www.bpmn.org)

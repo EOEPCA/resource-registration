@@ -10,10 +10,10 @@ Features
     * OGC API - Features
     * OGC API - Environmental Data Retrieval
     * OGC API - Tiles
+    * OGC API - Processes
 * additionally implements
     * OGC API - Coverages
     * OGC API - Maps
-    * OGC API - Processes
     * OGC API - Records
     * SpatioTemporal Asset Library
 * out of the box data provider plugins for rasterio, GDAL/OGR, Elasticsearch, PostgreSQL/PostGIS

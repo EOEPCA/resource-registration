@@ -9,15 +9,15 @@ The Resource Registration BB is a companion to Resource Discovery in terms of sa
 
 The proposed architecture for the building block is presented in the following figure. Compared to the design originally presented in the [System Architecture document](https://eoepca.readthedocs.io/projects/architecture/), the following changes are introduced to fit the Resource Registration well into the overall architecture of the building blocks:
 
-- Use OGC API Processes instead of OGC API Features Part 4 – Transactions for the Registration API as most of the resource types are not features (e.g., workflows, Jupyter Notebooks, EO Application Packages)
+- Use OGC API - Processes instead of OGC API - Features Part 4 – Transactions for the Registration API as most of the resource types are not features (e.g., workflows, Jupyter Notebooks, EO Application Packages)
 - Use the CRUD interface of Resource Discovery directly rather than publish a message to the Notification & Automation BB as the user of the API directly expect a result synchronously (however messages are asynchronously and usually no feedback is given to the originator). The Resource Discovery component will then publish a message to the Notification & Automation BB so that other building blocks can be notified about a resource registration.
 
 ![Resource Registration architecture](../img/resource-registration-architecture.drawio.png)
 
-As described in the [System Architecture document](https://eoepca.readthedocs.io/projects/architecture/) the Resource Registration Building Block includes the following main components:
+As described in the [System Architecture document](https://eoepca.readthedocs.io/projects/architecture/), the Resource Registration Building Block includes the following main components:
 
 * **Registration API**<br>
-  For record Create, Update and Delete operations. The API is based on OGC standards for the registration of records into the platform. For the simple cases that a resource is already in the appropriate format (STAC, Record, ISO 19115, Dublin Core) the OGC API Features Part 4 (Create, Replace, Update and Delete - Transactions) is used to register those resources. In cases where transformation/validation needs to take place, an OGC API - Processes interface is defined for registering the appropriate resources.
+  For resource registration / management Create, Update and Delete operations. The API is based on OGC API standards for the registration of resources into the platform. For the simple cases that a resource is already in the appropriate format (STAC, Record, ISO 19115, Dublin Core) the OGC API - Features Part 4 (Create, Replace, Update and Delete - Transactions) is used to register those resources. In cases where transformation/validation needs to take place, an OGC API - Processes interface is defined for registering the appropriate resources.
 
 * **Harvester**<br>
   To continuously ingest resources from other (external) data sources. The Harvester proactively initiates and orchestrates the harvesting capability and executes dedicated workflows to handle specific data sources. A workflow is a self-contained asset which can be deployed ("plugged") into the harvester and can therefore conceptionally be seen as a *Harvester Data Sources* mentioned in the System Architecture document.
@@ -29,7 +29,7 @@ The components design of the Resource Registration Building Block is shown in th
 
 ![Resource Registration components](../img/resource-registration-components.png)
 
-The Registration API uses pygeoapi to publish processes according to the OGC API Processes specification. Processes for resource creation, update, and deletion are implemented for all resource types available in the resource catalogue. The processes make use of the OWSLib, components of the EOEPCA registrar as well as the newly combined and developed data ingestion library.
+The Registration API uses pygeoapi to publish processes according to the OGC API - Processes specification. Processes for resource creation, update, and deletion are implemented for all resource types available in the resource catalogue. The processes make use of the OWSLib, components of the EOEPCA registrar as well as the newly combined and developed data ingestion library.
 
 The Harvester component is built with workflows in Flowable allowing to easily operate the workflows conducted. Python is used to communicate with the Flowable core engine via REST API and to execute the workflow steps. The execution of the tasks for metadata harvesting, data download, and metadata creation is based on various software, such as EOX View Server’s harvester as well as OWSLib, pygeometa, EOMetadataTool, and stactools. A common data ingestion library is being developed to combine the functionalities from those various packages.
 

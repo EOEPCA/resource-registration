@@ -4,14 +4,14 @@ To try out the Resource Registration building block you can install it locally o
 
 ## Registration API
 
-To setup a local copy of the Registration API follow the instructions provided [here](https://github.com/EOEPCA/registration-api?tab=readme-ov-file#getting-started). This component is build upon the [pygeoapi](https://pygeoapi.io/) project to offer the [OGC API - Processes](https://ogcapi.ogc.org/processes/) to the user. An introduction to the OGC API Processes can be found in the Registration API [User Guide](../../user-guide/registration-api-usage/).
+To setup a local copy of the Registration API follow the instructions provided [here](https://github.com/EOEPCA/registration-api?tab=readme-ov-file#getting-started). This component is build upon the [pygeoapi](https://pygeoapi.io/) project to offer the [OGC API - Processes](https://ogcapi.ogc.org/processes/) to the user. An introduction to the OGC API Processes can be found in the Registration API [User Guide](../user-guide/registration-api-usage.md).
 
 ## Harvester
 
 You can setup a local copy of the Harvester component using Docker and Docker Compose:
 
 1. Run the Flowable workflow engine on your machine as described in the [Flowable Docker documentation](https://github.com/flowable/flowable-engine/tree/main/docker).
-3. Clone the [Harvester Github repository](https://github.com/EOEPCA/registration-harvester.git).
+3. Clone the [Harvester GitHub repository](https://github.com/EOEPCA/registration-harvester.git).
 4. Deploy the BPMN workflow definitions contained in the `workflows` directory on your local Flowable instance. 
 5. The  `docker-compose.yml` in the project root directory defines the worker processes for the workflows. Adapt the workflow-specific configuration files to your enviroment and start everything with `docker compose up`.
 

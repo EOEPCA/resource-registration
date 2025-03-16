@@ -15,7 +15,7 @@ Each workflow can be triggered by the Registration API and can utilize the Resou
 
 ## Harvester Data Sources / Workflows
 
-As described in the building block [architecture](../overview.md), the concept of the Harvester Data Source is represented by a workflow. It provides an integration with a specific data source or provider and enables customised support for resource harvesting and interpretation. It is designed to be pluggable into the Harvester for a given deployment, making the Resource Registration BB easily extensible for other datasets, that need to be made available for discovery and access.
+As described in the building block [architecture](overview.md), the concept of the Harvester Data Source is represented by a workflow. It provides an integration with a specific data source or provider and enables customised support for resource harvesting and interpretation. It is designed to be pluggable into the Harvester for a given deployment, making the Resource Registration BB easily extensible for other datasets, that need to be made available for discovery and access.
 
 ### Initial Workflows
 
