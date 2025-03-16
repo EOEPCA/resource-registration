@@ -1,5 +1,7 @@
 # Registration API - User Guide
 
+Resource registration is managed by the Registration API.  This document will provide an overview of the OGC API - Process standard as well as describe the workflows and interactions to manage resource registration in EOEPCA.
+
 ## Introduction
 
 The OGC API -- Processes standard supports the wrapping of
@@ -323,7 +325,7 @@ requires that requests are run using HTTP POST, with a payload as specified/requ
     You are welcome to use any tool that is able to execute HTTP POST requests per below.
 
 ```bash
-curl -X 'POST' \
+curl -X POST \
   'https://demo.pygeoapi.io/master/processes/hello-world/execution' \
   -H 'Accept: application/json' \
   -H 'Content-Type: application/json' \
@@ -353,7 +355,7 @@ the HTTP **Location** header contains a URL to the resulting job information.
     We add the `-v` option to the curl command below to be able to inspect the response headers
 
 ```bash
-curl -v -X 'POST' \
+curl -v -X POST \
   'https://demo.pygeoapi.io/master/processes/hello-world/execution' \
   -H 'Prefer: respond-async' \
   -H 'Accept: application/json' \
@@ -445,7 +447,7 @@ If we wish to delete a given job, we can execute an HTTP DELETE request agains t
     You are welcome to use any tool that is able to execute HTTP DELETE requests per below.
 
 ```bash
-curl -X 'DELETE' https://demo.pygeoapi.io/master/jobs/cdbc641c-92c2-11ee-9c88-0242ac120003
+curl -X DELETE https://demo.pygeoapi.io/master/jobs/cdbc641c-92c2-11ee-9c88-0242ac120003
 ```
 
 !!! note
@@ -458,3 +460,812 @@ curl -X 'DELETE' https://demo.pygeoapi.io/master/jobs/cdbc641c-92c2-11ee-9c88-02
 ## Summary
 
 The OGC API - Processes standard enables the execution of computing processes and the retrieval of metadata describing the purpose and functionality of the processes. This deep dive provided an introduction to the standard and an overview of its various endpoints, that enable monitoring, creating, updating and deleting those processes on a server.
+
+# Using the Registration API
+
+EOEPCA registration management is realized by using the OGC API - Processes functionality described above.
+
+```mermaid
+graph LR
+  A[Start] --> B{Register/Deregister};
+  B ----> C{Target};
+  C ---->|create, update, delete| D[OGC API - Records];
+  C ---->|create, update, delete| E[STAC API];
+```
+
+## Core concepts
+
+### Request / response HTTP methods and encodings
+
+All processes support **only** HTTP POST with JSON request payloads.  All other HTTP methods and reqeust payload types are not supported and will result in HTTP 405/400 errors.
+
+### Link relations
+
+Link relations are used to describe a given resource type.  The following link relations are supported:
+
+| Link relation | Authority |
+| -------- | ------- |
+| `collection` | [RFC 6573](https://www.rfc-editor.org/rfc/rfc6573.html) |
+| `item` | [RFC 6573](https://www.rfc-editor.org/rfc/rfc6573.html) |
+| `http://www.opengis.net/spec/ogcapi-records-1/1.0` | [OGC](https://ogcapi.ogc.org/records) |
+| `https://api.stacspec.org/v1.0.0/core` | [STAC](https://github.com/radiantearth/stac-api-spec) |
+
+The Registration API provides two core processes:
+
+- `processes/register`: add/update a resource
+- `processes/deregister`: delete a resource
+
+### Supported resource types
+
+Supported resources include:
+
+- STAC Items ([v1.0.0](https://github.com/radiantearth/stac-spec/blob/v1.0.0/item-spec/item-spec.md), [v1.1.0](https://github.com/radiantearth/stac-spec/blob/v1.1.0/item-spec/item-spec.md))
+- STAC Collections ([v1.0.0](https://github.com/radiantearth/stac-spec/blob/v1.0.0/collection-spec/collection-spec.md), [v1.1.0](https://github.com/radiantearth/stac-spec/blob/v1.1.0/collection-spec/collection-spec.md))
+- EOEPCA Metadata Profile ([draft](https://github.com/eoepca/metadata-profile))
+
+Resources can be provided in the following ways:
+
+- online resource / link to resource definition
+- inline resource definition
+
+### Supported target APIs
+
+Resources can be sent to the following "target" service endpoint types:
+
+- OGC API - Records - Part 1.0
+- STAC API v1.0.0
+
+The Registration API handles all interactions and workflow with targets.  A user need only specify the landing page as part of the register/deregister request payload.
+
+## Registration example requests and responses
+
+### Registering an inline STAC Collection to an OGC API - Records endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "source": {
+      "content": {
+        "id": "simple-collection",
+        "type": "Collection",
+        "stac_extensions": [
+          "https://stac-extensions.github.io/eo/v2.0.0/schema.json",
+          "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+          "https://stac-extensions.github.io/view/v1.0.0/schema.json"
+        ],
+        "stac_version": "1.1.0",
+        "description": "A simple collection demonstrating core catalog fields with links to a couple of items",
+        "title": "Simple Example Collection",
+        "keywords": [
+          "simple",
+          "example",
+          "collection"
+        ],
+        "providers": [
+          {
+            "name": "Remote Data, Inc",
+            "description": "Producers of awesome spatiotemporal assets",
+            "roles": [
+              "producer",
+              "processor"
+            ],
+            "url": "http://remotedata.io"
+          }
+        ],
+        "extent": {
+          "spatial": {
+            "bbox": [
+              [
+                172.91173669923782,
+                1.3438851951615003,
+                172.95469614953714,
+                1.3690476620161975
+              ]
+            ]
+          },
+          "temporal": {
+            "interval": [
+              [
+                "2020-12-11T22:38:32.125Z",
+                "2020-12-14T18:02:31.437Z"
+              ]
+            ]
+          }
+        },
+        "license": "CC-BY-4.0",
+        "summaries": {
+          "platform": [
+            "cool_sat1",
+            "cool_sat2"
+          ],
+          "constellation": [
+            "ion"
+          ],
+          "instruments": [
+            "cool_sensor_v1",
+            "cool_sensor_v2"
+          ],
+          "gsd": {
+            "minimum": 0.512,
+            "maximum": 0.66
+          },
+          "eo:cloud_cover": {
+            "minimum": 1.2,
+            "maximum": 1.2
+          },
+          "proj:cpde": [
+            "EPSG:32659"
+          ],
+          "view:sun_elevation": {
+            "minimum": 54.9,
+            "maximum": 54.9
+          },
+          "view:off_nadir": {
+            "minimum": 3.8,
+            "maximum": 3.8
+          },
+          "view:sun_azimuth": {
+            "minimum": 135.7,
+            "maximum": 135.7
+          },
+          "statistics": {
+            "type": "object",
+            "properties": {
+              "vegetation": {
+                "description": "Percentage of pixels that are detected as vegetation, e.g. forests, grasslands, etc.",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "water": {
+                "description": "Percentage of pixels that are detected as water, e.g. rivers, oceans and ponds.",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "urban": {
+                "description": "Percentage of pixels that detected as urban, e.g. roads and buildings.",
+                "minimum": 0,
+                "maximum": 100
+              }
+            }
+          }
+        },
+        "links": [
+          {
+            "rel": "root",
+            "href": "./collection.json",
+            "type": "application/json",
+            "title": "Simple Example Collection"
+          },
+          {
+            "rel": "item",
+            "href": "./simple-item.json",
+            "type": "application/geo+json",
+            "title": "Simple Item"
+          },
+          {
+            "rel": "item",
+            "href": "./core-item.json",
+            "type": "application/geo+json",
+            "title": "Core Item"
+          },
+          {
+            "rel": "item",
+            "href": "./extended-item.json",
+            "type": "application/geo+json",
+            "title": "Extended Item"
+          },
+          {
+            "rel": "self",
+            "href": "https://raw.githubusercontent.com/radiantearth/stac-spec/v1.1.0/examples/collection.json",
+            "type": "application/json"
+          }
+        ]
+      },
+      "rel": "item"
+    },
+    "target": {
+      "href": "https://resource-catalogue.develop.eoepca.org",
+      "rel": "http://www.opengis.net/spec/ogcapi-records-1/1.0"
+    }
+  }
+}'
+```
+
+### Registering a remote STAC Collection to an OGC API - Records endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "source": {
+      "href": "https://raw.githubusercontent.com/radiantearth/stac-spec/refs/heads/master/examples/collection.json",
+      "rel": "item"
+    },
+    "target": {
+      "href": "https://resource-catalogue.develop.eoepca.org",
+      "rel": "http://www.opengis.net/spec/ogcapi-records-1/1.0"
+    }
+  }
+}'
+```
+
+### Registering an inline STAC Collection to a STAC API endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "source": {
+      "content": {
+        "id": "simple-collection",
+        "type": "Collection",
+        "stac_extensions": [
+          "https://stac-extensions.github.io/eo/v2.0.0/schema.json",
+          "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+          "https://stac-extensions.github.io/view/v1.0.0/schema.json"
+        ],
+        "stac_version": "1.1.0",
+        "description": "A simple collection demonstrating core catalog fields with links to a couple of items",
+        "title": "Simple Example Collection",
+        "keywords": [
+          "simple",
+          "example",
+          "collection"
+        ],
+        "providers": [
+          {
+            "name": "Remote Data, Inc",
+            "description": "Producers of awesome spatiotemporal assets",
+            "roles": [
+              "producer",
+              "processor"
+            ],
+            "url": "http://remotedata.io"
+          }
+        ],
+        "extent": {
+          "spatial": {
+            "bbox": [
+              [
+                172.91173669923782,
+                1.3438851951615003,
+                172.95469614953714,
+                1.3690476620161975
+              ]
+            ]
+          },
+          "temporal": {
+            "interval": [
+              [
+                "2020-12-11T22:38:32.125Z",
+                "2020-12-14T18:02:31.437Z"
+              ]
+            ]
+          }
+        },
+        "license": "CC-BY-4.0",
+        "summaries": {
+          "platform": [
+            "cool_sat1",
+            "cool_sat2"
+          ],
+          "constellation": [
+            "ion"
+          ],
+          "instruments": [
+            "cool_sensor_v1",
+            "cool_sensor_v2"
+          ],
+          "gsd": {
+            "minimum": 0.512,
+            "maximum": 0.66
+          },
+          "eo:cloud_cover": {
+            "minimum": 1.2,
+            "maximum": 1.2
+          },
+          "proj:cpde": [
+            "EPSG:32659"
+          ],
+          "view:sun_elevation": {
+            "minimum": 54.9,
+            "maximum": 54.9
+          },
+          "view:off_nadir": {
+            "minimum": 3.8,
+            "maximum": 3.8
+          },
+          "view:sun_azimuth": {
+            "minimum": 135.7,
+            "maximum": 135.7
+          },
+          "statistics": {
+            "type": "object",
+            "properties": {
+              "vegetation": {
+                "description": "Percentage of pixels that are detected as vegetation, e.g. forests, grasslands, etc.",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "water": {
+                "description": "Percentage of pixels that are detected as water, e.g. rivers, oceans and ponds.",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "urban": {
+                "description": "Percentage of pixels that detected as urban, e.g. roads and buildings.",
+                "minimum": 0,
+                "maximum": 100
+              }
+            }
+          }
+        },
+        "links": [
+          {
+            "rel": "root",
+            "href": "./collection.json",
+            "type": "application/json",
+            "title": "Simple Example Collection"
+          },
+          {
+            "rel": "item",
+            "href": "./simple-item.json",
+            "type": "application/geo+json",
+            "title": "Simple Item"
+          },
+          {
+            "rel": "item",
+            "href": "./core-item.json",
+            "type": "application/geo+json",
+            "title": "Core Item"
+          },
+          {
+            "rel": "item",
+            "href": "./extended-item.json",
+            "type": "application/geo+json",
+            "title": "Extended Item"
+          },
+          {
+            "rel": "self",
+            "href": "https://raw.githubusercontent.com/radiantearth/stac-spec/v1.1.0/examples/collection.json",
+            "type": "application/json"
+          }
+        ]
+      },
+      "rel": "item"
+    },
+    "target": {
+      "href": "https://eoapi.develop.eoepca.org/stac",
+      "rel": "https://api.stacspec.org/v1.0.0/core"
+    }
+  }
+}'
+```
+
+### Registering a remote STAC Collection to a STAC API endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "source": {
+      "href": "https://raw.githubusercontent.com/radiantearth/stac-spec/refs/heads/master/examples/collection.json",
+      "rel": "item"
+    },
+    "target": {
+      "href": "https://eoapi.develop.eoepca.org/stac",
+      "rel": "https://api.stacspec.org/v1.0.0/core"
+    }
+  }
+}'
+```
+
+### Registering an inline STAC Item to an OGC API - Records endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "source": {
+      "content": {
+        "stac_version": "1.1.0",
+        "stac_extensions": [],
+        "type": "Feature",
+        "id": "20201211_223832_CS2",
+        "bbox": [
+          172.91173669923782,
+          1.3438851951615003,
+          172.95469614953714,
+          1.3690476620161975
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                172.91173669923782,
+                1.3438851951615003
+              ],
+              [
+                172.95469614953714,
+                1.3438851951615003
+              ],
+              [
+                172.95469614953714,
+                1.3690476620161975
+              ],
+              [
+                172.91173669923782,
+                1.3690476620161975
+              ],
+              [
+                172.91173669923782,
+                1.3438851951615003
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "datetime": "2020-12-11T22:38:32.125000Z"
+        },
+        "collection": "simple-collection",
+        "links": [
+          {
+            "rel": "collection",
+            "href": "./collection.json",
+            "type": "application/json",
+            "title": "Simple Example Collection"
+          },
+          {
+            "rel": "root",
+            "href": "./collection.json",
+            "type": "application/json",
+            "title": "Simple Example Collection"
+          },
+          {
+            "rel": "parent",
+            "href": "./collection.json",
+            "type": "application/json",
+            "title": "Simple Example Collection"
+          }
+        ],
+        "assets": {
+          "visual": {
+            "href": "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.tif",
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "3-Band Visual",
+            "roles": [
+              "visual"
+            ]
+          },
+          "thumbnail": {
+            "href": "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.jpg",
+            "title": "Thumbnail",
+            "type": "image/jpeg",
+            "roles": [
+              "thumbnail"
+            ]
+          }
+        }
+      },
+      "rel": "item"
+    },
+    "target": {
+      "href": "https://resource-catalogue.develop.eoepca.org",
+      "rel": "http://www.opengis.net/spec/ogcapi-records-1/1.0"
+    }
+  }
+}'
+```
+
+### Registering a remote STAC Item to an OGC API - Records endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "source": {
+      "href": "https://raw.githubusercontent.com/radiantearth/stac-spec/refs/heads/master/examples/simple-item.json",
+      "rel": "item"
+    },
+    "target": {
+      "href": "https://resource-catalogue.develop.eoepca.org",
+      "rel": "http://www.opengis.net/spec/ogcapi-records-1/1.0",
+      "collection": "sentinel-2-l2a"
+    }
+  }
+}'
+```
+
+Notes:
+
+- if the STAC Item has a `collection` property, it will be used to add the item to the relevant collection on the OGC API - Records endpoint
+- the `collection` property can also be explicitly specified in `target.collection` to override the `collection` property (if defined) in the related STAC Item
+- if no collection is defined, the item will be registered to the OGC API - Record `metadata:main` collection
+
+### Registering an inline STAC Item to a STAC API endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "source": {
+      "content": {
+        "stac_version": "1.1.0",
+        "stac_extensions": [],
+        "type": "Feature",
+        "id": "20201211_223832_CS2",
+        "bbox": [
+          172.91173669923782,
+          1.3438851951615003,
+          172.95469614953714,
+          1.3690476620161975
+        ],
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                172.91173669923782,
+                1.3438851951615003
+              ],
+              [
+                172.95469614953714,
+                1.3438851951615003
+              ],
+              [
+                172.95469614953714,
+                1.3690476620161975
+              ],
+              [
+                172.91173669923782,
+                1.3690476620161975
+              ],
+              [
+                172.91173669923782,
+                1.3438851951615003
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "datetime": "2020-12-11T22:38:32.125000Z"
+        },
+        "collection": "simple-collection",
+        "links": [
+          {
+            "rel": "collection",
+            "href": "./collection.json",
+            "type": "application/json",
+            "title": "Simple Example Collection"
+          },
+          {
+            "rel": "root",
+            "href": "./collection.json",
+            "type": "application/json",
+            "title": "Simple Example Collection"
+          },
+          {
+            "rel": "parent",
+            "href": "./collection.json",
+            "type": "application/json",
+            "title": "Simple Example Collection"
+          }
+        ],
+        "assets": {
+          "visual": {
+            "href": "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.tif",
+            "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+            "title": "3-Band Visual",
+            "roles": [
+              "visual"
+            ]
+          },
+          "thumbnail": {
+            "href": "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.jpg",
+            "title": "Thumbnail",
+            "type": "image/jpeg",
+            "roles": [
+              "thumbnail"
+            ]
+          }
+        }
+      },
+      "rel": "item"
+    },
+    "target": {
+      "href": "https://eoapi.develop.eoepca.org/stac",
+      "rel": "https://api.stacspec.org/v1.0.0/core",
+      "collection": "sentinel-2-l2a"
+    }
+  }
+}'
+```
+
+### Registering a remote STAC Item to a STAC API endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "source": {
+      "href": "https://raw.githubusercontent.com/radiantearth/stac-spec/refs/heads/master/examples/simple-item.json",
+      "rel": "item"
+    },
+    "target": {
+      "href": "https://eoapi.develop.eoepca.org/stac",
+      "rel": "https://api.stacspec.org/v1.0.0/core",
+      "collection": "sentinel-2-l2a"
+    }
+  }
+}'
+```
+
+Notes:
+
+- if the STAC Item has a `collection` property, it will be used to add the item to the relevant collection on the STAC API endpoint
+- the `collection` property can also be explicitly specified in `target.collection` to override the `collection` property (if defined) in the related STAC Item
+
+## Responses
+
+Registration API responses follow the OGC API - Processes standard using standard HTTP status codes and JSON response payloads.
+
+Successful responses return HTTP 200 with the following response payload (example):
+```json
+{
+  "id": "registrar",
+  "resource-and-data-catalogue-link": {
+    "href": "https://eoapi.develop.eoepca.org/stac/collections/sentinel-2-l2a/items/20201211_223832_CS2",
+    "rel": "item",
+    "type": "application/geo+json"
+  }
+}
+```
+
+The response payload returns an OGC API link object of the newly registered resource, along with its resource type and media type.
+
+Unsuccessful responses return HTTP 400 with the following response payload (example):
+
+```json
+{
+  "type": "InvalidParameterValue",
+  "code": "InvalidParameterValue",
+  "description": "Error executing process: {\"code\":\"CheckViolationError\",\"description\":\"no partition of relation \\\"items\\\" found for row\\nDETAIL:  Partition key of the failing row contains (collection) = (sendtinel-2-l2a).\"}"
+}
+```
+
+The response payload returns an error type, core and description of the problem detail.
+
+## Deregistration example requests and responses
+
+### Deregistering any collection from an OGC API - Records endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "id": "my-collection-id",
+    "target": {
+      "href": "https://resource-catalogue.develop.eoepca.org",
+      "rel": "http://www.opengis.net/spec/ogcapi-records-1/1.0"
+    }
+  }
+}'
+```
+
+### Deregistering any collection from a STAC API endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "id": "my-collection-id",
+    "target": {
+      "href": "https://eoapi.develop.eoepca.org/stac",
+      "rel": "https://api.stacspec.org/v1.0.0/core"
+    }
+  }
+}'
+```
+
+### Deregistering any item from an OGC API - Records endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "id": "my-item-id",
+    "collection": "my-collection-id",
+    "target": {
+      "href": "https://resource-catalogue.develop.eoepca.org",
+      "rel": "http://www.opengis.net/spec/ogcapi-records-1/1.0"
+    }
+  }
+}'
+```
+
+Notes:
+
+- the `inputs.collection` property, specifying the collection identifier, is required for item deregistration
+
+### Deregistering any item from a STAC API endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "id": "my-item-id",
+    "collection": "my-collection-id",
+    "target": {
+      "href": "https://eoapi.develop.eoepca.org/stac",
+      "rel": "https://api.stacspec.org/v1.0.0/core"
+    }
+  }
+}'
+```
+
+Notes:
+
+- the `inputs.collection` property, specifying the collection identifier, is required for item deregistration
+
+## Responses
+
+Deregistration API responses follow the OGC API - Processes standard using standard HTTP status codes and JSON response payloads.
+
+Successful responses return HTTP 200 with the following response payload of the deleted resource identifier (example):
+
+```json
+{
+  "id": "my-collection-id"
+}
+```
+
+Unsuccessful responses return HTTP 400 with the following response payload (example):
+
+```json
+{
+  "type": "InvalidParameterValue",
+  "code": "InvalidParameterValue",
+  "description": "Error executing process: Collection sentinel-2-l2a does not exist."
+}
+```
+
+The response payload returns an error type, core and description of the problem detail.
+
