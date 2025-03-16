@@ -15,6 +15,7 @@ nav:
         - Registration API: design/registration-api-design.md
         - Harvester: design/harvester-design.md
 #        - eodm: https://geopython.github.io/eodm/
+#        - pygeoapi: https://docs.pygeoapi.io
     - User Guide:
       - Registration API: user-guide/registration-api-usage.md
       - Harvester: user-guide/harvester-usage.md
@@ -82,3 +83,8 @@ markdown_extensions:
   - pymdownx.snippets:
       auto_append:
         - includes/abbreviations.md
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
