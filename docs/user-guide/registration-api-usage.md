@@ -461,7 +461,7 @@ curl -X DELETE https://demo.pygeoapi.io/master/jobs/cdbc641c-92c2-11ee-9c88-0242
 
 The OGC API - Processes standard enables the execution of computing processes and the retrieval of metadata describing the purpose and functionality of the processes. This deep dive provided an introduction to the standard and an overview of its various endpoints, that enable monitoring, creating, updating and deleting those processes on a server.
 
-# Using the Registration API
+## Using the Registration API
 
 EOEPCA registration management is realized by using the OGC API - Processes functionality described above.
 
@@ -473,13 +473,17 @@ graph LR
   C ---->|create, update, delete| E[STAC API];
 ```
 
-## Core concepts
+### Core concepts
 
-### Request / response HTTP methods and encodings
+#### Request / response HTTP methods and encodings
 
-All processes support **only** HTTP POST with JSON request payloads.  All other HTTP methods and reqeust payload types are not supported and will result in HTTP 405/400 errors.
+All processes support **only** HTTP POST with JSON request payloads.  All other HTTP methods and request payload types are not supported and will result in HTTP 405/400 errors.
 
-### Link relations
+#### JSON Schemas
+
+Registration API JSON Schemas describe the content models that are within an OGC API - Processes execution payload.  The schemas are available at <https://github.com/EOEPCA/registration-api/blob/master/schemas> and are used as part of runtime request payload validation.
+
+#### Link relations
 
 Link relations are used to describe a given resource type.  The following link relations are supported:
 
@@ -495,7 +499,7 @@ The Registration API provides two core processes:
 - `processes/register`: add/update a resource
 - `processes/deregister`: delete a resource
 
-### Supported resource types
+#### Supported resource types
 
 Supported resources include:
 
@@ -508,7 +512,7 @@ Resources can be provided in the following ways:
 - online resource / link to resource definition
 - inline resource definition
 
-### Supported target APIs
+#### Supported target APIs
 
 Resources can be sent to the following "target" service endpoint types:
 
@@ -517,9 +521,9 @@ Resources can be sent to the following "target" service endpoint types:
 
 The Registration API handles all interactions and workflow with targets.  A user need only specify the landing page as part of the register/deregister request payload.
 
-## Registration example requests and responses
+### Registration example requests and responses
 
-### Registering an inline STAC Collection to an OGC API - Records endpoint
+#### Registering an inline STAC Collection to an OGC API - Records endpoint
 
 ```bash
 curl -X POST \
@@ -675,7 +679,7 @@ curl -X POST \
 }'
 ```
 
-### Registering a remote STAC Collection to an OGC API - Records endpoint
+#### Registering a remote STAC Collection to an OGC API - Records endpoint
 
 ```bash
 curl -X POST \
@@ -696,7 +700,7 @@ curl -X POST \
 }'
 ```
 
-### Registering an inline STAC Collection to a STAC API endpoint
+#### Registering an inline STAC Collection to a STAC API endpoint
 
 ```bash
 curl -X POST \
@@ -852,7 +856,7 @@ curl -X POST \
 }'
 ```
 
-### Registering a remote STAC Collection to a STAC API endpoint
+#### Registering a remote STAC Collection to a STAC API endpoint
 
 ```bash
 curl -X POST \
@@ -873,7 +877,7 @@ curl -X POST \
 }'
 ```
 
-### Registering an inline STAC Item to an OGC API - Records endpoint
+#### Registering an inline STAC Item to an OGC API - Records endpoint
 
 ```bash
 curl -X POST \
@@ -974,7 +978,7 @@ curl -X POST \
 }'
 ```
 
-### Registering a remote STAC Item to an OGC API - Records endpoint
+#### Registering a remote STAC Item to an OGC API - Records endpoint
 
 ```bash
 curl -X POST \
@@ -1002,7 +1006,7 @@ Notes:
 - the `collection` property can also be explicitly specified in `target.collection` to override the `collection` property (if defined) in the related STAC Item
 - if no collection is defined, the item will be registered to the OGC API - Record `metadata:main` collection
 
-### Registering an inline STAC Item to a STAC API endpoint
+#### Registering an inline STAC Item to a STAC API endpoint
 
 ```bash
 curl -X POST \
@@ -1104,7 +1108,7 @@ curl -X POST \
 }'
 ```
 
-### Registering a remote STAC Item to a STAC API endpoint
+#### Registering a remote STAC Item to a STAC API endpoint
 
 ```bash
 curl -X POST \
@@ -1131,7 +1135,7 @@ Notes:
 - if the STAC Item has a `collection` property, it will be used to add the item to the relevant collection on the STAC API endpoint
 - the `collection` property can also be explicitly specified in `target.collection` to override the `collection` property (if defined) in the related STAC Item
 
-## Responses
+### Responses
 
 Registration API responses follow the OGC API - Processes standard using standard HTTP status codes and JSON response payloads.
 
@@ -1161,9 +1165,9 @@ Unsuccessful responses return HTTP 400 with the following response payload (exam
 
 The response payload returns an error type, core and description of the problem detail.
 
-## Deregistration example requests and responses
+### Deregistration example requests and responses
 
-### Deregistering any collection from an OGC API - Records endpoint
+#### Deregistering any collection from an OGC API - Records endpoint
 
 ```bash
 curl -X POST \
@@ -1181,7 +1185,7 @@ curl -X POST \
 }'
 ```
 
-### Deregistering any collection from a STAC API endpoint
+#### Deregistering any collection from a STAC API endpoint
 
 ```bash
 curl -X POST \
@@ -1199,7 +1203,7 @@ curl -X POST \
 }'
 ```
 
-### Deregistering any item from an OGC API - Records endpoint
+#### Deregistering any item from an OGC API - Records endpoint
 
 ```bash
 curl -X POST \
@@ -1222,7 +1226,7 @@ Notes:
 
 - the `inputs.collection` property, specifying the collection identifier, is required for item deregistration
 
-### Deregistering any item from a STAC API endpoint
+#### Deregistering any item from a STAC API endpoint
 
 ```bash
 curl -X POST \
@@ -1245,7 +1249,7 @@ Notes:
 
 - the `inputs.collection` property, specifying the collection identifier, is required for item deregistration
 
-## Responses
+### Responses
 
 Deregistration API responses follow the OGC API - Processes standard using standard HTTP status codes and JSON response payloads.
 
