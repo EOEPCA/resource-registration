@@ -1171,7 +1171,7 @@ The response payload returns an error type, core and description of the problem 
 
 ```bash
 curl -X POST \
-  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  'https://registration-api.develop.eoepca.org/processes/deregister/execution' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -1189,7 +1189,7 @@ curl -X POST \
 
 ```bash
 curl -X POST \
-  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  'https://registration-api.develop.eoepca.org/processes/deregister/execution' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -1207,7 +1207,7 @@ curl -X POST \
 
 ```bash
 curl -X POST \
-  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  'https://registration-api.develop.eoepca.org/processes/deregister/execution' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -1230,7 +1230,7 @@ Notes:
 
 ```bash
 curl -X POST \
-  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  'https://registration-api.develop.eoepca.org/processes/deregister/execution' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
