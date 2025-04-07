@@ -669,7 +669,7 @@ curl -X POST \
           }
         ]
       },
-      "rel": "item"
+      "rel": "collection"
     },
     "target": {
       "href": "https://resource-catalogue.develop.eoepca.org",
@@ -690,7 +690,7 @@ curl -X POST \
   "inputs": {
     "source": {
       "href": "https://raw.githubusercontent.com/radiantearth/stac-spec/refs/heads/master/examples/collection.json",
-      "rel": "item"
+      "rel": "collection"
     },
     "target": {
       "href": "https://resource-catalogue.develop.eoepca.org",
@@ -846,7 +846,7 @@ curl -X POST \
           }
         ]
       },
-      "rel": "item"
+      "rel": "collection"
     },
     "target": {
       "href": "https://eoapi.develop.eoepca.org/stac",
@@ -867,7 +867,7 @@ curl -X POST \
   "inputs": {
     "source": {
       "href": "https://raw.githubusercontent.com/radiantearth/stac-spec/refs/heads/master/examples/collection.json",
-      "rel": "item"
+      "rel": "collection"
     },
     "target": {
       "href": "https://eoapi.develop.eoepca.org/stac",
