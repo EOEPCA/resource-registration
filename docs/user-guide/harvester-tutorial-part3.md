@@ -1,3 +1,1 @@
-# Harvester Tutorial: Part 3
-
-## Deployment and workflow execution
+# Harvester Developer Guide Part 3 - Deployment and workflow execution

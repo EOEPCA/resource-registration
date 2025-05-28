@@ -1,8 +1,6 @@
-# Harvester Tutorial: Part 1
+# Harvester Developer Guide Part 1 - Workflow design with BPMN
 
-## Workflow design with BPMN
-
-### Flowable Design
+## Flowable Design
    
 - Login to Flowable Design
 - First we must create a new app. Click the red "Create" button and fill the form as shown below and click "Create"

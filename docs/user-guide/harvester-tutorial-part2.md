@@ -1,3 +1,1 @@
-# Harvester Tutorial: Part 2
-
-## Worker implementation with Python
+# Harvester Developer Guide Part 2 - Worker implementation with Python

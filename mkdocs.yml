@@ -18,7 +18,7 @@ nav:
 #        - pygeoapi: https://docs.pygeoapi.io
     - Usage:
       - Registration API: user-guide/registration-api-usage.md
-      - Harvester Tutorial: 
+      - Harvester Developer Guide: 
         - Introduction: user-guide/harvester-tutorial-intro.md
         - 1. BPMN Design: user-guide/harvester-tutorial-part1.md
         - 2. Worker implementation: user-guide/harvester-tutorial-part2.md

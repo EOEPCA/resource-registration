@@ -1,4 +1,4 @@
-# Harvester Tutorial: Developing workflows
+# Harvester Developer Guide: Introduction
 
 ## Overview
 
@@ -14,8 +14,11 @@ The step-by-step procedures in this tutorial will develop a workflow, which repr
 ![example workflow BPMN](../img/harvester-tutorial/bpmn-example-workflow.png)
 
 
-The tutorial is split into three parts. [In the first part](harvester-tutorial-part1.md), you will create the BPMN representation of the workflow shown above. The result of this will be an XML file containing the BPMN model. You can skip the modeling part and download the final BPMN model [here](../img/harvester-tutorial/example-workflow.bpmn), if you want to jump at the worker implementation immediately, which is described in [part 2](harvester-tutorial-part2.md). Finally, the BPMN workflow model and the worker implementation will be deployed and the workflow will be executed in [part 3](harvester-tutorial-part3.md) of the tutorial.
+The tutorial is split into three parts. 
 
 1. [Workflow design with BPMN](harvester-tutorial-part1.md)
+   - In this part you will create the BPMN representation of the workflow shown above. The result of this will be an XML file containing the BPMN model. If you want to skip the modeling part, the final BPMN model can be downloaded [here](../img/harvester-tutorial/example-workflow.bpmn).
 2. [Worker implementation with Python](harvester-tutorial-part2.md)
+   - In this part, the worker will be implemented which contains the logic to be executed for each part of the workflow.
 3. [Deployment and workflow execution](harvester-tutorial-part3.md)
+   - Finally, the BPMN workflow model and the worker implementation will be deployed and the workflow will be executed.
