@@ -1,8 +1,9 @@
-# Harvester Developer Guide: Introduction
+# Harvester Developer Guide
 
 ## Overview
 
 This tutorial will guide you through the process of designing, implementing and executing a workflow with the Harvester component of the Resource Registration building block. In particular, you will learn
+
 - how to design a workflow with BPMN using the Flowable Design tool, 
 - how to implement a worker for it in Python and
 - how to deploy and run the workflow.
