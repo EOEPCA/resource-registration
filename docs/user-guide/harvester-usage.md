@@ -1,15 +1,13 @@
-# Harvester - User Guide
+# Harvester Tutorial: Developing workflows
 
-## Tutorial: Developing workflows
-
-### Overview
+## Overview
 
 This tutorial will guide you through the process of designing, implementing and executing a workflow with the Harvester component of the Resource Registration building block. In particular, you will learn
 - how to design a workflow with BPMN using the Flowable Design tool, 
 - how to implement a worker for it in Python and
 - how to deploy and run the workflow.
 
-### Example Workflow
+## Example Workflow
 
 The step-by-step procedures in this tutorial will develop a workflow, which represents the common use case of searching a STAC API and processing the STAC items contained in the search result. The graphical BPMN representation of this workflow can be ssen in figure below. 
 

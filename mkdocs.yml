@@ -18,7 +18,11 @@ nav:
 #        - pygeoapi: https://docs.pygeoapi.io
     - Usage:
       - Registration API: user-guide/registration-api-usage.md
-      - Harvester: user-guide/harvester-usage.md
+      - Harvester Tutorial: 
+        - user-guide/harvester-usage.md
+        - Part 1: user-guide/harvester-tutorial-part1.md
+        - Part 2: user-guide/harvester-tutorial-part2.md
+        - Part 3: user-guide/harvester-tutorial-part3.md
 #    - Administration:
 #      - admin/configuration.md
 #      - admin/maintenance.md
