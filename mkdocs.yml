@@ -16,7 +16,7 @@ nav:
         - Harvester: design/harvester-design.md
 #        - eodm: https://geopython.github.io/eodm/
 #        - pygeoapi: https://docs.pygeoapi.io
-    - User Guide:
+    - Usage:
       - Registration API: user-guide/registration-api-usage.md
       - Harvester: user-guide/harvester-usage.md
 #    - Administration:
