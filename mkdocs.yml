@@ -19,10 +19,10 @@ nav:
     - Usage:
       - Registration API: user-guide/registration-api-usage.md
       - Harvester Tutorial: 
-        - user-guide/index.md
-        - Part 1: user-guide/harvester-tutorial-part1.md
-        - Part 2: user-guide/harvester-tutorial-part2.md
-        - Part 3: user-guide/harvester-tutorial-part3.md
+        - Introduction: user-guide/harvester-tutorial-intro.md
+        - 1. BPMN Design: user-guide/harvester-tutorial-part1.md
+        - 2. Worker implementation: user-guide/harvester-tutorial-part2.md
+        - 3. Deployment and execution: user-guide/harvester-tutorial-part3.md
 #    - Administration:
 #      - admin/configuration.md
 #      - admin/maintenance.md
