@@ -507,6 +507,10 @@ Supported resources include:
 - STAC Collections ([v1.0.0](https://github.com/radiantearth/stac-spec/blob/v1.0.0/collection-spec/collection-spec.md), [v1.1.0](https://github.com/radiantearth/stac-spec/blob/v1.1.0/collection-spec/collection-spec.md))
 - EOEPCA Metadata Profile ([draft](https://github.com/eoepca/metadata-profile))
 
+!!! note
+
+    If STAC Extensions are defined (in `stac_extensions`), the Registration API will validate the resource against the list of extensions defined
+
 Resources can be provided in the following ways:
 
 - online resource / link to resource definition
