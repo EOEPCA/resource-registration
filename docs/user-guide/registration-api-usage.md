@@ -1181,6 +1181,7 @@ curl -X POST \
   -d '{
   "inputs": {
     "id": "my-collection-id",
+    "rel": "collection",
     "target": {
       "href": "https://resource-catalogue.develop.eoepca.org",
       "rel": "http://www.opengis.net/spec/ogcapi-records-1/1.0"
@@ -1199,6 +1200,7 @@ curl -X POST \
   -d '{
   "inputs": {
     "id": "my-collection-id",
+    "rel": "collection",
     "target": {
       "href": "https://eoapi.develop.eoepca.org/stac",
       "rel": "https://api.stacspec.org/v1.0.0/core"
@@ -1217,6 +1219,7 @@ curl -X POST \
   -d '{
   "inputs": {
     "id": "my-item-id",
+    "rel": "item",
     "collection": "my-collection-id",
     "target": {
       "href": "https://resource-catalogue.develop.eoepca.org",
@@ -1240,6 +1243,7 @@ curl -X POST \
   -d '{
   "inputs": {
     "id": "my-item-id",
+    "rel": "item",
     "collection": "my-collection-id",
     "target": {
       "href": "https://eoapi.develop.eoepca.org/stac",
