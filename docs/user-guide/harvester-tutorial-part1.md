@@ -1,7 +1,6 @@
 # Harvester Developer Guide Part 1 - Workflow design with BPMN
 
-## Flowable Design
-   
+
 1. Login to [Flowable Design](https://trial.flowable.com/design/). If you haven't used it before you will need to register yourself. The registration and usage of the tool is free.
 
 1. First we must create a new app. Click the red "Create" button and fill the form as shown below and click "Create"
@@ -42,6 +41,6 @@
 
 1. To improve the readability of the workflow model, we can add a comment on the flow connecting our two task. For this, click on the arrow connecting both tasks and update the Name property in the properties panel. The final workflow model should look like this:
 
-    ![Configure External Worker Task](../img/harvester-tutorial/flowable-editor-final-workflow.png)
+    ![Final Workflowk](../img/harvester-tutorial/flowable-editor-final-workflow.png)
 
 1. At the end we need to save our model to file, as we will it need to deploy the workflow in our Flowable instance later to be able to run it. In the toolbar of the editor click the "Download the model" icon and save the file as example-workflow.bpmn to your local file system.
