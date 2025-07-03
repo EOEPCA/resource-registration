@@ -18,7 +18,7 @@ The step-by-step procedures in this tutorial will develop a workflow, which repr
 The tutorial is split into three parts. 
 
 1. [Workflow design with BPMN](harvester-tutorial-part1.md)
-   - This part describes the creation of the BPMN representation of the workflow shown above. If you want to skip the modelling part, the final BPMN model can be downloaded [here](../img/harvester-tutorial/example-workflow.bpmn).
+   - This part describes the creation of the BPMN representation of the workflow shown above. If you want to skip the modelling part, the final BPMN model can be downloaded [here](https://raw.githubusercontent.com/EOEPCA/registration-harvester/refs/heads/main/workflows/harvester-tutorial.bpmn).
 2. [Worker implementation with Python](harvester-tutorial-part2.md)
    - In this part, the worker will be implemented which contains the logic to be executed for each part of the workflow.
 3. [Deployment and workflow execution](harvester-tutorial-part3.md)
