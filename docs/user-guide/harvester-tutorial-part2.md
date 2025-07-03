@@ -48,7 +48,7 @@ In general, for each workflow step modelled as external worker task, you have to
 
 ### Task implementation
 
-For our tutorial example we have two tasks to implement, the "Discovery STAC Items" and the "Process STAC Item" task. For simplicity we will implement both handler classes in the same Python module as shown below. The final Python file is located [here](https://github.com/EOEPCA/registration-harvester/blob/main/src/worker/tutorial/tasks.py).
+For our tutorial example we have two tasks to implement, the "Discovery STAC Items" and the "Process STAC Item" task. For simplicity we will implement both handler classes in the same Python module as shown below. The full Python file is located [here](https://github.com/EOEPCA/registration-harvester/blob/main/src/worker/tutorial/tasks.py).
 
 
 ```python
@@ -66,7 +66,9 @@ class TutorialDiscoverItemsTaskHandler(TaskHandler):
             # 2. Perform task logic
             log_with_context(f"Searching STAC items using API: {api_url}", log_context)
             # stac search
-            items = []
+            catalog = Client.open(api_url, headers=[])
+            search = catalog.search(max_items=100, collections="sentinel-2-l2a", datetime="2025-07-02")
+            items = list(search.items_as_dicts())
 
             # 3. Return success with output variables
             log_with_context("DiscoverItems task completed successfully.", log_context)
