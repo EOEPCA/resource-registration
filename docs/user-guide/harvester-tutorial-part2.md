@@ -37,7 +37,7 @@ So, when implementing a new task, your focus will be on the execute method, leve
 
 ## Implementing the tasks for our example workflow
 
-In general, for each workflow step modelled as external worker task you have to do the following: 
+In general, for each workflow step modelled as external worker task, you have to do the following: 
 
 1. Create a Handler Class
 
@@ -46,7 +46,9 @@ In general, for each workflow step modelled as external worker task you have to 
 
 2. Implement the execute Method
 
-For our tutorial example we have two tasks to implement, the "Discovery STAC Items" and the "Process STAC Item" task. For simplicity we will implement both Handler classes in the same Python module. The final implementation can be seen here.
+### Task implementation
+
+For our tutorial example we have two tasks to implement, the "Discovery STAC Items" and the "Process STAC Item" task. For simplicity we will implement both handler classes in the same Python module as shown below. The final Python file is located [here](https://github.com/EOEPCA/registration-harvester/blob/main/src/worker/tutorial/tasks.py).
 
 
 ```python
@@ -109,6 +111,8 @@ class TutorialProcessItemTaskHandler(TaskHandler):
             return self.task_failure("Error in TutorialProcessItemTaskHandler", error_msg, result)
 ```
 
+### Best practices for task implemenation
+
 * **Logging:** Use `log_with_context` for all logging. Include `job.id` and `job.element_name` in your `log_context` for better traceability.
 * **Input Variables:** Retrieve any necessary input variables passed from the workflow using `job.get_variable("variable_name")`.
 * **Configuration:** Access handler-specific configurations (defined in `config.yaml`) using `self.get_config("config_key", "default_value")`.
@@ -124,7 +128,7 @@ class TutorialProcessItemTaskHandler(TaskHandler):
 After implementing your TaskHandler, you need to configure the worker to use it. This is done in the main configuration file (typically `etc/config.yaml`, or the path specified by the `CONFIG_FILE_PATH` environment variable).
 The `SubscriptionManager` component automatically discovers and subscribes your handlers to specific topics based on this configuration.
 
-### Key Configuration Sections under `worker`
+### General structure of configuration file
 
 * `topics`: This section maps topic names (which your BPMN tasks will publish to) to your handler classes.
     * Each key is a topic name (e.g., `my_custom_task_topic`).
@@ -137,6 +141,8 @@ The `SubscriptionManager` component automatically discovers and subscribes your 
     * Inside each handler's configuration, you can define key-value pairs. These values are accessible within that handler using `self.get_config("your_key")`.
 
 ### Configuration for example workflow
+
+This sections provides the configuration to bind our worker implementation to the tasks we defined in the BMPN model. The full configuration file is located [here](https://github.com/EOEPCA/registration-harvester/blob/main/config-tutorial.yaml).
 
 ```yaml
 worker:
