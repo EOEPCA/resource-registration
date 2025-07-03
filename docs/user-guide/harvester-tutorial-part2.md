@@ -52,12 +52,6 @@ For our tutorial example we have two tasks to implement, the "Discovery STAC Ite
 
 
 ```python
-# src/worker/tutorial/tasks.py
-from worker.common.task_handler import TaskHandler
-from worker.common.utils.logging import log_with_context # For logging
-from flowable.external_worker_client import ExternalJob, JobResultBuilder, JobResult
-
-
 class TutorialDiscoverItemsTaskHandler(TaskHandler):
     def execute(self, job: ExternalJob, result: JobResultBuilder, config: dict) -> JobResult:
         log_context = {"JOB": job.id, "BPMN_TASK": job.element_name}
@@ -97,7 +91,7 @@ class TutorialProcessItemTaskHandler(TaskHandler):
                 log_with_context("Missing 'item' input variable.", log_context, "error")
                 return result.failure().error_message("Input data is missing.")
 
-            # 2. Perform task logic
+            # 2. Perform task logic: just logging the item
             log_with_context(f"Processing item {item}", log_context)
 
             # 3. Return success, no output variable produced by this task
@@ -111,7 +105,7 @@ class TutorialProcessItemTaskHandler(TaskHandler):
             return self.task_failure("Error in TutorialProcessItemTaskHandler", error_msg, result)
 ```
 
-### Best practices for task implemenation
+### Best practices
 
 * **Logging:** Use `log_with_context` for all logging. Include `job.id` and `job.element_name` in your `log_context` for better traceability.
 * **Input Variables:** Retrieve any necessary input variables passed from the workflow using `job.get_variable("variable_name")`.
@@ -142,7 +136,7 @@ The `SubscriptionManager` component automatically discovers and subscribes your 
 
 ### Configuration for example workflow
 
-This sections provides the configuration to bind our worker implementation to the tasks we defined in the BMPN model. The full configuration file is located [here](https://github.com/EOEPCA/registration-harvester/blob/main/config-tutorial.yaml).
+This sections provides the part of the configuration to bind our worker implementation to the tasks we defined in the BMPN model. The full configuration file can be found [here](https://github.com/EOEPCA/registration-harvester/blob/main/config-tutorial.yaml).
 
 ```yaml
 worker:
