@@ -1,6 +1,6 @@
 # Harvester Developer Guide Part 2 - Worker implementation with Python
 
-This chapter covers implementing new individual tasks for workflow orchestration and configuring the worker to manage their execution.
+This chapter covers implementing the tasks for the workflow we created in the [first part](harvester-tutorial-part1.md) of this tutorial. The workflow definition file and code samples can be found in the [Registration Harvester repository](https://github.com/EOEPCA/registration-harvester). 
 
 ## Understanding the `TaskHandler`
 
@@ -35,9 +35,9 @@ The TaskHandler base class provides some helpful features:
 
 So, when implementing a new task, your focus will be on the execute method, leveraging `job.get_variable()`, `self.get_config()`, and `result.success()`, `result.failure()`, or `self.task_failure()` for outputs.
 
-## Implementing a New Task
+## Implementing the tasks for our example workflow
 
-Follow these steps to create and integrate a new task:
+In general, for each workflow step modelled as external worker task you have to do the following: 
 
 1. Create a Handler Class
 
@@ -46,41 +46,67 @@ Follow these steps to create and integrate a new task:
 
 2. Implement the execute Method
 
+For our tutorial example we have two tasks to implement, the "Discovery STAC Items" and the "Process STAC Item" task. For simplicity we will implement both Handler classes in the same Python module. The final implementation can be seen here.
+
+
 ```python
-# src/worker/custom/tasks.py
+# src/worker/tutorial/tasks.py
 from worker.common.task_handler import TaskHandler
 from worker.common.utils.logging import log_with_context # For logging
 from flowable.external_worker_client import ExternalJob, JobResultBuilder, JobResult
 
 
-class MyCustomTaskHandler(TaskHandler):
+class TutorialDiscoverItemsTaskHandler(TaskHandler):
     def execute(self, job: ExternalJob, result: JobResultBuilder, config: dict) -> JobResult:
         log_context = {"JOB": job.id, "BPMN_TASK": job.element_name}
-        log_with_context("Starting My Custom Task...", log_context)
+        log_with_context("Starting DiscoverItems task ...", log_context)
+
+        try:
+            # no input data needed for this task
+            
+            # get STAC API url from configuration
+            api_url = self.get_config("service_url", "http://default.api.com")            
+
+            # 2. Perform task logic
+            log_with_context(f"Searching STAC items using API: {api_url}", log_context)
+            # stac search
+            items = []
+
+            # 3. Return success with output variables
+            log_with_context("DiscoverItems task completed successfully.", log_context)
+            return result.success().variable_string(name="items", value=items)
+
+        except Exception as e:
+            error_msg = str(e)
+            log_with_context(error_msg, log_context, "error")
+            # Use the task_failure helper for consistent error reporting
+            return self.task_failure("Error in TutorialDiscoverItemsTaskHandler", error_msg, result)
+
+class TutorialProcessItemTaskHandler(TaskHandler):
+    def execute(self, job: ExternalJob, result: JobResultBuilder, config: dict) -> JobResult:
+        log_context = {"JOB": job.id, "BPMN_TASK": job.element_name}
+        log_with_context("Starting ProcessItem task ...", log_context)
 
         try:
             # 1. Get input variables
-            input_data = job.get_variable("my_input_data")
-            api_url = self.get_config("service_url", "http://default.api.com")
+            item = job.get_variable("item")
 
-            if not input_data:
-                log_with_context("Missing 'my_input_data' variable.", log_context, "error")
+            if not item:
+                log_with_context("Missing 'item' input variable.", log_context, "error")
                 return result.failure().error_message("Input data is missing.")
 
-            log_with_context(f"Processing data: {input_data} using API: {api_url}", log_context)
-
             # 2. Perform task logic
-            processed_output = f"Processed: {input_data.upper()}"
+            log_with_context(f"Processing item {item}", log_context)
 
-            # 3. Return success with output variables
-            log_with_context("Custom task completed successfully.", log_context)
-            return result.success().variable_string(name="my_output_data", value=processed_output)
+            # 3. Return success, no output variable produced by this task
+            log_with_context("ProcessItem task completed successfully.", log_context)
+            return result.success()
 
         except Exception as e:
-            error_msg = f"Error in MyCustomTaskHandler: {str(e)}"
+            error_msg = str(e)
             log_with_context(error_msg, log_context, "error")
             # Use the task_failure helper for consistent error reporting
-            return self.task_failure("CustomTaskExecutionError", error_msg, result)
+            return self.task_failure("Error in TutorialProcessItemTaskHandler", error_msg, result)
 ```
 
 * **Logging:** Use `log_with_context` for all logging. Include `job.id` and `job.element_name` in your `log_context` for better traceability.
@@ -110,21 +136,26 @@ The `SubscriptionManager` component automatically discovers and subscribes your 
     * Each key is the class name of a handler (e.g., `MyCustomTaskHandler`).
     * Inside each handler's configuration, you can define key-value pairs. These values are accessible within that handler using `self.get_config("your_key")`.
 
-### Example `config.yaml` Snippet
+### Configuration for example workflow
 
 ```yaml
 worker:
+  # Bind the workflow steps defined in BPMN to a worker implementation by Job topic name
   topics:
-    # Topic for the custom task implemented above
-    my_custom_task_topic:
-      module: "worker.custom.tasks"  # Path to the .py file, dot-separated
-      handler: "MyCustomTaskHandler"   # Class name
-      lock_duration: "PT5M"          # Example: 5 minute lock duration for this task
-      number_of_retries: 3
+    tutorial_discover_items:                        # Job topic name defined in the BPMN for this task
+      module: "worker.tutorial.tasks"               # Path to the .py file containing the handler implementation, dot-separated
+      handler: "TutorialDiscoverItemsTaskHandler"   # Name of the handler class
+      lock_duration: "PT5M"                         # Example: 5 minute lock duration for this task
+      number_of_retries: 3                          # If the task fails, the BPMN engine will retry 3 times
+    tutorial_process_item:
+      module: "worker.tutorial.tasks"               
+      handler: "TutorialProcessItemTaskHandler"     
+      lock_duration: "PT5M"                         
+      number_of_retries: 3                          
 
-  handlers:
-    # Configuration specific to MyCustomTaskHandler
-    MyCustomTaskHandler:
+  # Provide configuration specific to each handler, if needed
+  handlers:  
+    TutorialDiscoverItemsTaskHandler:
       service_url: "https://my.api.service.com/v1/process"
       default_timeout_seconds: 60
 ```
@@ -139,6 +170,6 @@ worker:
 
 ## Workflow Integration
 
-Tasks implemented as TaskHandlers are invoked by an external system, the BPMN engine Flowable. In your BPMN model, you would define an "External Task". The "topic" you configure for this external task in the BPMN model must match one of the topic names defined in your `worker.topics` configuration (e.g., `my_custom_task_topic`).
+Tasks implemented as TaskHandlers are invoked by an external system, the BPMN engine Flowable. In your BPMN model, you would define an "External Worker task". The "Job topic" you configure for this external task in the BPMN model must match one of the topic names defined in your `worker.topics` configuration (e.g., `my_custom_task_topic`).
 
 When the workflow reaches such an external task, the engine publishes a job to the topic specified in the BPMN model. The worker, listening on that topic, picks up the job and delegates it to the configured TaskHandler for execution.
