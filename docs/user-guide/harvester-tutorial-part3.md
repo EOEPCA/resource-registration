@@ -13,7 +13,7 @@ During the remaing part of this section it is assmued, that the Docker Compose d
 ```
 curl -X POST \
   --user "eoepca:eoepca" \
-  -F upload=@harvester-tutorial.bpmn \
+  --form upload=@harvester-tutorial.bpmn \
   http://localhost:8082/flowable-rest/service/repository/deployments
 ```
 
@@ -32,7 +32,9 @@ curl -X POST \
 To check if there is a running instance run:
 
 ```
-curl -X GET --user "eoepca:eoepca" http://localhost:8082/flowable-rest/service/runtime/process-instances
+curl -X GET \
+  --user "eoepca:eoepca" \
+  http://localhost:8082/flowable-rest/service/runtime/process-instances
 ```
 
 If everythin went successful, our workflow should already be running and logging the STAC items which has been returned from the STAC search in the "Disovery STAC Items" workflow task. To the logs of the worker just execute `docker compose logs`.
