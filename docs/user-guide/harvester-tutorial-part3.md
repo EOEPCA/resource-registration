@@ -10,18 +10,18 @@ During the remaing part of this section it is assmued, that the Docker Compose d
 
 ## Deployment of example workflow BPMN
 
-```bash
+```
 curl -X POST \
   --user "eoepca:eoepca" \
   -F upload=@harvester-tutorial.bpmn \
   http://localhost:8082/flowable-rest/service/repository/deployments
-``` 
+```
 
 ## Execution of example workflow
 
 To execute the workflow we must create a process instance of our BPMN process which is referenced by the process definition key. This key is derived from the process id which is defined in the BPMN file itself. In our case the key is `simpleHarvestingWorkflow`.
 
-```bash
+```
 curl -X POST \ 
   --header "Content-Type: application/json" \
   --user "eoepca:eoepca" \
@@ -31,7 +31,7 @@ curl -X POST \
 
 To check if there is a running instance run:
 
-```bash
+```
 curl -X GET --user "eoepca:eoepca" http://localhost:8082/flowable-rest/service/runtime/process-instances
 ```
 
