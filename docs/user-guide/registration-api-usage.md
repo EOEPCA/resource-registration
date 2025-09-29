@@ -493,6 +493,7 @@ Link relations are used to describe a given resource type.  The following link r
 | `item` | [RFC 6573](https://www.rfc-editor.org/rfc/rfc6573.html) |
 | `http://www.opengis.net/spec/ogcapi-records-1/1.0` | [OGC](https://ogcapi.ogc.org/records) |
 | `https://api.stacspec.org/v1.0.0/core` | [STAC](https://github.com/radiantearth/stac-api-spec) |
+| `item` | [Common Workflow Language (CWL)](https://www.commonwl.org/v1.2) |
 
 The Registration API provides two core processes:
 
@@ -1138,6 +1139,51 @@ Notes:
 
 - if the STAC Item has a `collection` property, it will be used to add the item to the relevant collection on the STAC API endpoint
 - the `collection` property can also be explicitly specified in `target.collection` to override the `collection` property (if defined) in the related STAC Item
+
+#### Registering a remote CWL to an OGC API - Records endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "source": {
+      "href": "https://raw.githubusercontent.com/EOEPCA/rm-data-access/refs/heads/master/core/tests/data/app-s-expression.dev.0.0.2.cwl",
+      "rel": "item"
+    },
+    "target": {
+      "href": "https://resource-catalogue.develop.eoepca.org",
+      "rel": "http://www.opengis.net/spec/ogcapi-records-1/1.0"
+    }
+  }
+}'
+```
+
+#### Registering a remote CWL to a STAC API endpoint
+
+```bash
+curl -X POST \
+  'https://registration-api.develop.eoepca.org/processes/register/execution' \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "inputs": {
+    "source": {
+      "href": "https://raw.githubusercontent.com/EOEPCA/rm-data-access/refs/heads/master/core/tests/data/app-s-expression.dev.0.0.2.cwl",
+      "rel": "item"
+    },
+    "target": {
+      "href": "https://eoapi.develop.eoepca.org/stac",
+      "rel": "https://api.stacspec.org/v1.0.0/core"
+    }
+  }
+}'
+```
+
+!!! note
+    Inline CWL registration is not suppored (CWL ingest only supported by remote registration)
 
 ### Responses
 
