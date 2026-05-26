@@ -6,23 +6,23 @@ As described in the building block [architecture](overview.md), the main concept
 
 ### Workflow engine
 
-The workflow engine is the central element of the Harvester. It executes and manages predefined workflows. The Harvester uses [Flowable](https://www.flowable.com/open-source/docs/) which is a BPMN based open-source workflow engine. It offers a REST API to manage and execute workflows.
+The workflow engine is the central element of the Harvester. It executes and manages predefined workflows. The Harvester uses [Operaton](https://operaton.org/) which is a BPMN based open-source workflow engine. It offers a REST API to manage and execute workflows.
 
 ### Workflow definition
 
-A workflow definition is a static representation of the workflow as a BPMN 2.0 process definition. It defines the sequence of tasks, activities or operations to be executed during the workflow and is usually stored as XML file with a `.bpmn` extension. It can be created with the [Flowable Design]() application or any other BPMN editor, which is able to create Flowable-compatible BPMN definitions.
+A workflow definition is a static representation of the workflow as a BPMN 2.0 process definition. It defines the sequence of tasks, activities or operations to be executed during the workflow and is usually stored as XML file with a `.bpmn` extension. It can be created with the [Camunda Modeler](https://camunda.com/download/modeler/) application or any other BPMN editor, which is able to create BPMN definitions.
 
-Before any workflow can be executed by Flowable, a workflow definition must be submitted (or deployed) through its REST API, using the beforehand created BPMN file. Once deployed, the workflow definition is represented as a *process definition* resource by Flowable.
+Before any workflow can be executed by Operaton, a workflow definition must be submitted (or deployed) through its REST API, using the beforehand created BPMN file. Once deployed, the workflow definition is represented as a *process definition* resource by Operaton.
 
 ### Workflow instance
 
-A workflow instance is a running workflow which was created from a workflow definition. Workflow instances can be created automatically by Flowable itself or externally through the REST API. A workflow instance is represented by Flowable as a *process instance* resource.
+A workflow instance is a running workflow which was created from a workflow definition. Workflow instances can be created automatically by Operaton itself or externally through the REST API. A workflow instance is represented by Operaton as a *process instance* resource.
 
 ### External Worker
 
 An external worker is an entity that is independent of the workflow engine. It does not need to run in the same process, on the same machine or in the same cluster, etc. 
 
-When Flowable encounters a workflow task that is configured to be externally handled, it provides this unit of work as a job, which can be polled and acquired by an external worker. The worker then executes the job and sends the result back to Flowable. For the communication of workflow engine and external worker the REST API is used.
+When Operaton encounters a workflow task that is configured to be externally handled, it provides this unit of work as a job, which can be polled and acquired by an external worker. The worker then executes the job and sends the result back to Operaton. For the communication of workflow engine and external worker the REST API is used.
 
 The benefit of this pattern is that the entities performing the actual work are independent of the workflow engine. This allows, for example, the worker to be scaled out or maintained independently.
 
@@ -58,9 +58,9 @@ Then, the Landsat Scene Ingestion workflow is executed for each scene individual
 
 The workflow supports two different operation modes. As it can been in the BPMN diagram, both modes differ in their implementation of the discovery task.
 
-In the *continuous* mode, the workflow is executed automatically every hour by the Flowable workflow engine and the data discovery is done with a shifting time window. The size of the window (default 1 hour) can be set in the workflow configuration together with additional search filters (see below). The main use case of this mode is to perform the systematic EO data provisioning into the exploitation platform.
+In the *continuous* mode, the workflow is executed automatically every hour by the Operaton workflow engine and the data discovery is done with a shifting time window. The size of the window (default 1 hour) can be set in the workflow configuration together with additional search filters (see below). The main use case of this mode is to perform the systematic EO data provisioning into the exploitation platform.
 
-The *manual* mode is executed when the workflow is exlicitly started by sending a HTTP request to the Flowable REST API. In this case the data discovery solely is based on the filter parameters which are included in the body of the HTTP request. No time window is calculated automatically. This mode is useful in cases, where a certain set of data meeting specific criteria needs to be ingested into the platform.
+The *manual* mode is executed when the workflow is exlicitly started by sending a HTTP request to the Operaton REST API. In this case the data discovery solely is based on the filter parameters which are included in the body of the HTTP request. No time window is calculated automatically. This mode is useful in cases, where a certain set of data meeting specific criteria needs to be ingested into the platform.
 
 #### Search parameter
 
@@ -106,9 +106,9 @@ For each new scene discovered, the workflow executes the Sentinel Scene Ingestio
 
 The workflow supports two different operation modes. As it can been in the BPMN diagram, both modes differ in their implementation of the discovery task.
 
-In the *continuous* mode, the workflow is executed automatically every hour by the Flowable workflow engine and the data discovery is done with a shifting time window. The size of the window (default 1 hour) can be set in the workflow configuration together with additional search filters (see below). The main use case of this mode is to perform the systematic EO data provisioning into the exploitation platform.
+In the *continuous* mode, the workflow is executed automatically every hour by the Operaton workflow engine and the data discovery is done with a shifting time window. The size of the window (default 1 hour) can be set in the workflow configuration together with additional search filters (see below). The main use case of this mode is to perform the systematic EO data provisioning into the exploitation platform.
 
-The *manual* mode is executed when the workflow is exlicitly started by sending a HTTP request to the Flowable REST API. In this case the data discovery solely is based on the filter parameters which are included in the body of the HTTP request. No time window is calculated automatically. This mode is useful in cases, where a certain set of data meeting specific criteria needs to be ingested into the platform.
+The *manual* mode is executed when the workflow is exlicitly started by sending a HTTP request to the Operaton REST API. In this case the data discovery solely is based on the filter parameters which are included in the body of the HTTP request. No time window is calculated automatically. This mode is useful in cases, where a certain set of data meeting specific criteria needs to be ingested into the platform.
 
 #### Search parameter
 

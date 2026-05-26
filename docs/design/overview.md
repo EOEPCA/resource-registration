@@ -3,7 +3,7 @@
 The Resource Registration Building Block supports the ingestion of data and its associated metadata into the platform services – including, but not limited to:
 
 - Metadata registration into Resource Discovery service
-- Data registration into Data Access services for data retrieval and visualisation
+- Data registration into Data Access services for data retrieval and visualisationOperaton
 
 The Resource Registration BB is a companion to Resource Discovery in terms of satisfying the ingestion of the resource types supported by Resource Discovery. Thus, it provides a RESTful service interface for registration of all the Resource Types supported by the Resource Discovery Building Block.
 
@@ -31,8 +31,8 @@ The components design of the Resource Registration Building Block is shown in th
 
 The Registration API uses pygeoapi to publish processes according to the OGC API - Processes specification. Processes for resource creation, update, and deletion are implemented for all resource types available in the resource catalogue. The processes make use of the OWSLib, components of the EOEPCA registrar as well as the newly combined and developed data ingestion library.
 
-The Harvester component is built with workflows in Flowable allowing to easily operate the workflows conducted. Python is used to communicate with the Flowable core engine via REST API and to execute the workflow steps. The execution of the tasks for metadata harvesting, data download, and metadata creation is based on various software, such as EOX View Server’s harvester as well as OWSLib, pygeometa, EOMetadataTool, and stactools. A common data ingestion library is being developed to combine the functionalities from those various packages.
+The Harvester component is built with BPMN workflows in Operaton allowing to easily operate the workflows conducted. Python is used to communicate with the Operaton core engine via REST API and to execute the workflow steps. The execution of the tasks for metadata harvesting, data download, and metadata creation is based on various software, such as EOX View Server’s harvester as well as OWSLib, pygeometa, EOMetadataTool, and stactools. A common data ingestion library is being developed to combine the functionalities from those various packages.
 
-As part of the workflows in Flowable, notifications can be sent to the notification & automation building block and workflows can listen for notifications as well.
+As part of the workflows in Operaton, notifications can be sent to the notification & automation building block and workflows can listen for notifications as well.
 
 All APIs are protected with the API Gateway, which connects to the Identity Management building block for authentication and authorization. In addition, the API Gateway is able to conduct rate-limiting.

@@ -10,9 +10,9 @@ To setup a local copy of the Registration API follow the instructions provided [
 
 You can setup a local copy of the Harvester component using Docker and Docker Compose:
 
-1. Run the Flowable workflow engine on your machine as described in the [Flowable Docker documentation](https://github.com/flowable/flowable-engine/tree/main/docker).
+1. Run the Operaton workflow engine on your machine as described in the [Operaton Docker documentation](https://docs.operaton.org/docs/documentation/installation/docker).
 3. Clone the [Harvester GitHub repository](https://github.com/EOEPCA/registration-harvester.git).
-4. Deploy the BPMN workflow definitions contained in the `workflows` directory on your local Flowable instance. 
+4. Deploy the BPMN workflow definitions contained in the `workflows` directory on your local Operaton instance. 
 5. The  `docker-compose.yml` in the project root directory defines the worker processes for the workflows. Adapt the workflow-specific configuration files to your enviroment and start everything with `docker compose up`.
 
 !!! info "USGS M2M user account"
