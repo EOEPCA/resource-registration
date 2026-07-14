@@ -118,6 +118,6 @@ In *manual* mode, the following parameters can be used to filter the search resu
 
 | Name | Description | Default | Example |
 | ---- | ----------- | --------| ------- |
-| filter | OData filter expression | None | `(ContentDate/Start ge 2025-01-06T00:00:00.000000Z and ContentDate/Start lt 2025-01-08T00:00:00.000000Z) and (Online eq true)` |
+| datetime_interval | A date-time or an interval, open or closed. Date and time expressions adhere to RFC 3339 | None | `2024-11-12T15:00:00Z/2024-11-12T16:00:00Z` |
 | timewindow_hours | Size of the calculated time window in hours | `1` | `1` |
 
